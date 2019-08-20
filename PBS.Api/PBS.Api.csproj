@@ -9,9 +9,13 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PBS.Business.DAL\PBS.Business.DAL.csproj" />
+    <ProjectReference Include="..\PBS.Business.Services\PBS.Business.Services.csproj" />
+    <ProjectReference Include="..\PBS.Business.Utilities\PBS.Business.Utilities.csproj" />
     <ProjectReference Include="..\PBS.Database\PBS.Database.csproj" />
   </ItemGroup>
 
