@@ -13,7 +13,7 @@ namespace PBS.Database.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<ParkingLot> ParkingLots { get; set; }
-        public DbSet<ParkingLotImages> ParkingLotImages { get; set; }
+        public DbSet<ParkingLotImage> ParkingLotImages { get; set; }
         public DbSet<Slot> Slots { get; set; }
         public DbSet<SlotType> SlotTypes { get; set; }
     }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PBS.Database.Models
+﻿namespace PBS.Database.Models
 {
-    public class ParkingLotImages
+    public class ParkingLotImage
     {
         public int Id { get; set; }
 

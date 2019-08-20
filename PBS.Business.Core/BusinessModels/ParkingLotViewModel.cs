@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace PBS.Database.Models
+namespace PBS.Business.Core.BusinessModels
 {
-    public class ParkingLot
+    public class ParkingLotViewModel
     {
         public int Id { get; set; }
 
@@ -12,16 +12,16 @@ namespace PBS.Database.Models
 
         #region Parking Owner
         public int OwnerId { get; set; }
-        public User Owner { get; set; }
+        public UserViewModel OwnerViewModel { get; set; }
         #endregion
 
         #region Parking Address
         public int AddressId { get; set; }
-        public Address Address { get; set; }
+        public AddressViewModel AddressViewModel { get; set; }
         #endregion
 
         #region Navigational Properties
-        public List<ParkingLotImage> ParkingLotImages { get; set; }
+        public List<ParkingLotImageViewModel> ParkingLotImageViewModels { get; set; }
         #endregion
     }
 }
