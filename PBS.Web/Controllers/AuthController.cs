@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using PBS.Web.Helpers;
@@ -30,6 +31,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
+                    HttpContext.Session.SetString ("token", response.Data.ToString ());
                     return RedirectToAction ("Index", "Home");
                 }
                 else
@@ -60,6 +62,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
+                    HttpContext.Session.SetString ("token", response.Data.ToString ());
                     return RedirectToAction ("Index", "Home");
                 }
                 else
@@ -73,6 +76,14 @@ namespace PBS.Web.Controllers
             }
 
             return View (model);
+        }
+
+        [HttpPost]
+        public IActionResult Logout ()
+        {
+            HttpContext.Session.Remove ("token");
+
+            return RedirectToAction ("Login", "Auth");
         }
     }
 }

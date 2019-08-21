@@ -1,4 +1,8 @@
 ﻿@using PBS.Web
 @using PBS.Web.Models
 @using PBS.Business.Core.Models
+@using PBS.Web.Helpers
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject ITokenDecoder _tokenDecoder

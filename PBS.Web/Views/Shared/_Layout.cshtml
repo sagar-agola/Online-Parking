@@ -21,21 +21,38 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PBS.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Parking Booking System</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-2">
+                        @if (_tokenDecoder.IsLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <a href="#" class="nav-link text-dark">Welcome, @_tokenDecoder.UserName</a>
+                            </li>
+                            <li class="nav-item">
+                                <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
+                                    <a href="#" class="nav-link text-dark"
+                                       onclick="document.getElementById('LogoutForm').submit();">Logout</a>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav flex-grow-0">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
                         </li>
                     </ul>
                 </div>

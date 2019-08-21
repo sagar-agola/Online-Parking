@@ -26,6 +26,10 @@ namespace PBS.Web
              });
 
             services.AddSingleton<IApiHelper, ApiHelper> ();
+            services.AddSingleton<ITokenDecoder, TokenDecoder> ();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor> ();
+
+            services.AddSession ();
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
         }
@@ -45,6 +49,7 @@ namespace PBS.Web
             app.UseHttpsRedirection ();
             app.UseStaticFiles ();
             app.UseCookiePolicy ();
+            app.UseSession ();
 
             app.UseMvc (routes =>
              {
