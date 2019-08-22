@@ -19,8 +19,7 @@ namespace PBS.Api.Controllers
             _tokenManager = tokenManager;
         }
 
-        [HttpPost]
-        [Route ("login")]
+        [HttpPost ("login")]
         public object Login (LoginModel model)
         {
             UserViewModel response = _authService.Login (model.Email, model.Password);

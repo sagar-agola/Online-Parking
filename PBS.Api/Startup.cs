@@ -19,6 +19,8 @@ using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Context;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -39,6 +41,21 @@ namespace PBS.Api
             services.AddSwaggerGen (c =>
             {
                 c.SwaggerDoc ("v1", new Info ());
+                c.AddSecurityDefinition ("Bearer",
+                   new ApiKeyScheme
+                   {
+                       In = "header",
+                       Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                       Name = "Authorization",
+                       Type = "apiKey"
+                   });
+               c.AddSecurityRequirement (new Dictionary<string, IEnumerable<string>>
+               {
+                    {
+                       "Bearer",
+                       Enumerable.Empty<string>()
+                    },
+               });
             });
             #endregion
 
@@ -82,7 +99,10 @@ namespace PBS.Api
             #region Domain Services
             services.AddScoped<IUnitOfWork, UnitOfWork> ();
             services.AddScoped<IAuthService, AuthService> ();
+            services.AddScoped<IUserService, UserService> ();
             #endregion
+
+            services.AddCors ();
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
         }
@@ -113,6 +133,7 @@ namespace PBS.Api
             }
 
             app.UseHttpsRedirection ();
+            app.UseCors (x => x.AllowAnyOrigin ().AllowAnyHeader ().AllowAnyMethod ());
             app.UseAuthentication ();
             app.UseMvc ();
             app.UseSwagger ();

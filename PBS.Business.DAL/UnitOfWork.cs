@@ -11,12 +11,14 @@ namespace PBS.Business.DAL
         private readonly PbsDbContext _context;
 
         public IAuthRepository AuthRepository { get; }
+        public IUserRepository UserRepository { get; }
 
         public UnitOfWork (PbsDbContext context)
         {
             _context = context;
 
             AuthRepository = new AuthRepository (_context);
+            UserRepository = new UserRepository (_context);
         }
 
         private bool disposed;
