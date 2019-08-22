@@ -49,7 +49,7 @@ namespace PBS.Api
                        Name = "Authorization",
                        Type = "apiKey"
                    });
-               c.AddSecurityRequirement (new Dictionary<string, IEnumerable<string>>
+                c.AddSecurityRequirement (new Dictionary<string, IEnumerable<string>>
                {
                     {
                        "Bearer",
@@ -82,11 +82,14 @@ namespace PBS.Api
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetSection ("AppSettings:JwtIssuer").Value,
+                        ValidAudience = Configuration.GetSection ("AppSettings:JwtAudience").Value,
                         IssuerSigningKey = new SymmetricSecurityKey (Encoding.ASCII
-                            .GetBytes (Configuration.GetSection ("AppSettings:Token").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                            .GetBytes (Configuration.GetSection ("AppSettings:Token").Value))
                     };
                 });
             #endregion

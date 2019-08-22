@@ -35,7 +35,9 @@ namespace PBS.Business.Utilities.Helpers
             {
                 Subject = new ClaimsIdentity (claims),
                 Expires = DateTime.Now.AddDays (1),
-                SigningCredentials = creds
+                SigningCredentials = creds,
+                Issuer = _configuration.Issuer,
+                Audience = _configuration.Audience
             };
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler ();

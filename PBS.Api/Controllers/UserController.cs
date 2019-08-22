@@ -9,6 +9,7 @@ namespace PBS.Api.Controllers
 {
     [Route ("api/user")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -29,7 +30,6 @@ namespace PBS.Api.Controllers
             }
 
             return new ResponseDetails (true, model);
-
         }
 
         [HttpGet ("get/{id}")]
@@ -46,7 +46,6 @@ namespace PBS.Api.Controllers
         }
 
         [HttpPost("update")]
-        [Authorize(Roles = "User")]
         public object Update (UserViewModel model)
         {
             int id = model.Id;
