@@ -31,13 +31,21 @@
                         @if (_tokenDecoder.IsLoggedIn)
                         {
                             <li class="nav-item">
-                                <a href="#" class="nav-link text-dark">Welcome, @_tokenDecoder.UserName</a>
-                            </li>
-                            <li class="nav-item">
-                                <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
-                                    <a href="#" class="nav-link text-dark"
-                                       onclick="document.getElementById('LogoutForm').submit();">Logout</a>
-                                </form>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink" 
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Hii, @_tokenDecoder.UserName
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">My Profile</a>
+                                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">Change Password</a>
+                                        <div class="dropdown-divider"></div>
+                                        <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
+                                            <a href="#" class="dropdown-item"
+                                               onclick="document.getElementById('LogoutForm').submit();">Logout</a>
+                                        </form>
+                                    </div>
+                                </div>
                             </li>
                         }
                         else

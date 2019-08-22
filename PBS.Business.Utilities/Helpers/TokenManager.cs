@@ -10,9 +10,9 @@ namespace PBS.Business.Utilities.Helpers
 {
     public class TokenManager : ITokenManager
     {
-        private readonly IAppConfiguration _configuration;
+        private readonly IApiConfiguration _configuration;
 
-        public TokenManager (IAppConfiguration configuration)
+        public TokenManager (IApiConfiguration configuration)
         {
             _configuration = configuration;
         }

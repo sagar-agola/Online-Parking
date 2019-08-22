@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PBS.Business.Core\PBS.Business.Core.csproj" />
+    <ProjectReference Include="..\PBS.Business.Utilities\PBS.Business.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

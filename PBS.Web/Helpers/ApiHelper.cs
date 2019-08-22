@@ -10,10 +10,12 @@ namespace PBS.Web.Helpers
     public class ApiHelper : IApiHelper
     {
         private readonly IConfiguration _configuration;
+        private readonly ITokenDecoder _tokenDecoder;
 
-        public ApiHelper (IConfiguration configuration)
+        public ApiHelper (IConfiguration configuration, ITokenDecoder tokenDecoder)
         {
             _configuration = configuration;
+            _tokenDecoder = tokenDecoder;
         }
 
         /// <summary>
@@ -45,6 +47,11 @@ namespace PBS.Web.Helpers
 
                 client.DefaultRequestHeaders.Accept.Clear ();
                 client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));
+
+                if (_tokenDecoder.IsLoggedIn)
+                {
+                    client.DefaultRequestHeaders.Add ("Authorization", "Bearer " + _tokenDecoder.RowToken);
+                }
 
                 HttpResponseMessage response;
 

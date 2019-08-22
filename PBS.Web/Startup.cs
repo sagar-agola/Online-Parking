@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PBS.Business.Utilities.Configuration;
+using PBS.Business.Utilities.Helpers;
+using PBS.Business.Utilities.MailClient;
 using PBS.Web.Helpers;
 
 namespace PBS.Web
@@ -28,6 +31,9 @@ namespace PBS.Web
             services.AddSingleton<IApiHelper, ApiHelper> ();
             services.AddSingleton<ITokenDecoder, TokenDecoder> ();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor> ();
+            services.AddSingleton<IEncryptionHelper, EncryptionHelper> ();
+            services.AddSingleton<IWebConfiguration, WebConfiguration> ();
+            services.AddSingleton<IMailClient, MailClient> ();
 
             services.AddSession ();
 

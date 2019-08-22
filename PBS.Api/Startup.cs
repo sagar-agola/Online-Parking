@@ -95,7 +95,7 @@ namespace PBS.Api
             #endregion
 
             #region Utilities
-            services.AddSingleton<IAppConfiguration, AppConfiguration> ();
+            services.AddSingleton<IApiConfiguration, ApiConfiguration> ();
             services.AddSingleton<ITokenManager, TokenManager> ();
             #endregion
 

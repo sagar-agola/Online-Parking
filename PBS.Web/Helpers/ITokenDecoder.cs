@@ -2,6 +2,8 @@
 {
     public interface ITokenDecoder
     {
+        string RowToken { get; }
+
         bool IsLoggedIn { get; }
 
         int UserId { get; }

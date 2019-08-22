@@ -3,7 +3,7 @@ using System.IO;
 
 namespace PBS.Business.Utilities.Configuration
 {
-    public class AppConfiguration : IAppConfiguration
+    public class ApiConfiguration : IApiConfiguration
     {
         public string Token
         {

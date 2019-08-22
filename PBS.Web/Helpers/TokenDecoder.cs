@@ -13,11 +13,19 @@ namespace PBS.Web.Helpers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public string RowToken
+        {
+            get
+            {
+                return _httpContextAccessor.HttpContext.Session.GetString ("token");
+            }
+        }
+
         public bool IsLoggedIn
         {
             get
             {
-                return _httpContextAccessor.HttpContext.Session.GetString ("token") != null;
+                return RowToken != null;
             }
         }
 
@@ -25,7 +33,7 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = _httpContextAccessor.HttpContext.Session.GetString ("token");
+                string token = RowToken;
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
                 JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;
@@ -38,7 +46,7 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = _httpContextAccessor.HttpContext.Session.GetString ("token");
+                string token = RowToken;
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
                 JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;
@@ -51,7 +59,7 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = _httpContextAccessor.HttpContext.Session.GetString ("token");
+                string token = RowToken;
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
                 JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;

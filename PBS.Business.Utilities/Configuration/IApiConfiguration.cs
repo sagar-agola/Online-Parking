@@ -1,6 +1,6 @@
 ﻿namespace PBS.Business.Utilities.Configuration
 {
-    public interface IAppConfiguration
+    public interface IApiConfiguration
     {
         string Token { get; }
         string Issuer { get; }
