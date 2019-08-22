@@ -2,6 +2,8 @@
 using PBS.Business.Contracts;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.BusinessModels;
+using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Models;
 using System.Collections.Generic;
@@ -59,6 +61,27 @@ namespace PBS.Business.Services
             }
 
             return null;
+        }
+
+        public bool ChangePassword(ChangePasswordModel model)
+        {
+            PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            ChangePasswordDbModel dbModel = new ChangePasswordDbModel
+            {
+                Id = model.Id,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
+            };
+
+            bool success = _unitOfWork.UserRepository.ChangePassword (dbModel);
+
+            if (success)
+            {
+                _unitOfWork.SaveChanges ();
+            }
+
+            return success;
         }
     }
 }

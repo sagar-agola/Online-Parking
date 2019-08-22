@@ -58,5 +58,18 @@ namespace PBS.Api.Controllers
 
             return new ResponseDetails (true, model);
         }
+
+        [HttpPost("change-password")]
+        public object ChangePassword(ChangePasswordModel model)
+        {
+            bool success = _userService.ChangePassword (model);
+
+            if (!success)
+            {
+                return new ResponseDetails (false, "Could not update password.");
+            }
+
+            return new ResponseDetails (true, "Password updated successfully.");
+        }
     }
 }

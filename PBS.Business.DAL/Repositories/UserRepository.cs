@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PBS.Business.Contracts.Repositories;
+using PBS.Business.Core.Models;
 using PBS.Database.Context;
 using PBS.Database.Models;
 using System.Collections.Generic;
@@ -56,6 +57,24 @@ namespace PBS.Business.DAL.Repositories
                 model.PasswordSalt = user.PasswordSalt;
 
                 _context.Users.Update (model);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool ChangePassword (ChangePasswordDbModel model)
+        {
+            if (UserExists (model.Id))
+            {
+                User user = _context.Users.First (u => u.Id == model.Id);
+
+                user.PasswordHash = model.PasswordHash;
+                user.PasswordSalt = model.PasswordSalt;
+
+                _context.Users.Update (user);
+
                 return true;
             }
 
