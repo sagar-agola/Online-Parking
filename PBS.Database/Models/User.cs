@@ -37,6 +37,7 @@ namespace PBS.Database.Models
         #region Navigational Properties
         public List<ParkingLot> ParkingLots { get; set; }
         public List<Booking> Bookings { get; set; }
+        public List<UserClaim> UserClaims { get; set; }
         #endregion
     }
 }

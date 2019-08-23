@@ -92,6 +92,11 @@ namespace PBS.Api
                             .GetBytes (Configuration.GetSection ("AppSettings:Token").Value))
                     };
                 });
+
+            services.AddAuthorization (options =>
+             {
+                 options.AddPolicy ("test", policy => policy.RequireClaim ("test"));
+             });
             #endregion
 
             #region Utilities

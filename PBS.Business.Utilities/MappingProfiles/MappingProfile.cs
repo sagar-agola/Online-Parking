@@ -11,6 +11,9 @@ namespace PBS.Business.Utilities.MappingProfiles
             CreateMap<User, UserViewModel> ();
             CreateMap<UserViewModel, User> ();
 
+            CreateMap<UserClaim, UserClaimViewModel> ();
+            CreateMap<UserClaimViewModel, UserClaim> ();
+
             CreateMap<Role, RoleViewModel> ();
             CreateMap<RoleViewModel, Role> ();
 

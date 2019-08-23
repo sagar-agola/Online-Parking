@@ -19,7 +19,8 @@ namespace PBS.Api.Controllers
             _userService = userService;
         }
 
-        [HttpGet("get-all")]
+        [HttpGet ("get-all")]
+        [Authorize (Policy = "test")]
         public object GetAll ()
         {
             List<UserViewModel> model = _userService.GetAll ();
@@ -45,7 +46,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost("update")]
+        [HttpPost ("update")]
         public object Update (UserViewModel model)
         {
             int id = model.Id;
@@ -59,8 +60,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost("change-password")]
-        public object ChangePassword(ChangePasswordModel model)
+        [HttpPost ("change-password")]
+        public object ChangePassword (ChangePasswordModel model)
         {
             bool success = _userService.ChangePassword (model);
 

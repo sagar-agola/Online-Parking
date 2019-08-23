@@ -27,6 +27,7 @@ namespace PBS.Business.DAL.Repositories
                 .Include (user => user.Address)
                 .Include (user => user.Bookings)
                 .Include (user => user.ParkingLots)
+                .Include (user => user.UserClaims)
                 .FirstOrDefault (user => user.Email == email);
         }
 

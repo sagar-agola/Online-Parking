@@ -1,9 +1,10 @@
-﻿using PBS.Business.Core.BusinessModels;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace PBS.Business.Utilities.Helpers
 {
     public interface ITokenManager
     {
-        string GetToken (UserViewModel model);
+        string GetToken (List<Claim> claims);
     }
 }

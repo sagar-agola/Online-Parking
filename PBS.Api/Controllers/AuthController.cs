@@ -3,6 +3,8 @@ using PBS.Business.Contracts.Services;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Helpers;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace PBS.Api.Controllers
 {
@@ -29,7 +31,9 @@ namespace PBS.Api.Controllers
                 return new ResponseDetails (false, null);
             }
 
-            string token = _tokenManager.GetToken (response);
+            List<Claim> claims = GetClaims (response);
+
+            string token = _tokenManager.GetToken (claims);
 
             return new ResponseDetails (true, token);
         }
@@ -49,9 +53,28 @@ namespace PBS.Api.Controllers
             // login after register
             UserViewModel user = _authService.Login (model.Email, password);
 
-            string token = _tokenManager.GetToken (user);
+            List<Claim> claims = GetClaims (user);
+
+            string token = _tokenManager.GetToken (claims);
 
             return new ResponseDetails (true, token);
+        }
+
+        private static List<Claim> GetClaims (UserViewModel model)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim (ClaimTypes.NameIdentifier, model.Id.ToString ()),
+                new Claim (ClaimTypes.Name, model.FirstName + " " + model.LastName),
+                new Claim (ClaimTypes.Role, model.RoleViewModel.Title)
+            };
+
+            foreach (UserClaimViewModel claim in model.UserClaimViewModels)
+            {
+                claims.Add (new Claim (claim.ClaimType, claim.ClaimTitle));
+            }
+
+            return claims;
         }
     }
 }
