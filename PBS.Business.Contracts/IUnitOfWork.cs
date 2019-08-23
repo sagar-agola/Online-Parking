@@ -6,6 +6,7 @@ namespace PBS.Business.Contracts
     {
         IAuthRepository AuthRepository { get; }
         IUserRepository UserRepository { get; }
+        IClaimRepository ClaimRepository { get; }
 
         void Dispose ();
         void SaveChanges ();

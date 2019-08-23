@@ -12,6 +12,7 @@ namespace PBS.Business.DAL
 
         public IAuthRepository AuthRepository { get; }
         public IUserRepository UserRepository { get; }
+        public IClaimRepository ClaimRepository { get; }
 
         public UnitOfWork (PbsDbContext context)
         {
@@ -19,6 +20,7 @@ namespace PBS.Business.DAL
 
             AuthRepository = new AuthRepository (_context);
             UserRepository = new UserRepository (_context);
+            ClaimRepository = new ClaimRepository (_context);
         }
 
         private bool disposed;

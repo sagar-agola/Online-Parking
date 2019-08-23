@@ -81,11 +81,9 @@ namespace PBS.Business.DAL.Repositories
             return false;
         }
 
-        #region Private methods
-        private bool UserExists (int id)
+        public bool UserExists (int id)
         {
             return _context.Users.Any (user => user.Id == id);
         }
-        #endregion
     }
 }

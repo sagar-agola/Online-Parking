@@ -74,6 +74,7 @@ namespace PBS.Api
 
             #region Domain Mapping
             services.AddSingleton<IUserMapping, UserMapping> ();
+            services.AddSingleton<IClaimMapping, ClaimMapping> ();
             #endregion
 
             #region JWT Token Authentication
@@ -108,6 +109,7 @@ namespace PBS.Api
             services.AddScoped<IUnitOfWork, UnitOfWork> ();
             services.AddScoped<IAuthService, AuthService> ();
             services.AddScoped<IUserService, UserService> ();
+            services.AddScoped<IClaimService, ClaimService> ();
             #endregion
 
             services.AddCors ();
