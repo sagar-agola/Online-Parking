@@ -98,7 +98,12 @@ namespace PBS.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError ("", response.Data.ToString ());
+                    ErrorViewModel errorModel = new ErrorViewModel
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", errorModel);
                 }
             }
             else
@@ -117,11 +122,11 @@ namespace PBS.Web.Controllers
 
             if (model.GetType () == typeof (UserViewModel))
             {
-                return View (model);
+                return View (model as UserViewModel);
             }
             else
             {
-                return View ("Error", model);
+                return View ("Error", model as ErrorViewModel);
             }
         }
         #endregion
@@ -134,11 +139,11 @@ namespace PBS.Web.Controllers
 
             if (model.GetType () == typeof (UserViewModel))
             {
-                return View (model);
+                return View (model as UserViewModel);
             }
             else
             {
-                return View ("Error", model);
+                return View ("Error", model as ErrorViewModel);
             }
         }
 
@@ -185,7 +190,7 @@ namespace PBS.Web.Controllers
             }
             else
             {
-                return View ("Error", model);
+                return View ("Error", model as ErrorViewModel);
             }
         }
 
