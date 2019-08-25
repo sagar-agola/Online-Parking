@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using System.Collections.Generic;
 
 namespace PBS.Api.Controllers
 {
@@ -20,15 +17,15 @@ namespace PBS.Api.Controllers
             _claimService = claimService;
         }
 
-        [HttpPost("add")]
-        public object Add(UserClaimViewModel model)
+        [HttpPost ("add")]
+        public object Add (UserClaimViewModel model)
         {
             model = _claimService.Add (model);
 
             return new ResponseDetails (true, "Claim added successfully.");
         }
 
-        [HttpGet("get-all")]
+        [HttpGet ("get-all")]
         public object GetAll ()
         {
             List<UserClaimViewModel> model = _claimService.GetAll ();
@@ -44,8 +41,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, "None at the moment.");
         }
 
-        [HttpGet("get/{id}")]
-        public object Get(int id)
+        [HttpGet ("get/{id}")]
+        public object Get (int id)
         {
             List<UserClaimViewModel> model = _claimService.GetUserClaim (id);
 
@@ -62,8 +59,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpDelete("remove")]
-        public object Remove(ClaimRemoveModel model)
+        [HttpDelete ("remove")]
+        public object Remove (ClaimRemoveModel model)
         {
             bool success = _claimService.Remove (model);
 
@@ -75,7 +72,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, $"User with Id: { model.UserId } is not found or invalid Claim title.");
         }
 
-        [HttpDelete("remove-all/{id}")]
+        [HttpDelete ("remove-all/{id}")]
         public object RemoveAll (int id)
         {
             bool success = _claimService.RemoveAll (id);

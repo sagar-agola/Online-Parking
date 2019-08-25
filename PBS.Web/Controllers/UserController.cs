@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.MailClient;
@@ -18,8 +20,10 @@ namespace PBS.Web.Controllers
         private readonly IMailClient _client;
         private const int KEY = 5;
 
-        public UserController (IApiHelper apiHelper, ITokenDecoder tokenDecoder,
-            IEncryptionHelper encryptionHelper, IMailClient client)
+        public UserController (IApiHelper apiHelper,
+                               ITokenDecoder tokenDecoder,
+                               IEncryptionHelper encryptionHelper,
+                               IMailClient client)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
@@ -27,6 +31,7 @@ namespace PBS.Web.Controllers
             _client = client;
         }
 
+        #region Change Password Actions
         [HttpGet]
         public IActionResult ChangePassword ()
         {
@@ -103,6 +108,133 @@ namespace PBS.Web.Controllers
 
             return View (model);
         }
+        #endregion
+
+        #region View Profile
+        public IActionResult Profile ()
+        {
+            object model = GetUserDetails ();
+
+            if (model.GetType () == typeof (UserViewModel))
+            {
+                return View (model);
+            }
+            else
+            {
+                return View ("Error", model);
+            }
+        }
+        #endregion
+
+        #region Update Profile
+        [HttpGet]
+        public IActionResult Update ()
+        {
+            object model = GetUserDetails ();
+
+            if (model.GetType () == typeof (UserViewModel))
+            {
+                return View (model);
+            }
+            else
+            {
+                return View ("Error", model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Update (UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDetails response = _apiHelper.SendApiRequest (model, "user/update", HttpMethod.Post);
+
+                if (response.Success)
+                {
+                    return RedirectToAction ("Profile");
+                }
+                else
+                {
+                    ErrorViewModel error = new ErrorViewModel
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", error);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError ("", "Validation error.");
+                return View (model);
+            }
+        }
+        #endregion
+
+        #region Update Address
+        [HttpGet]
+        public IActionResult UpdateAddress ()
+        {
+            object model = GetUserDetails ();
+
+            if (model.GetType () == typeof (UserViewModel))
+            {
+                UserViewModel user = (UserViewModel) model;
+
+                return View (user.AddressViewModel);
+            }
+            else
+            {
+                return View ("Error", model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateAddress (AddressViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDetails response = _apiHelper.SendApiRequest (model, "address/update", HttpMethod.Post);
+
+                if (response.Success)
+                {
+                    return RedirectToAction ("UpdateAddress");
+                }
+                else
+                {
+                    ErrorViewModel errorModel = new ErrorViewModel
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", errorModel);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError ("", "Validation error.");
+                return View (model);
+            }
+        }
+        #endregion
+
+        #region Private Methods
+        private object GetUserDetails ()
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "user/get/" + _tokenDecoder.UserId, HttpMethod.Get);
+
+            if (response.Success)
+            {
+                return JsonConvert.DeserializeObject<UserViewModel> (response.Data.ToString ());
+            }
+            else
+            {
+                return new ErrorViewModel
+                {
+                    Message = response.Data.ToString ()
+                };
+            }
+        }
 
         private string GanerateAndSendOTP (ChangePasswordViewModel model)
         {
@@ -118,5 +250,6 @@ namespace PBS.Web.Controllers
             _client.SendEmail (model.Email, _tokenDecoder.UserName, "OTP for change password", body);
             return encryptedOtp;
         }
+        #endregion
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PBS.Web</title>
+    <title>@ViewData["Title"] - Parking Booking System</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -37,8 +37,15 @@
                                         Hii, @_tokenDecoder.UserName
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">My Profile</a>
-                                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">Change Password</a>
+                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">
+                                            My Profile
+                                        </a>
+                                        <a class="dropdown-item" asp-action="UpdateAddress" asp-controller="User">
+                                            Manage Address
+                                        </a>
+                                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">
+                                            Change Password
+                                        </a>
                                         <div class="dropdown-divider"></div>
                                         <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
                                             <a href="#" class="dropdown-item"

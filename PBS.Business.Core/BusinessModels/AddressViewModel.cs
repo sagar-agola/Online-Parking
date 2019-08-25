@@ -5,7 +5,7 @@ namespace PBS.Business.Core.BusinessModels
 {
     public class AddressViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         public string AddressLine1 { get; set; }

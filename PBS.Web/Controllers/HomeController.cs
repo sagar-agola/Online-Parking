@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Web.Models;
 
 namespace PBS.Web.Controllers
@@ -20,10 +15,9 @@ namespace PBS.Web.Controllers
             return View ();
         }
 
-        [ResponseCache (Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error ()
+        public IActionResult Error (ErrorViewModel model)
         {
-            return View (new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View (model);
         }
     }
 }

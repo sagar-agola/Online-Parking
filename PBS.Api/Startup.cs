@@ -110,6 +110,7 @@ namespace PBS.Api
             services.AddScoped<IAuthService, AuthService> ();
             services.AddScoped<IUserService, UserService> ();
             services.AddScoped<IClaimService, ClaimService> ();
+            services.AddScoped<IAddressService, AddressService> ();
             #endregion
 
             services.AddCors ();

@@ -9,7 +9,6 @@ namespace PBS.Api.Controllers
 {
     [Route ("api/user")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

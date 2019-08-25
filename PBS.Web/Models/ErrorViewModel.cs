@@ -1,11 +1,9 @@
-using System;
-
-namespace PBS.Web.Models
+﻿namespace PBS.Web.Models
 {
     public class ErrorViewModel
     {
-        public string RequestId { get; set; }
+        public string Title { get; set; } = "Error";
 
-        public bool ShowRequestId => !string.IsNullOrEmpty (RequestId);
+        public string Message { get; set; } = "An unknown error occured while procesing your request.";
     }
 }

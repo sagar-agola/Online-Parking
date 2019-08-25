@@ -48,11 +48,11 @@ namespace PBS.Business.Services
             }
 
             model.RoleId = 2; // Role : User
-            model.AddressId = 1; // initial Dummy address
 
             PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             User modelMapping = _mapper.Map<User> (model);
+            modelMapping.Address = _mapper.Map<Address> (model.AddressViewModel);
 
             modelMapping.PasswordHash = passwordHash;
             modelMapping.PasswordSalt = passwordSalt;

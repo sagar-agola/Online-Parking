@@ -58,6 +58,16 @@ namespace PBS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.AddressViewModel = new AddressViewModel ()
+                {
+                    AddressLine1 = "test",
+                    AddressLine2 = "test",
+                    City = "test",
+                    LandMark = "test",
+                    PinCode = "111111",
+                    State = "test"
+                };
+
                 ResponseDetails response = _apiHelper.SendApiRequest (model, "auth/register", HttpMethod.Post);
 
                 if (response.Success)
