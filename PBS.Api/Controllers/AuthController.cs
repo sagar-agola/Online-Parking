@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
+using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Helpers;
@@ -8,7 +9,7 @@ using System.Security.Claims;
 
 namespace PBS.Api.Controllers
 {
-    [Route ("api/auth")]
+
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace PBS.Api.Controllers
             _tokenManager = tokenManager;
         }
 
-        [HttpPost ("login")]
+        [HttpPost (ApiRoutes.Auth.Login)]
         public object Login (LoginModel model)
         {
             UserViewModel response = _authService.Login (model.Email, model.Password);
@@ -38,7 +39,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, token);
         }
 
-        [HttpPost ("register")]
+        [HttpPost (ApiRoutes.Auth.Register)]
         public object Register (UserViewModel model)
         {
             string password = model.Password;

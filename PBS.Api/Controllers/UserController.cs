@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
+using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using System.Collections.Generic;
 
 namespace PBS.Api.Controllers
 {
-    [Route ("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace PBS.Api.Controllers
             _userService = userService;
         }
 
-        [HttpGet ("get-all")]
+        [HttpGet (ApiRoutes.User.GetAll)]
         [Authorize (Policy = "test")]
         public object GetAll ()
         {
@@ -32,7 +32,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpGet ("get/{id}")]
+        [HttpGet (ApiRoutes.User.Get)]
         public object Get (int id)
         {
             UserViewModel model = _userService.Get (id);
@@ -45,7 +45,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost ("update")]
+        [HttpPost (ApiRoutes.User.Update)]
         public object Update (UserViewModel model)
         {
             int id = model.Id;
@@ -59,7 +59,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost ("change-password")]
+        [HttpPost (ApiRoutes.User.ChangePassword)]
         public object ChangePassword (ChangePasswordModel model)
         {
             bool success = _userService.ChangePassword (model);
