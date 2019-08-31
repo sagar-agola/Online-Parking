@@ -22,6 +22,7 @@ namespace PBS.Business.Core.BusinessModels
 
         #region Navigational Properties
         public List<ParkingLotImageViewModel> ParkingLotImageViewModels { get; set; }
+        public List<SlotViewModel> SlotViewModels { get; set; }
         #endregion
     }
 }

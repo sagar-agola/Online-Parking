@@ -14,7 +14,7 @@ namespace PBS.Database.Models
         #endregion
 
         #region Slot Type
-        public int SlotId { get; set; }
+        public int SlotTypeId { get; set; }
         public SlotType SlotType { get; set; }
         #endregion
 

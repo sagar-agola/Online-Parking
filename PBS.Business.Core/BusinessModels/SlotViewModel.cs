@@ -14,7 +14,7 @@ namespace PBS.Business.Core.BusinessModels
         #endregion
 
         #region Slot Type
-        public int SlotId { get; set; }
+        public int SlotTypeId { get; set; }
         public SlotTypeViewModel SlotTypeViewModel { get; set; }
         #endregion
 

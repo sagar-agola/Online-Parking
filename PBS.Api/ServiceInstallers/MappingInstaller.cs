@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PBS.Business.Utilities.Mappings;
@@ -19,6 +15,7 @@ namespace PBS.Api.ServiceInstallers
 
             services.AddSingleton<IUserMapping, UserMapping> ();
             services.AddSingleton<IClaimMapping, ClaimMapping> ();
+            services.AddSingleton<IParkingLotMapping, ParkingLotMapping> ();
         }
     }
 }

@@ -41,10 +41,8 @@ namespace PBS.Business.DAL.Repositories
                     .IncludeFilter (user => user.Bookings.Where (booking => booking.IsActive))
                     .First (user => user.Id == id);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public bool Update (User model)

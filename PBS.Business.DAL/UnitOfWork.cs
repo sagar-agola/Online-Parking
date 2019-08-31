@@ -14,6 +14,7 @@ namespace PBS.Business.DAL
         public IUserRepository UserRepository { get; }
         public IClaimRepository ClaimRepository { get; }
         public IAddressRepository AddressRepository { get; }
+        public IParkingLotRepository ParkingLotRepository { get; }
 
         public UnitOfWork (PbsDbContext context)
         {
@@ -23,8 +24,15 @@ namespace PBS.Business.DAL
             UserRepository = new UserRepository (_context);
             ClaimRepository = new ClaimRepository (_context);
             AddressRepository = new AddressRepository (_context);
+            ParkingLotRepository = new ParkingLotRepository (_context);
         }
 
+        public void SaveChanges ()
+        {
+            _context.SaveChanges ();
+        }
+
+        #region IDisposable implemention
         private bool disposed;
 
         protected virtual void Dispose (bool disposing)
@@ -41,10 +49,6 @@ namespace PBS.Business.DAL
             Dispose (true);
             GC.SuppressFinalize (this);
         }
-
-        public void SaveChanges ()
-        {
-            _context.SaveChanges ();
-        }
+        #endregion
     }
 }

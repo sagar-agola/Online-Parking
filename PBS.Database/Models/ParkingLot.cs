@@ -22,6 +22,7 @@ namespace PBS.Database.Models
 
         #region Navigational Properties
         public List<ParkingLotImage> ParkingLotImages { get; set; }
+        public List<Slot> Slots { get; set; }
         #endregion
     }
 }

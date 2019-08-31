@@ -26,6 +26,9 @@ namespace PBS.Business.Utilities.MappingProfiles
             CreateMap<ParkingLot, ParkingLotViewModel> ();
             CreateMap<ParkingLotViewModel, ParkingLot> ();
 
+            CreateMap<ParkingLotImage, ParkingLotImageViewModel> ();
+            CreateMap<ParkingLotImageViewModel, ParkingLotImage> ();
+
             CreateMap<Booking, BookingViewModel> ();
             CreateMap<BookingViewModel, Booking> ();
 
