@@ -44,11 +44,7 @@
             }
             else
             {
-                <span>@Model.AddressViewModel.AddressLine1, </span><br />
-                <span>@Model.AddressViewModel.AddressLine2, </span><br />
-                <span>@Model.AddressViewModel.LandMark, </span><br />
-                <span>@Model.AddressViewModel.City - Model.AddressViewModel.PinCode</span> <br />
-                <span>@Model.AddressViewModel.State, India</span>
+                <partial name="_Address" model="Model.AddressViewModel" />
             }
         </dd>
     </dl>

@@ -1,0 +1,61 @@
+﻿@model List<ParkingLotViewModel>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@if (Model.Any ())
+{
+    <h1>My Parking lot<small>(s)</small></h1><br />
+
+    <div class="row">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table border="0" cellpadding="5" width="100%">
+                            <tr>
+                                <td width="50%">Name</td>
+                                <td width="50%">@Model[i].Name</td>
+                            </tr>
+                            <tr>
+                                <td>Is Active</td>
+                                <td>@(Model[i].IsActive ? "Yes" : "No")</td>
+                            </tr>
+                            <tr>
+                                <td>Is Aproved</td>
+                                <td>@(Model[i].IsAproved ? "Yes" : "No")</td>
+                            </tr>
+                            <tr>
+                                <td>Number Of 2 wheel Slots</td>
+                                <td>@Model[i].SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>
+                            </tr>
+                            <tr>
+                                <td>Number Of 4 wheel Slots</td>
+                                <td>@Model[i].SlotViewModels.Where(x => x.SlotTypeId == 2).Count()</td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td>@Model[i].AddressViewModel.City</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a asp-action="Details" asp-route-id="@Model[i].Id">Full Details</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h3>You don't own any parking lot.</h3>
+}
+
+<div style="margin-top: 10px">
+    <a asp-action="add" class="btn btn-success">Add New Request</a>
+</div>

@@ -27,6 +27,10 @@ namespace PBS.Business.Core.BusinessModels
         [MaxLength (18, ErrorMessage = "Password must be atmost 18 character long.")]
         public string Password { get; set; }
 
+        [Required (ErrorMessage = "Confirm Password is required field.")]
+        [Compare("Password", ErrorMessage = "Password and Compare password must match.")]
+        public string ConfirmPassword { get; set; }
+
         #region User Role
         public int RoleId { get; set; }
         public RoleViewModel RoleViewModel { get; set; }

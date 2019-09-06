@@ -1,0 +1,53 @@
+﻿@model ParkingLotViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Parking lot Details</h1>
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Model.Name<span> Parking lot</span></h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div style="border-right: 1px solid #D8D8D8">
+                    <h4>Basic Info</h4>
+                    <table border="0" cellpadding="5" width="100%">
+                        <tr>
+                            <td width="50%">Is Aproved</td>
+                            <td width="50%">@(Model.IsAproved ? "Yes" : "No")</td>
+                        </tr>
+                        <tr>
+                            <td width="50%">Is Active</td>
+                            <td width="50%">@(Model.IsActive ? "Yes" : "No")</td>
+                        </tr>
+                        <tr>
+                            <td>Number of 2 Wheel slots</td>
+                            <td>@Model.SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>
+                        </tr>
+                        <tr>
+                            <td>Number of 4 Wheel slots</td>
+                            <td>@Model.SlotViewModels.Where(x => x.SlotTypeId == 2).Count()</td>
+                        </tr>
+                        <tr>
+                            <td>Number of booked slots</td>
+                            <td>@Model.SlotViewModels.Where(x => x.IsBooked).Count()</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Address</h4>
+                <partial name="_Address" model="Model.AddressViewModel" />
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-success">Update Details</a>
+        <a asp-action="Manage" asp-controller="Slot" asp-route-id="@Model.Id" class="btn btn-info">Manage Slots</a>
+    </div>
+</div>

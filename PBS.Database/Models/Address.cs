@@ -22,6 +22,10 @@ namespace PBS.Database.Models
         [MaxLength (6)]
         public string PinCode { get; set; }
 
+        public string SubDistrict { get; set; }
+
+        public string District { get; set; }
+
         public string State { get; set; }
 
         #region Navigational Properties

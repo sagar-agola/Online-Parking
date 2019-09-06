@@ -16,6 +16,7 @@ namespace PBS.Api.ServiceInstallers
             services.AddSingleton<IUserMapping, UserMapping> ();
             services.AddSingleton<IClaimMapping, ClaimMapping> ();
             services.AddSingleton<IParkingLotMapping, ParkingLotMapping> ();
+            services.AddSingleton<ISlotMapping, SlotMapping> ();
         }
     }
 }

@@ -65,6 +65,8 @@ namespace PBS.Web.Controllers
                     City = "test",
                     LandMark = "test",
                     PinCode = "111111",
+                    District = "test",
+                    SubDistrict = "test",
                     State = "test"
                 };
 

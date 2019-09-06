@@ -17,6 +17,8 @@ namespace PBS.Api.ServiceInstallers
             services.AddScoped<IClaimService, ClaimService> ();
             services.AddScoped<IAddressService, AddressService> ();
             services.AddScoped<IParkingLotService, ParkingLotService> ();
+            services.AddScoped<ISlotService, SlotService> ();
+            services.AddScoped<ISlotTypeService, SlotTypeService> ();
         }
     }
 }

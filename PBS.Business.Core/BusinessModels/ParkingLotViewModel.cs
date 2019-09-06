@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PBS.Business.Core.BusinessModels
 {
     public class ParkingLotViewModel
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Parking name is required.")]
+        public string Name { get; set; }
 
         public bool IsAproved { get; set; }
 
@@ -21,8 +25,8 @@ namespace PBS.Business.Core.BusinessModels
         #endregion
 
         #region Navigational Properties
-        public List<ParkingLotImageViewModel> ParkingLotImageViewModels { get; set; }
-        public List<SlotViewModel> SlotViewModels { get; set; }
+        public List<ParkingLotImageViewModel> ParkingLotImageViewModels { get; set; } = new List<ParkingLotImageViewModel> ();
+        public List<SlotViewModel> SlotViewModels { get; set; } = new List<SlotViewModel> ();
         #endregion
     }
 }

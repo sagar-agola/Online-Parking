@@ -37,7 +37,7 @@
         #endregion
 
         #region Parking Lot
-        public static class parkingLot
+        public static class ParkingLot
         {
             private const string _base = _root + "/parkinglot";
 
@@ -47,6 +47,29 @@
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
             public const string Remove = _base + "/remove/{id}";
+        }
+        #endregion
+
+        #region Slot
+        public static class Slot
+        {
+            private const string _base = _root + "/slot";
+
+            public const string GetAll = _base + "/get-all";
+            public const string GetByParkingLot = _base + "/parkinglot/{id}";
+            public const string Get = _base + "/get/{id}";
+            public const string Add = _base + "/add";
+            public const string Update = _base + "/update";
+            public const string Remove = _base + "/remove/{id}";
+        }
+        #endregion
+
+        #region Slot Type
+        public static class SlotType
+        {
+            private const string _base = _root + "/slot-type";
+
+            public const string GetAll = _base + "/get-all";
         }
         #endregion
     }

@@ -1,0 +1,14 @@
+﻿@model AddressViewModel
+
+<span>@Model.AddressLine1, </span><br />
+@if (!string.IsNullOrEmpty (Model.AddressLine2))
+{
+    <span>@Model.AddressLine2, </span><br />
+}
+@if (!string.IsNullOrEmpty (Model.LandMark))
+{
+    <span>@Model.LandMark, </span><br />
+}
+@Model.City <span>-</span> @Model.PinCode, <br />
+<span>@Model.SubDistrict, @Model.District,</span> <br />
+<span>@Model.State, India</span>

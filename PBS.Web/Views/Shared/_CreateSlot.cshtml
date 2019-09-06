@@ -1,0 +1,16 @@
+﻿@model CreateSlotModel
+
+<form method="post" asp-action="Create" asp-controller="Slot">
+    <input asp-for="ParkingLotId" type="hidden" />
+    <div class="form-group">
+        <label asp-for="SlotTypeId" class="control-label"></label>
+        <select asp-for="SlotTypeId" class="form-control"
+                asp-items="@(new SelectList(Model.SlotTypes, "Id", "Title"))">
+            <option value="-1">-- Select Slot Type --</option>
+        </select>
+        <span asp-validation-for="SlotTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Create" />
+    </div>
+</form>

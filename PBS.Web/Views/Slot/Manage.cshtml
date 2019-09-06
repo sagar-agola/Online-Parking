@@ -1,0 +1,111 @@
+﻿@model ManageSlotModel
+
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h1>Manage Slots</h1>
+
+<p>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</p>
+
+<p>
+    <a class="btn btn-success text-white" onclick="AddNewSlot()">Create New Slot</a>
+</p>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-2 text-center font-weight-bold">Slot Id</div>
+            <div class="col-md-2 text-center font-weight-bold">Is Booked?</div>
+            <div class="col-md-2 text-center font-weight-bold">Slot Type</div>
+            <div class="col-md-2 text-center font-weight-bold">Total Bookings</div>
+            <div class="col-md-3 text-center font-weight-bold">Actions</div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (SlotViewModel slot in Model.Slots)
+        {
+            <div class="row" style="padding: 3px">
+                <div class="col-md-2 text-center">
+                    @slot.Id
+                </div>
+                <div class="col-md-2 text-center">
+                    @(slot.IsBooked ? "Yes" : "No")
+                </div>
+                <div class="col-md-2 text-center">
+                    @slot.SlotTypeViewModel.Title
+                </div>
+                <div class="col-md-2 text-center">
+                    @slot.BookingViewModels.Count
+                </div>
+                <div class="col-md-3 text-center">
+                    <a asp-action="Details" asp-route-id="@slot.Id" class="btn btn-info">Details</a>
+                    @if (slot.IsBooked)
+                    {
+                        <a href="#" class="btn btn-danger disabled">Delete</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger text-white" onclick="DeleteSlot(@slot.Id, @slot.ParkingLotId)">Delete</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="createSlotModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create New Slot</h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>  
+            </div>
+            <div class="modal-body">
+                <partial name="_CreateSlot" model="@new CreateSlotModel () 
+                         { 
+                            SlotTypes = Model.SlotTypes,
+                            ParkingLotId = Model.Slots[0].ParkingLotId
+                         }" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSlotModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Slot</h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div id="deleteContent"></div>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" id="slotId" name="slotId" />
+                    <input type="hidden" id="parkingLotId" name="parkingLotId" />
+                    <div style="padding-top: 10px">
+                        <input type="submit" class="btn btn-success" value="Yes" />
+                        <input type="button" class="btn btn-danger accept-policy" value="No" data-dismiss="modal" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function AddNewSlot() {
+        $('#createSlotModal').modal();
+    }
+
+    function DeleteSlot(slotId, parkingLotId) {
+        $('#slotId').val(slotId);
+        $('#parkingLotId').val(parkingLotId);
+        $('#deleteContent').empty().append("Are you sure you want to remove slot with Id : " + slotId + " ?");
+        $('#deleteSlotModal').modal();
+    }
+</script>

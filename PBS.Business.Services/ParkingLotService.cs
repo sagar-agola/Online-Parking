@@ -5,6 +5,7 @@ using PBS.Business.Core.BusinessModels;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Business.Services
 {
@@ -24,9 +25,16 @@ namespace PBS.Business.Services
         public ParkingLotViewModel Add (ParkingLotViewModel model)
         {
             ParkingLot modelMapping = _mapper.Map<ParkingLot> (model);
-            modelMapping.Address = _mapper.Map<Address> (model.AddressViewModel);
-            modelMapping.ParkingLotImages = _mapper.Map<List<ParkingLotImage>> (model.ParkingLotImageViewModels);
-            modelMapping.Slots = _mapper.Map<List<Slot>> (model.SlotViewModels);
+
+            if (model.AddressViewModel != null)
+            {
+                modelMapping.Address = _mapper.Map<Address> (model.AddressViewModel);
+            }
+
+            if (model.SlotViewModels.Any ())
+            {
+                modelMapping.Slots = _mapper.Map<List<Slot>> (model.SlotViewModels);
+            }
 
             modelMapping.IsActive = true;
             modelMapping.IsAproved = false;

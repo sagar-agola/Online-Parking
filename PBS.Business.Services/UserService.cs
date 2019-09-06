@@ -83,5 +83,13 @@ namespace PBS.Business.Services
 
             return success;
         }
+
+        public bool MakeOwner(int userId)
+        {
+            bool success = _unitOfWork.UserRepository.MakeOwner (userId);
+            _unitOfWork.SaveChanges ();
+
+            return success;
+        }
     }
 }

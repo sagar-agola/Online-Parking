@@ -3,7 +3,11 @@
 @using PBS.Business.Core.Models
 @using PBS.Web.Helpers
 @using PBS.Business.Core.BusinessModels
+@using PBS.Business.Utilities.Helpers
+@using Microsoft.Extensions.Configuration
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @inject ITokenDecoder _tokenDecoder
+@inject IEncryptionHelper _encryptionHelper
+@inject IConfiguration _configuration

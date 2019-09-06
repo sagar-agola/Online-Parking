@@ -52,6 +52,22 @@ else
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SubDistrict" class="control-label"></label>
+                        <input asp-for="SubDistrict" class="form-control" />
+                        <span asp-validation-for="SubDistrict" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="District" class="control-label"></label>
+                        <input asp-for="District" class="form-control" />
+                        <span asp-validation-for="District" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label asp-for="State" class="control-label"></label>
                 <input asp-for="State" class="form-control" />
@@ -73,11 +89,7 @@ else
         }
         else
         {
-            <span>@Model.AddressLine1, </span><br />
-            <span>@Model.AddressLine2, </span><br />
-            <span>@Model.LandMark, </span><br />
-            <span>@Model.City - Model.PinCode</span> <br />
-            <span>@Model.State, India</span>
+            <partial name="_Address" model="Model" />
         }
     </div>
 </div>

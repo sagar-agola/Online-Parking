@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBS.Database.Context;
 
 namespace PBS.Database.Migrations
 {
     [DbContext(typeof(PbsDbContext))]
-    partial class PbsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190831172232_change-address")]
+    partial class changeaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,10 +92,6 @@ namespace PBS.Database.Migrations
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsAproved");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
 
                     b.Property<int>("OwnerId");
 

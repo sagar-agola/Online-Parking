@@ -6,14 +6,17 @@ namespace PBS.Business.Utilities.Helpers
     {
         public string Encrypt (string inputString, int key)
         {
+            string padding = DateTime.Now.DayOfWeek.ToString ().Substring (0, 3);
+            inputString += padding;
+
             char[] ans = new char[inputString.Length];
 
             for (int i = 0; i < inputString.Length; i++)
             {
-                int temp = GetASCIIValue (inputString[i]);
+                int temp = Convert.ToInt32 (inputString[i]);
                 temp += (i + key);
 
-                ans[i] = GetCharFromASCII (temp);
+                ans[i] = Convert.ToChar (temp);
             }
 
             return new string (ans);
@@ -24,25 +27,20 @@ namespace PBS.Business.Utilities.Helpers
 
             for (int i = 0; i < inputString.Length; i++)
             {
-                int temp = GetASCIIValue (inputString[i]);
+                int temp = Convert.ToInt32 (inputString[i]);
                 temp -= (i + key);
 
                 if (temp < 300 && temp > 0)
                 {
-                    ans[i] = GetCharFromASCII (temp);
+                    ans[i] = Convert.ToChar (temp);
                 }
             }
 
-            return new string (ans);
-        }
-        private char GetCharFromASCII (int ch)
-        {
-            return Convert.ToChar (ch);
-        }
+            string answer = new string (ans);
 
-        private int GetASCIIValue (char ch)
-        {
-            return Convert.ToInt32 (ch);
+            answer = answer.Substring (0, answer.Length - 3);
+
+            return answer;
         }
     }
 }

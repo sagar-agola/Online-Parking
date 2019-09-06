@@ -9,6 +9,8 @@ namespace PBS.Business.Contracts
         IClaimRepository ClaimRepository { get; }
         IAddressRepository AddressRepository { get; }
         IParkingLotRepository ParkingLotRepository { get; }
+        ISlotRepository SlotRepository { get; }
+        ISlotTypeRepository SlotTypeRepository { get; }
 
         void Dispose ();
         void SaveChanges ();

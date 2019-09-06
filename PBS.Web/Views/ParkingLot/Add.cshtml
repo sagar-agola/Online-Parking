@@ -1,0 +1,94 @@
+﻿@model AddParkingLotModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h1>Create parking lot request</h1>
+
+<hr />
+<form asp-action="Add">
+    <div class="row">
+        <div class=" col-md-4">
+            <h3>basic Info</h3>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <h3>Slots</h3>
+            <div class="form-group">
+                <label asp-for="NoOf2WheelSlot" class="control-label"></label>
+                <input asp-for="NoOf2WheelSlot" class="form-control" />
+                <span asp-validation-for="NoOf2WheelSlot" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOf4WheelSlot" class="control-label"></label>
+                <input asp-for="NoOf4WheelSlot" class="form-control" />
+                <span asp-validation-for="NoOf4WheelSlot" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Address</h3>
+            <div class="form-group">
+                <label asp-for="AddressViewModel.AddressLine1" class="control-label"></label>
+                <input asp-for="AddressViewModel.AddressLine1" class="form-control" />
+                <span asp-validation-for="AddressViewModel.AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressViewModel.AddressLine2" class="control-label"></label>
+                <input asp-for="AddressViewModel.AddressLine2" class="form-control" />
+                <span asp-validation-for="AddressViewModel.AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressViewModel.LandMark" class="control-label"></label>
+                <input asp-for="AddressViewModel.LandMark" class="form-control" />
+                <span asp-validation-for="AddressViewModel.LandMark" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AddressViewModel.City" class="control-label"></label>
+                        <input asp-for="AddressViewModel.City" class="form-control" />
+                        <span asp-validation-for="AddressViewModel.City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AddressViewModel.PinCode" class="control-label"></label>
+                        <input asp-for="AddressViewModel.PinCode" class="form-control" />
+                        <span asp-validation-for="AddressViewModel.PinCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AddressViewModel.SubDistrict" class="control-label"></label>
+                        <input asp-for="AddressViewModel.SubDistrict" class="form-control" />
+                        <span asp-validation-for="AddressViewModel.SubDistrict" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AddressViewModel.District" class="control-label"></label>
+                        <input asp-for="AddressViewModel.District" class="form-control" />
+                        <span asp-validation-for="AddressViewModel.District" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressViewModel.State" class="control-label"></label>
+                <input asp-for="AddressViewModel.State" class="form-control" />
+                <span asp-validation-for="AddressViewModel.State" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>
+</form>
