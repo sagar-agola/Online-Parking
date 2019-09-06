@@ -47,7 +47,45 @@
         </div>
     </div>
     <div class="card-footer">
-        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-success">Update Details</a>
+        <a class="btn btn-success text-white" onclick="UpdateParkingLot()">Update Details</a>
         <a asp-action="Manage" asp-controller="Slot" asp-route-id="@Model.Id" class="btn btn-info">Manage Slots</a>
     </div>
 </div>
+
+<div class="modal fade" id="updateParkingLotModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Parking Lot Details</h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Update" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="IsActive" type="hidden" />
+                    <input asp-for="IsAproved" type="hidden" />
+                    <input asp-for="OwnerId" type="hidden" />
+                    <input asp-for="AddressId" type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a href="#" class="btn btn-danger text-white" data-dismiss="modal">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function UpdateParkingLot() {
+        $('#updateParkingLotModal').modal();
+    }
+</script>

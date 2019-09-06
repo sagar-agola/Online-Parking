@@ -135,27 +135,6 @@ namespace PBS.Web.Controllers
         #endregion
 
         #region Update
-        [HttpGet]
-        public IActionResult Update (int id)
-        {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + id, HttpMethod.Get);
-
-            if (response.Success)
-            {
-                ParkingLotViewModel model = JsonConvert.DeserializeObject<ParkingLotViewModel> (response.Data.ToString ());
-
-                return View (model);
-            }
-            else
-            {
-                ErrorViewModel model = new ErrorViewModel
-                {
-                    Message = response.Data.ToString ()
-                };
-
-                return View ("Error", model);
-            }
-        }
 
         [HttpPost]
         public IActionResult Update (ParkingLotViewModel model)
@@ -166,7 +145,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
-                    return RedirectToAction ("Dashboard");
+                    return RedirectToAction ("Details", new { id = model.Id });
                 }
                 else
                 {
