@@ -78,5 +78,17 @@ namespace PBS.Business.DAL.Repositories
         {
             _context.ParkingLots.Update (model);
         }
+
+        public ParkingLotImage AddImage (ParkingLotImage model)
+        {
+            _context.ParkingLotImages.Add (model);
+
+            return model;
+        }
+
+        public List<ParkingLotImage> GetImages(int parkingLotId)
+        {
+            return _context.ParkingLotImages.Where (img => img.ParkingLotId == parkingLotId).ToList ();
+        }
     }
 }

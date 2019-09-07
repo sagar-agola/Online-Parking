@@ -2,9 +2,12 @@
 using PBS.Business.Contracts;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.BusinessModels;
+using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace PBS.Business.Services
@@ -106,6 +109,60 @@ namespace PBS.Business.Services
             }
 
             return null;
+        }
+
+        public List<string> GetImages(int parkingLotId, string folderPath)
+        {
+            if (_unitOfWork.ParkingLotRepository.ParkingLotExists (parkingLotId))
+            {
+                List<ParkingLotImage> model = _unitOfWork.ParkingLotRepository.GetImages (parkingLotId);
+                List<string> returnModel = new List<string> ();
+
+                foreach (ParkingLotImage img in model)
+                {
+                    string path = Path.Combine (folderPath, img.ImageName);
+                    byte[] imgBytes = File.ReadAllBytes (path);
+                    string encodedString = Convert.ToBase64String (imgBytes);
+
+                    returnModel.Add (encodedString);
+                }
+
+                return returnModel;
+            }
+
+            return null;
+        }
+
+        public ParkingLotImageViewModel UploadImage (UploadLotImageModel model, string path)
+        {
+            string uniqueName = SaveImage (model, path);
+
+            ParkingLotImage imageModel = new ParkingLotImage ()
+            {
+                ImageName = uniqueName,
+                ParkingLotId = model.ParkingLotId
+            };
+
+            imageModel = _unitOfWork.ParkingLotRepository.AddImage (imageModel);
+            _unitOfWork.SaveChanges ();
+
+            return _mapper.Map<ParkingLotImageViewModel> (imageModel);
+        }
+
+        private static string SaveImage (UploadLotImageModel model, string path)
+        {
+            string uniqueName = (DateTime.Now.Ticks.ToString () + "_" + model.Image.FileName)
+                            .Replace ("-", "_")
+                            .Replace (" ", "_");
+
+            string imagePath = Path.Combine (path, uniqueName);
+
+            using (FileStream stream = new FileStream (imagePath, FileMode.Create))
+            {
+                model.Image.CopyTo (stream);
+            }
+
+            return uniqueName;
         }
     }
 }

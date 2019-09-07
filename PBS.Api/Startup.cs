@@ -49,6 +49,7 @@ namespace PBS.Api
                 //app.UseHsts ();
             }
 
+            app.UseStaticFiles ();
             app.UseHttpsRedirection ();
             app.UseCors (x => x.AllowAnyOrigin ().AllowAnyHeader ().AllowAnyMethod ());
             app.UseAuthentication ();

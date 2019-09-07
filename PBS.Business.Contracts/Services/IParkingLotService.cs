@@ -1,4 +1,5 @@
 ﻿using PBS.Business.Core.BusinessModels;
+using PBS.Business.Core.Models;
 using System.Collections.Generic;
 
 namespace PBS.Business.Contracts.Services
@@ -12,5 +13,7 @@ namespace PBS.Business.Contracts.Services
         ParkingLotViewModel Add (ParkingLotViewModel model);
         ParkingLotViewModel Update (ParkingLotViewModel model);
         bool Remove (int id);
+        ParkingLotImageViewModel UploadImage (UploadLotImageModel model, string path);
+        List<string> GetImages (int parkingLotId, string folderPath);
     }
 }

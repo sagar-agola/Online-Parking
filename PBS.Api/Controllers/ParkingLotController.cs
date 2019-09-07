@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using System.Collections.Generic;
+using System.IO;
 
 namespace PBS.Api.Controllers
 {
@@ -12,11 +14,19 @@ namespace PBS.Api.Controllers
     {
         private readonly IParkingLotService _parkingLotService;
         private readonly IUserService _userService;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ParkingLotController (IParkingLotService parkingLotService, IUserService userService)
+        private readonly string _path;
+
+        public ParkingLotController (IParkingLotService parkingLotService,
+                                     IUserService userService,
+                                     IHostingEnvironment hostingEnvironment)
         {
             _parkingLotService = parkingLotService;
             _userService = userService;
+            _hostingEnvironment = hostingEnvironment;
+
+            _path = Path.Combine (_hostingEnvironment.WebRootPath, "Images", "ParkingLot");
         }
 
         [HttpPost (ApiRoutes.ParkingLot.Add)]
@@ -99,6 +109,34 @@ namespace PBS.Api.Controllers
             }
 
             return new ResponseDetails (false, $"Parking lot with Id : { id } not found.");
+        }
+
+        [HttpPost (ApiRoutes.ParkingLot.UploadImage)]
+        public object UploadImage ([FromForm] UploadLotImageModel model)
+        {
+            ParkingLotImageViewModel imageModel = _parkingLotService.UploadImage (model, _path);
+
+            if (imageModel == null)
+            {
+                return new ResponseDetails (false, "Could not upload Image");
+            }
+
+            List<string> returnModel = _parkingLotService.GetImages (model.ParkingLotId, _path);
+
+            return new ResponseDetails (true, returnModel);
+        }
+
+        [HttpGet(ApiRoutes.ParkingLot.GetImages)]
+        public object GetImages(int id)
+        {
+            List<string> model = _parkingLotService.GetImages (id, _path);
+
+            if (model == null)
+            {
+                return new ResponseDetails (false, $"Parking lot with Id : { id } not found.");
+            }
+
+            return new ResponseDetails (true, model);
         }
     }
 }

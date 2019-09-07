@@ -47,6 +47,8 @@
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
             public const string Remove = _base + "/remove/{id}";
+            public const string UploadImage = _base + "/upload-image";
+            public const string GetImages = _base + "/all-images/{id}";
         }
         #endregion
 

@@ -13,5 +13,7 @@ namespace PBS.Business.Contracts.Repositories
         void Update (ParkingLot model);
         void Remove (ParkingLot model);
         bool ParkingLotExists (int id);
+        ParkingLotImage AddImage (ParkingLotImage model);
+        List<ParkingLotImage> GetImages (int parkingLotId);
     }
 }
