@@ -6,6 +6,7 @@ using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Models;
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -135,32 +136,36 @@ namespace PBS.Business.Services
 
         public ParkingLotImageViewModel UploadImage (UploadLotImageModel model, string path)
         {
-            string uniqueName = SaveImage (model, path);
-
-            ParkingLotImage imageModel = new ParkingLotImage ()
+            if (_unitOfWork.ParkingLotRepository.ParkingLotExists (model.ParkingLotId))
             {
-                ImageName = uniqueName,
-                ParkingLotId = model.ParkingLotId
-            };
+                string uniqueName = SaveImage (model, path);
 
-            imageModel = _unitOfWork.ParkingLotRepository.AddImage (imageModel);
-            _unitOfWork.SaveChanges ();
+                ParkingLotImage imageModel = new ParkingLotImage ()
+                {
+                    ImageName = uniqueName,
+                    ParkingLotId = model.ParkingLotId
+                };
 
-            return _mapper.Map<ParkingLotImageViewModel> (imageModel);
+                imageModel = _unitOfWork.ParkingLotRepository.AddImage (imageModel);
+                _unitOfWork.SaveChanges ();
+
+                return _mapper.Map<ParkingLotImageViewModel> (imageModel);
+            }
+
+            return null;
         }
 
-        private static string SaveImage (UploadLotImageModel model, string path)
+        private string SaveImage (UploadLotImageModel model, string path)
         {
-            string uniqueName = (DateTime.Now.Ticks.ToString () + "_" + model.Image.FileName)
+            string uniqueName = (DateTime.Now.Ticks.ToString () + "_" + model.ImageName)
                             .Replace ("-", "_")
                             .Replace (" ", "_");
 
             string imagePath = Path.Combine (path, uniqueName);
 
-            using (FileStream stream = new FileStream (imagePath, FileMode.Create))
-            {
-                model.Image.CopyTo (stream);
-            }
+            byte[] bytes = Convert.FromBase64String (model.Image);
+
+            File.WriteAllBytes (imagePath, bytes);
 
             return uniqueName;
         }

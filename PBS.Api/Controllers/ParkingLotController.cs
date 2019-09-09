@@ -112,13 +112,13 @@ namespace PBS.Api.Controllers
         }
 
         [HttpPost (ApiRoutes.ParkingLot.UploadImage)]
-        public object UploadImage ([FromForm] UploadLotImageModel model)
+        public object UploadImage (UploadLotImageModel model)
         {
             ParkingLotImageViewModel imageModel = _parkingLotService.UploadImage (model, _path);
 
             if (imageModel == null)
             {
-                return new ResponseDetails (false, "Could not upload Image");
+                return new ResponseDetails (false, $"Parking lot with Id : { model.ParkingLotId } not found.");
             }
 
             List<string> returnModel = _parkingLotService.GetImages (model.ParkingLotId, _path);

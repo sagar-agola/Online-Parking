@@ -3,9 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Helpers;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 
 namespace PBS.Web.Controllers
@@ -162,6 +165,70 @@ namespace PBS.Web.Controllers
                 ModelState.AddModelError ("Error", "Validation Error");
                 return View (model);
             }
+        }
+        #endregion
+
+        #region Parking lot Images
+        public IActionResult Images (int id)
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkingLot/all-images/" + id, HttpMethod.Get);
+
+            if (response.Success)
+            {
+                List<string> model = JsonConvert.DeserializeObject<List<string>> (response.Data.ToString ());
+
+                ParkingImageModel ImageModel = new ParkingImageModel ()
+                {
+                    ParkingLotId = id,
+                    Images = model
+                };
+
+                return View (ImageModel);
+            }
+            else
+            {
+                ErrorViewModel model = new ErrorViewModel
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UploadImage(ParkingImageModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string base64EncodedImage = ImageProcessing.ProcessIFormFile (model.Image);
+
+                UploadLotImageModel dataModel = new UploadLotImageModel
+                {
+                    Image = base64EncodedImage,
+                    ImageName = model.Image.FileName,
+                    ParkingLotId = model.ParkingLotId
+                };
+
+                ResponseDetails response = _apiHelper.SendApiRequest (dataModel, "parkingLot/upload-image", HttpMethod.Post);
+
+                if (response.Success)
+                {
+                    return RedirectToAction ("Images", new { id = model.ParkingLotId });
+                }
+                else
+                {
+                    ErrorViewModel errorModel = new ErrorViewModel
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", errorModel);
+                }
+            }
+
+            ModelState.AddModelError ("", "Validation Error.");
+            return View (model);
         }
         #endregion
     }

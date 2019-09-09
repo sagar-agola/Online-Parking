@@ -1,0 +1,54 @@
+﻿@model ParkingImageModel
+
+@{
+    ViewData["Title"] = "Images";
+}
+
+<p>
+    <h1>Parking lot Images</h1>
+</p>
+
+<p>
+    <a href="#" class="btn btn-success" onclick="Upload()">Add New Image</a>
+</p>
+
+<div class="card">
+    <div class="row" style="padding: 20px">
+        @foreach (string str in Model.Images)
+        {
+            <div class="col-md-3" style="padding: 10px">
+                <img src="data:image/jpeg;base64, @str" class="img-thumbnail" style="height: 250px" />
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="uploadImageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Image</h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UploadImage" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="ParkingLotId" />
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input type="file" asp-for="Image" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Upload" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Upload() {
+        $('#uploadImageModal').modal();
+    }
+</script>
