@@ -22,6 +22,7 @@
             public const string GetAll = _base + "/get-all";
             public const string Get = _base + "/get/{id}";
             public const string Update = _base + "/update";
+            public const string Remove = _base + "/remove/{id}";
             public const string ChangePassword = _base + "/change-password";
         }
         #endregion

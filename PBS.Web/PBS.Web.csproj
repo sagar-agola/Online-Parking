@@ -18,4 +18,10 @@
     <ProjectReference Include="..\PBS.Business.Utilities\PBS.Business.Utilities.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

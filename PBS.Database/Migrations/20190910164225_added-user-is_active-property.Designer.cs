@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBS.Database.Context;
 
 namespace PBS.Database.Migrations
 {
     [DbContext(typeof(PbsDbContext))]
-    partial class PbsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190910164225_added-user-is_active-property")]
+    partial class addeduseris_activeproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

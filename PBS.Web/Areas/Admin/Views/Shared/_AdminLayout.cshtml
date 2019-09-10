@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>@ViewBag.Title - PBS Admin</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/simple-sidebar.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">PBS Admin</div>
+            <div class="list-group list-group-flush">
+                <a asp-action="Index" asp-controller="Users" class="list-group-item list-group-item-action bg-light">Users</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav  mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <h3>
+                                @RenderSection("header", false)
+                            </h3>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        @if (_tokenDecoder.IsLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <div class="dropdown" style="margin-right: 60px">
+                                    <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Hii, @_tokenDecoder.UserName
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">
+                                            My Profile
+                                        </a>
+                                        <a class="dropdown-item" asp-action="UpdateAddress" asp-controller="User">
+                                            Manage Address
+                                        </a>
+                                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">
+                                            Change Password
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
+                                            <a href="#" class="dropdown-item"
+                                               onclick="document.getElementById('LogoutForm').submit();">Logout</a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>

@@ -31,6 +31,8 @@ namespace PBS.Business.Core.BusinessModels
         [Compare("Password", ErrorMessage = "Password and Compare password must match.")]
         public string ConfirmPassword { get; set; }
 
+        public bool IsActive { get; set; }
+
         #region User Role
         public int RoleId { get; set; }
         public RoleViewModel RoleViewModel { get; set; }

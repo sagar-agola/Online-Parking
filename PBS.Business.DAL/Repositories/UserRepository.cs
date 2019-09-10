@@ -3,6 +3,7 @@ using PBS.Business.Contracts.Repositories;
 using PBS.Business.Core.Models;
 using PBS.Database.Context;
 using PBS.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Z.EntityFramework.Plus;
@@ -20,26 +21,42 @@ namespace PBS.Business.DAL.Repositories
 
         public List<User> GetAll ()
         {
-            return _context.Users
+            List<User> users = _context.Users
                 .AsNoTracking ()
+                .Include (user => user.ParkingLots)
                 .Include (user => user.Role)
                 .Include (user => user.Address)
-                .Include (user => user.ParkingLots)
-                .IncludeFilter (user => user.Bookings.Where (booking => booking.IsActive))
+                .Include (user => user.Bookings)
                 .ToList ();
+
+            if (users == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < users.Count; i++)
+            {
+                users[i].Bookings = users[i].Bookings.Where (b => b.IsActive).ToList ();
+            }
+
+            return users;
         }
 
         public User Get (int id)
         {
             if (UserExists (id))
             {
-                return _context.Users
+                User user = _context.Users
                     .AsNoTracking ()
-                    .Include (user => user.Role)
-                    .Include (user => user.Address)
-                    .Include (user => user.ParkingLots)
-                    .IncludeFilter (user => user.Bookings.Where (booking => booking.IsActive))
-                    .First (user => user.Id == id);
+                    .Include (u => u.Role)
+                    .Include (u => u.Address)
+                    .Include (u => u.ParkingLots)
+                    .Include (u => u.Bookings)
+                    .First (u => u.Id == id);
+
+                user.Bookings = user.Bookings.Where (b => b.IsActive).ToList ();
+
+                return user;
             }
 
             return null;
@@ -94,6 +111,15 @@ namespace PBS.Business.DAL.Repositories
             }
 
             return false;
+        }
+
+        public void Remove (int id)
+        {
+            User model = _context.Users.First (user => user.Id == id);
+
+            model.IsActive = false;
+
+            _context.Users.Update (model);
         }
 
         public bool UserExists (int id)

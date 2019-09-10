@@ -11,5 +11,6 @@ namespace PBS.Business.Contracts.Services
         UserViewModel Update (UserViewModel model);
         bool ChangePassword (ChangePasswordModel model);
         bool MakeOwner (int userId);
+        bool Remove (int id);
     }
 }

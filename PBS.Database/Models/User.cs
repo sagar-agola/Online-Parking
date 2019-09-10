@@ -20,6 +20,8 @@ namespace PBS.Database.Models
         [MaxLength (10)]
         public string ContectNumber { get; set; }
 
+        public bool IsActive { get; set; }
+
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }

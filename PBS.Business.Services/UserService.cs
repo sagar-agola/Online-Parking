@@ -63,6 +63,19 @@ namespace PBS.Business.Services
             return null;
         }
 
+        public bool Remove (int id)
+        {
+            if (_unitOfWork.UserRepository.UserExists (id))
+            {
+                _unitOfWork.UserRepository.Remove (id);
+                _unitOfWork.SaveChanges ();
+
+                return true;
+            }
+
+            return false;
+        }
+
         public bool ChangePassword(ChangePasswordModel model)
         {
             PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);

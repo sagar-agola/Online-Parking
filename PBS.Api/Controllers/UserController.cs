@@ -19,7 +19,6 @@ namespace PBS.Api.Controllers
         }
 
         [HttpGet (ApiRoutes.User.GetAll)]
-        [Authorize (Policy = "test")]
         public object GetAll ()
         {
             List<UserViewModel> model = _userService.GetAll ();
@@ -57,6 +56,19 @@ namespace PBS.Api.Controllers
             }
 
             return new ResponseDetails (true, model);
+        }
+
+        [HttpDelete(ApiRoutes.User.Remove)]
+        public object Remove(int id)
+        {
+            bool success = _userService.Remove (id);
+
+            if (!success)
+            {
+                return new ResponseDetails (false, $"User with Id: { id } is not found.");
+            }
+
+            return new ResponseDetails (true, "User removed successfully.");
         }
 
         [HttpPost (ApiRoutes.User.ChangePassword)]
