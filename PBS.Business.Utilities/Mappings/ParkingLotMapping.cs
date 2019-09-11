@@ -20,7 +20,7 @@ namespace PBS.Business.Utilities.Mappings
             ParkingLotViewModel modelMapping = _mapper.Map<ParkingLotViewModel> (model);
 
             modelMapping.AddressViewModel = _mapper.Map<AddressViewModel> (model.Address);
-            modelMapping.OwnerViewModel = _mapper.Map<UserViewModel> (model.Owner);
+            modelMapping.OwnerViewModel = MapUser (model.Owner);
             modelMapping.ParkingLotImageViewModels = _mapper.Map<List<ParkingLotImageViewModel>> (model.ParkingLotImages);
             modelMapping.SlotViewModels = MapSlots (model.Slots);
 
@@ -41,6 +41,16 @@ namespace PBS.Business.Utilities.Mappings
         #endregion
 
         #region Private Methods
+        private UserViewModel MapUser(User model)
+        {
+            UserViewModel modelMapping = _mapper.Map<UserViewModel> (model);
+
+            modelMapping.RoleViewModel = _mapper.Map<RoleViewModel> (model.Role);
+            modelMapping.AddressViewModel = _mapper.Map<AddressViewModel> (model.Address);
+
+            return modelMapping;
+        }
+
         private List<SlotViewModel> MapSlots (List<Slot> model)
         {
             List<SlotViewModel> modelMapping = new List<SlotViewModel> ();

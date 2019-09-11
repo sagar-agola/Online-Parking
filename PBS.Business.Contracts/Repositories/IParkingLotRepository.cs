@@ -15,5 +15,6 @@ namespace PBS.Business.Contracts.Repositories
         bool ParkingLotExists (int id);
         ParkingLotImage AddImage (ParkingLotImage model);
         List<ParkingLotImage> GetImages (int parkingLotId);
+        List<ParkingLot> GetRequested ();
     }
 }

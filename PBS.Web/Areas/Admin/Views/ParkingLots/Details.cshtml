@@ -1,0 +1,144 @@
+﻿@model ParkingLotRequestdetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section header {
+    Parking lot Details
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Basic Info
+                </h3>
+            </div>
+            <div class="card-body">
+                <table border="0" cellpadding="5" width="100%">
+                    <tr>
+                        <td width="70%">Is Aproved</td>
+                        <td width="30%">@(Model.ParkingLot.IsAproved ? "Yes" : "No")</td>
+                    </tr>
+                    <tr>
+                        <td>Is Active</td>
+                        <td>@(Model.ParkingLot.IsActive ? "Yes" : "No")</td>
+                    </tr>
+                    <tr>
+                        <td>Number of 2 Wheel slots</td>
+                        <td>@Model.ParkingLot.SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>
+                    </tr>
+                    <tr>
+                        <td>Number of 4 Wheel slots</td>
+                        <td>@Model.ParkingLot.SlotViewModels.Where(x => x.SlotTypeId == 2).Count()</td>
+                    </tr>
+                    <tr>
+                        <td>Number of booked slots</td>
+                        <td>@Model.ParkingLot.SlotViewModels.Where(x => x.IsBooked).Count()</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Address
+                </h3>
+            </div>
+            <div class="card-body">
+                <partial name="_Address" model="Model.ParkingLot.AddressViewModel" />
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Owner Info
+                </h3>
+            </div>
+            <div class="card-body">
+                <table border="0" cellpadding="5" width="100%">
+                    <tr>
+                        <td width="40%">Full Name</td>
+                        <td width="60%">@Model.ParkingLot.OwnerViewModel.FirstName @Model.ParkingLot.OwnerViewModel.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.ParkingLot.OwnerViewModel.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Contect Number</td>
+                        <td>@Model.ParkingLot.OwnerViewModel.ContectNumber</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-info text-white" onclick="OwnerDetails()">Full Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            Images
+        </h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Images.Any ())
+        {
+            <div class="row">
+                @foreach (string str in Model.Images)
+                {
+                    <div class="col-md-3" style="padding: 10px">
+                        <img src="data:image/jpeg;base64, @str" class="img-thumbnail" style="height: 250px" />
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <h4>None At the moment.</h4>
+        }
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12 text-center">
+        <form method="post" asp-action="Aprove">
+            <input type="hidden" id="id" name="id" value="@Model.ParkingLot.Id" />
+            <input type="submit" class="btn btn-lg btn-success" value="Aprove" />
+            <input type="button" class="btn btn-lg btn-danger" value="Reject" />
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="ownerDetailsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @Model.ParkingLot.OwnerViewModel.FirstName<span>'s Details</span>
+                </h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <partial name="_UserDetailsPartial" model="@Model.ParkingLot.OwnerViewModel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function OwnerDetails() {
+        $('#ownerDetailsModal').modal();
+    }
+</script>

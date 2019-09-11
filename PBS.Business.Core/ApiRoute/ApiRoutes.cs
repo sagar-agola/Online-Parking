@@ -43,10 +43,12 @@
             private const string _base = _root + "/parkinglot";
 
             public const string GetAll = _base + "/get-all";
+            public const string GetRequested = _base + "/get-requested";
             public const string GetByUser = _base + "/get/user/{userId}";
             public const string Get = _base + "/get/{id}";
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
+            public const string Aprove = _base + "/aprove/{id}";
             public const string Remove = _base + "/remove/{id}";
             public const string UploadImage = _base + "/upload-image";
             public const string GetImages = _base + "/all-images/{id}";

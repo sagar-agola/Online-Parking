@@ -26,8 +26,12 @@ namespace PBS.Business.DAL.Repositories
         public ParkingLot Get (int id)
         {
             return _context.ParkingLots
+                .AsNoTracking ()
                 .Include (lot => lot.Address)
                 .Include (lot => lot.Owner)
+                    .ThenInclude(owner => owner.Role)
+                .Include (lot => lot.Owner)
+                    .ThenInclude (owner => owner.Address)
                 .Include (lot => lot.ParkingLotImages)
                 .Include (lot => lot.Slots)
                     .ThenInclude (Slot => Slot.SlotType)
@@ -39,6 +43,7 @@ namespace PBS.Business.DAL.Repositories
         public List<ParkingLot> GetAll ()
         {
             return _context.ParkingLots
+                .AsNoTracking ()
                 .Include (lot => lot.Address)
                 .Include (lot => lot.Owner)
                 .Include (lot => lot.ParkingLotImages)
@@ -50,9 +55,25 @@ namespace PBS.Business.DAL.Repositories
                 .ToList ();
         }
 
+        public List<ParkingLot> GetRequested ()
+        {
+            return _context.ParkingLots
+                .AsNoTracking ()
+                .Include (lot => lot.Address)
+                .Include (lot => lot.Owner)
+                .Include (lot => lot.ParkingLotImages)
+                .Include (lot => lot.Slots)
+                    .ThenInclude (Slot => Slot.SlotType)
+                .Include (lot => lot.Slots)
+                    .ThenInclude (slot => slot.Bookings)
+                .Where (lot => lot.IsAproved == false && lot.IsActive)
+                .ToList ();
+        }
+
         public List<ParkingLot> GetByUser (int userId)
         {
             return _context.ParkingLots
+                .AsNoTracking ()
                 .Include (lot => lot.Address)
                 .Include (lot => lot.Owner)
                 .Include (lot => lot.ParkingLotImages)

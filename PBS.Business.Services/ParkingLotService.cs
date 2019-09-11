@@ -68,6 +68,13 @@ namespace PBS.Business.Services
             return _parkingLotMapping.MapParkingLotList (model);
         }
 
+        public List<ParkingLotViewModel> GetRequested ()
+        {
+            List<ParkingLot> model = _unitOfWork.ParkingLotRepository.GetRequested ();
+
+            return _parkingLotMapping.MapParkingLotList (model);
+        }
+
         public List<ParkingLotViewModel> GetByUser (int userId)
         {
             if (_unitOfWork.UserRepository.UserExists (userId))

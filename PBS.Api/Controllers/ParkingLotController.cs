@@ -6,6 +6,7 @@ using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PBS.Api.Controllers
 {
@@ -59,6 +60,19 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
+        [HttpGet(ApiRoutes.ParkingLot.GetRequested)]
+        public object GetRequested ()
+        {
+            List<ParkingLotViewModel> model = _parkingLotService.GetRequested ();
+
+            if (model.Any ())
+            {
+                return new ResponseDetails (true, model);
+            }
+
+            return new ResponseDetails (false, "None at the moment");
+        }
+
         [HttpGet (ApiRoutes.ParkingLot.GetByUser)]
         public object GetByUser (int userId)
         {
@@ -96,6 +110,23 @@ namespace PBS.Api.Controllers
             }
 
             return new ResponseDetails (true, model);
+        }
+
+        [HttpPost(ApiRoutes.ParkingLot.Aprove)]
+        public object Aprove(int id)
+        {
+            ParkingLotViewModel model = _parkingLotService.Get (id);
+
+            if (model == null)
+            {
+                return new ResponseDetails (false, $"Parking lot with Id : { model.Id } not found.");
+            }
+
+            model.IsAproved = true;
+
+            _parkingLotService.Update (model);
+
+            return new ResponseDetails (true, "Parking lot Aproved successfully.");
         }
 
         [HttpDelete (ApiRoutes.ParkingLot.Remove)]

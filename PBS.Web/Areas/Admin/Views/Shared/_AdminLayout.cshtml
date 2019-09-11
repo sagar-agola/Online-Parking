@@ -17,8 +17,10 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">PBS Admin</div>
             <div class="list-group list-group-flush">
-                <a asp-action="Index" asp-controller="Users" class="list-group-item list-group-item-action bg-light">Users</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+                <a asp-action="Index" asp-controller="Users" asp-area="Admin"
+                   class="list-group-item list-group-item-action bg-light">Users</a>
+                <a asp-action="Requests" asp-controller="ParkingLots" asp-area="Admin"
+                   class="list-group-item list-group-item-action bg-light">Parking Lot Requests</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
@@ -69,7 +71,7 @@
                 </div>
             </nav>
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding: 40px">
                 @RenderBody()
             </div>
         </div>

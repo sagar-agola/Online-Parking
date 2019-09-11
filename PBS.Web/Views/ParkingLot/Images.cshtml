@@ -14,11 +14,18 @@
 
 <div class="card">
     <div class="row" style="padding: 20px">
-        @foreach (string str in Model.Images)
+        @if (Model.Images.Any ())
         {
-            <div class="col-md-3" style="padding: 10px">
-                <img src="data:image/jpeg;base64, @str" class="img-thumbnail" style="height: 250px" />
-            </div>
+            @foreach (string str in Model.Images)
+            {
+                <div class="col-md-3" style="padding: 10px">
+                    <img src="data:image/jpeg;base64, @str" class="img-thumbnail" style="height: 250px" />
+                </div>
+            }
+        }
+        else
+        {
+            <h3>None at the moment.</h3>
         }
     </div>
 </div>

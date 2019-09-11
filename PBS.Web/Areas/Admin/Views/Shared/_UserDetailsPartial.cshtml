@@ -34,12 +34,15 @@
         <dt class="col-md-5 text-right">
             Total Parking lot<small>(s)</small>
         </dt>
-        <dd class="col-md-7">
-            @Model.ParkingLotViewModels.Count
-        </dd>
-        <dt class="col-md-5 text-right">
-            Address
-        </dt>
+        @if (Model.ParkingLotViewModels != null)
+        {
+            <dd class="col-md-7">
+                @Model.ParkingLotViewModels.Count
+            </dd>
+            <dt class="col-md-5 text-right">
+                Address
+            </dt>
+        }
         <dd class="col-md-7">
             @if (Model.AddressViewModel.AddressLine1 == "test")
             {

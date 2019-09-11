@@ -15,5 +15,6 @@ namespace PBS.Business.Contracts.Services
         bool Remove (int id);
         ParkingLotImageViewModel UploadImage (UploadLotImageModel model, string path);
         List<string> GetImages (int parkingLotId, string folderPath);
+        List<ParkingLotViewModel> GetRequested ();
     }
 }
