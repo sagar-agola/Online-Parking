@@ -11,6 +11,7 @@ namespace PBS.Business.Contracts
         IParkingLotRepository ParkingLotRepository { get; }
         ISlotRepository SlotRepository { get; }
         ISlotTypeRepository SlotTypeRepository { get; }
+        IRoleRepository RoleRepository { get; }
 
         void Dispose ();
         void SaveChanges ();

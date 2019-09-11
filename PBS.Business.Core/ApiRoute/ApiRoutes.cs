@@ -77,5 +77,18 @@
             public const string GetAll = _base + "/get-all";
         }
         #endregion
+
+        #region Role
+        public static class Role
+        {
+            private const string _base = _root + "/role";
+
+            public const string GetAll = _base + "/get-all";
+            public const string Get = _base + "/get/{id}";
+            public const string Add = _base + "/add";
+            public const string Update = _base + "/update";
+            public const string Remove = _base + "/remove/{id}";
+        }
+        #endregion
     }
 }

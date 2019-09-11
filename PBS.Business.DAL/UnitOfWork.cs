@@ -17,6 +17,7 @@ namespace PBS.Business.DAL
         public IParkingLotRepository ParkingLotRepository { get; }
         public ISlotRepository SlotRepository { get; }
         public ISlotTypeRepository SlotTypeRepository { get; }
+        public IRoleRepository RoleRepository { get; }
 
         public UnitOfWork (PbsDbContext context)
         {
@@ -29,6 +30,7 @@ namespace PBS.Business.DAL
             ParkingLotRepository = new ParkingLotRepository (_context);
             SlotRepository = new SlotRepository (_context);
             SlotTypeRepository = new SlotTypeRepository (_context);
+            RoleRepository = new RoleRepository (_context);
         }
 
         public void SaveChanges ()
