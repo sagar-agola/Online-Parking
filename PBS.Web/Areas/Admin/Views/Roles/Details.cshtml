@@ -1,0 +1,32 @@
+﻿@model RoleViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section header {
+    User Roles
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+            Role Title : @Model.Title
+        </h4>
+    </div>
+    <div class="card-body">
+        <ul>
+            @if (Model.UserViewModels.Any ())
+            {
+                foreach(UserViewModel user in Model.UserViewModels)
+                {
+                    <li>@user.FirstName<span> </span>@user.LastName</li>
+                }
+            }
+            else
+            {
+                <li>No users the moment.</li>
+            }
+        </ul>
+    </div>
+</div>

@@ -24,6 +24,7 @@
             public const string Update = _base + "/update";
             public const string Remove = _base + "/remove/{id}";
             public const string ChangePassword = _base + "/change-password";
+            public const string ChangeRole = _base + "/change-role";
         }
         #endregion
 

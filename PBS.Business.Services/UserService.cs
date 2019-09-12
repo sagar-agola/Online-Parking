@@ -76,7 +76,7 @@ namespace PBS.Business.Services
             return false;
         }
 
-        public bool ChangePassword(ChangePasswordModel model)
+        public bool ChangePassword (ChangePasswordModel model)
         {
             PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -97,7 +97,29 @@ namespace PBS.Business.Services
             return success;
         }
 
-        public bool MakeOwner(int userId)
+        public bool ChangeRole (ChangeUserRoleModel model)
+        {
+            bool roleExists = _unitOfWork.RoleRepository.RoleExists (model.RoleId);
+
+            if (roleExists)
+            {
+                User user = _unitOfWork.UserRepository.Get (model.UserId);
+
+                if (user != null)
+                {
+                    user.RoleId = model.RoleId;
+
+                    _unitOfWork.UserRepository.Update (user);
+                    _unitOfWork.SaveChanges ();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool MakeOwner (int userId)
         {
             bool success = _unitOfWork.UserRepository.MakeOwner (userId);
             _unitOfWork.SaveChanges ();

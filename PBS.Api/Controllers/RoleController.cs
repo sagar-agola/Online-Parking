@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using System.Collections.Generic;
 
 namespace PBS.Api.Controllers
 {
@@ -18,11 +14,11 @@ namespace PBS.Api.Controllers
 
         public RoleController (IRoleService roleService)
         {
-            this._roleService = roleService;
+            _roleService = roleService;
         }
 
-        [HttpPost(ApiRoutes.Role.Add)]
-        public object Add(RoleViewModel model)
+        [HttpPost (ApiRoutes.Role.Add)]
+        public object Add (RoleViewModel model)
         {
             model = _roleService.Add (model);
 
@@ -34,7 +30,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpGet(ApiRoutes.Role.GetAll)]
+        [HttpGet (ApiRoutes.Role.GetAll)]
         public object GetAll ()
         {
             List<RoleViewModel> model = _roleService.GetAll ();
@@ -42,8 +38,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpGet(ApiRoutes.Role.Get)]
-        public object Get(int id)
+        [HttpGet (ApiRoutes.Role.Get)]
+        public object Get (int id)
         {
             RoleViewModel model = _roleService.Get (id);
 
@@ -55,8 +51,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost(ApiRoutes.Role.Update)]
-        public object Update(RoleViewModel model)
+        [HttpPost (ApiRoutes.Role.Update)]
+        public object Update (RoleViewModel model)
         {
             bool success = _roleService.Update (model);
 
@@ -68,8 +64,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, $"Role with Id : { model.Id } not found.");
         }
 
-        [HttpDelete(ApiRoutes.Role.Remove)]
-        public object Remove(int id)
+        [HttpDelete (ApiRoutes.Role.Remove)]
+        public object Remove (int id)
         {
             bool success = _roleService.Remove (id);
 

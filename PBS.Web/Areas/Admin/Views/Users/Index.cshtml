@@ -14,9 +14,6 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-1 text-center">
-                <b>Id</b>
-            </div>
-            <div class="col-md-1 text-center">
                 <b>Name</b>
             </div>
             <div class="col-md-3 text-center">
@@ -31,19 +28,16 @@
             <div class="col-md-2 text-center">
                 <b>City</b>
             </div>
-            <div class="col-md-2 text-center">
+            <div class="col-md-3 text-center">
                 <b>Actions</b>
             </div>
         </div>
 
     </div>
     <div class="card-body">
-        @foreach (var item in Model.Where(m => m.IsActive))
+        @foreach (var item in Model.Where (m => m.IsActive))
         {
             <div class="row mb-1">
-                <div class="col-md-1 text-center">
-                    @item.Id
-                </div>
                 <div class="col-md-1 text-center">
                     @item.FirstName
                 </div>
@@ -66,9 +60,17 @@
                         @item.AddressViewModel.City
                     }
                 </div>
-                <div class="col-md-2 text-center">
+                <div class="col-md-3 text-center">
                     <a class="btn btn-info text-white" onclick="ShowDetails(@item.Id)">Details</a>
                     <a class="btn btn-danger text-white" onclick="DeleteUser(@item.Id)">Delete</a>
+                    @Html.ActionLink("Edit Role", "UpdateRole", "Users", new
+                    {
+                        userId = item.Id,
+                        roleId = item.RoleId
+                    }, new
+                    {
+                        @class = "btn btn-primary text-white"
+                    })
                 </div>
             </div>
 
@@ -97,9 +99,6 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-1 text-center">
-                <b>Id</b>
-            </div>
-            <div class="col-md-1 text-center">
                 <b>Name</b>
             </div>
             <div class="col-md-3 text-center">
@@ -114,19 +113,16 @@
             <div class="col-md-2 text-center">
                 <b>City</b>
             </div>
-            <div class="col-md-2 text-center">
+            <div class="col-md-3 text-center">
                 <b>Actions</b>
             </div>
         </div>
 
     </div>
     <div class="card-body">
-        @foreach (var item in Model.Where(m => m.IsActive == false))
+        @foreach (var item in Model.Where (m => m.IsActive == false))
         {
             <div class="row mb-1">
-                <div class="col-md-1 text-center">
-                    @item.Id
-                </div>
                 <div class="col-md-1 text-center">
                     @item.FirstName
                 </div>
@@ -149,7 +145,7 @@
                         @item.AddressViewModel.City
                     }
                 </div>
-                <div class="col-md-2 text-center">
+                <div class="col-md-3 text-center">
                     <a class="btn btn-info text-white" onclick="ShowDetails(@item.Id)">Details</a>
                 </div>
             </div>
@@ -193,7 +189,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     function ShowDetails(id) {

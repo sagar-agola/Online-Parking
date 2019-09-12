@@ -1,57 +1,57 @@
 ﻿@model UserViewModel
 
-    <dl class="row">
-        <dt class="col-md-5 text-right">
-            Id
-        </dt>
+<dl class="row">
+    <dt class="col-md-5 text-right">
+        Id
+    </dt>
+    <dd class="col-md-7">
+        @Model.Id
+    </dd>
+    <dt class="col-md-5 text-right">
+        Full Name
+    </dt>
+    <dd class="col-md-7">
+        @Model.FirstName @Model.LastName
+    </dd>
+    <dt class="col-md-5 text-right">
+        Email
+    </dt>
+    <dd class="col-md-7">
+        @Model.Email
+    </dd>
+    <dt class="col-md-5 text-right">
+        Contect Number
+    </dt>
+    <dd class="col-md-7">
+        @Model.ContectNumber
+    </dd>
+    <dt class="col-md-5 text-right">
+        Role
+    </dt>
+    <dd class="col-md-7">
+        @Model.RoleViewModel.Title
+    </dd>
+    <dt class="col-md-5 text-right">
+        Total Parking lot<small>(s)</small>
+    </dt>
+    @if (Model.ParkingLotViewModels != null)
+    {
         <dd class="col-md-7">
-            @Model.Id
+            @Model.ParkingLotViewModels.Count
         </dd>
         <dt class="col-md-5 text-right">
-            Full Name
+            Address
         </dt>
-        <dd class="col-md-7">
-            @Model.FirstName @Model.LastName
-        </dd>
-        <dt class="col-md-5 text-right">
-            Email
-        </dt>
-        <dd class="col-md-7">
-            @Model.Email
-        </dd>
-        <dt class="col-md-5 text-right">
-            Contect Number
-        </dt>
-        <dd class="col-md-7">
-            @Model.ContectNumber
-        </dd>
-        <dt class="col-md-5 text-right">
-            Role
-        </dt>
-        <dd class="col-md-7">
-            @Model.RoleViewModel.Title
-        </dd>
-        <dt class="col-md-5 text-right">
-            Total Parking lot<small>(s)</small>
-        </dt>
-        @if (Model.ParkingLotViewModels != null)
+    }
+    <dd class="col-md-7">
+        @if (Model.AddressViewModel.AddressLine1 == "test")
         {
-            <dd class="col-md-7">
-                @Model.ParkingLotViewModels.Count
-            </dd>
-            <dt class="col-md-5 text-right">
-                Address
-            </dt>
+            <span>Address not set.</span><br />
         }
-        <dd class="col-md-7">
-            @if (Model.AddressViewModel.AddressLine1 == "test")
-            {
-                <span>Address not set.</span><br />
-            }
-            else
-            {
-                <partial name="_Address" model="Model.AddressViewModel" />
-            }
-        </dd>
+        else
+        {
+            <partial name="_Address" model="Model.AddressViewModel" />
+        }
+    </dd>
 
-    </dl>
+</dl>

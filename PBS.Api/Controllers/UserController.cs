@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
@@ -58,8 +57,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpDelete(ApiRoutes.User.Remove)]
-        public object Remove(int id)
+        [HttpDelete (ApiRoutes.User.Remove)]
+        public object Remove (int id)
         {
             bool success = _userService.Remove (id);
 
@@ -82,6 +81,19 @@ namespace PBS.Api.Controllers
             }
 
             return new ResponseDetails (true, "Password updated successfully.");
+        }
+
+        [HttpPost (ApiRoutes.User.ChangeRole)]
+        public object ChangeRole (ChangeUserRoleModel model)
+        {
+            bool success = _userService.ChangeRole (model);
+
+            if (!success)
+            {
+                return new ResponseDetails (false, $"User with Id: { model.UserId } or Role with Id : { model.RoleId } is not found.");
+            }
+
+            return new ResponseDetails (true, "Role updated successfully.");
         }
     }
 }
