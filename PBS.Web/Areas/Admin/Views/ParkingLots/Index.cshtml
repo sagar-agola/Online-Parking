@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ParkingLotViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section header {
+    Parking Lots
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-2 text-center font-weight-bold">
+                Name
+            </div>
+            <div class="col-md-2 text-center font-weight-bold">
+                Owner Name
+            </div>
+            <div class="col-md-2 text-center font-weight-bold">
+                Number of Slots
+            </div>
+            <div class="col-md-2 text-center font-weight-bold">
+                City
+            </div>
+            <div class="col-md-2 text-center font-weight-bold">
+                Image status
+            </div>
+            <div class="col-md-2 text-center font-weight-bold">
+                Actions
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (ParkingLotViewModel item in Model)
+        {
+            <div class="row mb-1">
+                <div class="col-md-2 text-center">
+                    @item.Name
+                </div>
+                <div class="col-md-2 text-center">
+                    @item.OwnerViewModel.FirstName @item.OwnerViewModel.LastName
+                </div>
+                <div class="col-md-2 text-center">
+                    @item.SlotViewModels.Count
+                </div>
+                <div class="col-md-2 text-center">
+                    @item.AddressViewModel.City
+                </div>
+                <div class="col-md-2 text-center">
+                    @(item.ParkingLotImageViewModels.Any () ? item.ParkingLotImageViewModels.Count + " image Uploaded" : "None at the moment")
+                </div>
+                <div class="col-md-2 text-center">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

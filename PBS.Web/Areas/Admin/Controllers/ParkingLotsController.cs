@@ -21,6 +21,24 @@ namespace PBS.Web.Areas.Admin.Controllers
             _apiHelper = apiHelper;
         }
 
+        public IActionResult Index ()
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get-all", HttpMethod.Get);
+
+            List<ParkingLotViewModel> lots = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
+            List<ParkingLotViewModel> model = new List<ParkingLotViewModel> ();
+
+            for (int i = 0; i < lots.Count; i++)
+            {
+                if (lots[i].IsAproved)
+                {
+                    model.Add (lots[i]);
+                }
+            }
+
+            return View (model);
+        }
+
         public IActionResult Requests ()
         {
             ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get-requested", HttpMethod.Get);

@@ -19,12 +19,12 @@
             <div class="card-body">
                 <table border="0" cellpadding="5" width="100%">
                     <tr>
-                        <td width="70%">Name</td>
-                        <td width="30%">@Model.ParkingLot.Name</td>
+                        <td width="60%">Name</td>
+                        <td width="40%">@Model.ParkingLot.Name</td>
                     </tr>
                     <tr>
-                        <td width="70%">Is Aproved</td>
-                        <td width="30%">@(Model.ParkingLot.IsAproved ? "Yes" : "No")</td>
+                        <td>Is Aproved</td>
+                        <td>@(Model.ParkingLot.IsAproved ? "Yes" : "No")</td>
                     </tr>
                     <tr>
                         <td>Is Active</td>
@@ -111,15 +111,18 @@
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-12 text-center">
-        <form method="post" asp-action="Aprove">
-            <input type="hidden" id="id" name="id" value="@Model.ParkingLot.Id" />
-            <input type="submit" class="btn btn-lg btn-success" value="Aprove" />
-            <input type="button" class="btn btn-lg btn-danger" value="Reject" />
-        </form>
+@if (!Model.ParkingLot.IsAproved)
+{
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <form method="post" asp-action="Aprove">
+                <input type="hidden" id="id" name="id" value="@Model.ParkingLot.Id" />
+                <input type="submit" class="btn btn-lg btn-success" value="Aprove" />
+                <input type="button" class="btn btn-lg btn-danger" value="Reject" />
+            </form>
+        </div>
     </div>
-</div>
+}
 
 <div class="modal fade" id="ownerDetailsModal">
     <div class="modal-dialog">
