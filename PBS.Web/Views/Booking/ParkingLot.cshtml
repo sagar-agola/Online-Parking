@@ -1,0 +1,73 @@
+﻿@model ParkingLotViewModel
+
+@{
+    ViewData["Title"] = "Book Slot";
+}
+
+<h2 class="mb-5">@Model.Name parking lot</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+            2 wheel Slots
+        </h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @for (int i = 0; i < Model.SlotViewModels.Count (); i++)
+            {
+                if (Model.SlotViewModels[i].IsBooked && Model.SlotViewModels[i].SlotTypeViewModel.Title == "2 Wheel")
+                {    
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                       class="slot-link">
+                        <div class="disabled slot-booked bg-danger text-center">
+                            @Model.SlotViewModels[i].Id
+                        </div>
+                    </a>   
+                }
+                else if (!(Model.SlotViewModels[i].IsBooked) && Model.SlotViewModels[i].SlotTypeViewModel.Title == "2 Wheel")
+                {    
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                       class="slot-link">
+                        <div class="slot bg-success text-center">
+                            @Model.SlotViewModels[i].Id
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h4 class="card-title">
+            4 wheel Slots
+        </h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @for (int i = 0; i < Model.SlotViewModels.Count (); i++)
+            {
+                if (Model.SlotViewModels[i].IsBooked && Model.SlotViewModels[i].SlotTypeViewModel.Title == "4 Wheel")
+                {
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                       class="slot-link">
+                        <div class="disabled slot-booked bg-danger text-center">
+                            @Model.SlotViewModels[i].Id
+                        </div>
+                    </a>
+                }
+                else if (!(Model.SlotViewModels[i].IsBooked) && Model.SlotViewModels[i].SlotTypeViewModel.Title == "4 Wheel")
+                {
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                       class="slot-link">
+                        <div class="slot bg-success text-center">
+                            @Model.SlotViewModels[i].Id
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>

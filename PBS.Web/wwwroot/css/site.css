@@ -63,6 +63,32 @@ a {
     cursor: pointer;
 }
 
-.lot-image {
+.slot {
+    border-radius: 12px;
+    border: 5px solid green;
+    height: 50px;
+    margin: auto 10px;
+    color: antiquewhite;
+    cursor: pointer;
+}
 
+.slot-booked {
+    border-radius: 12px;
+    border: 5px solid darkred;
+    height: 50px;
+    margin: auto 10px;
+    color: antiquewhite;
+    cursor: not-allowed;
+}
+
+.slot-link {
+    color: antiquewhite;
+    cursor: pointer;
+    text-decoration: none;
+    width: 100px;
+}
+
+.slot-link:hover {
+    text-decoration: none;
+    color: lightgray;
 }

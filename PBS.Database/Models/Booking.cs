@@ -13,7 +13,7 @@ namespace PBS.Database.Models
         public DateTime EndDateTime { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(13)]
         public string VehicleNumber { get; set; }
 
         public bool IsActive { get; set; }

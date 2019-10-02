@@ -8,6 +8,7 @@ using PBS.Business.Utilities.Configuration;
 using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.MailClient;
 using PBS.Web.Helpers;
+using Rotativa.AspNetCore;
 
 namespace PBS.Web
 {
@@ -56,6 +57,8 @@ namespace PBS.Web
             app.UseStaticFiles ();
             app.UseCookiePolicy ();
             app.UseSession ();
+
+            RotativaConfiguration.Setup (env, "..\\Rotativa\\");
 
             app.UseMvc (routes =>
             {

@@ -1,0 +1,61 @@
+﻿@model List<ParkingLotViewModel>
+
+@{
+    ViewData["Title"] = "Parking lot List";
+}
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <partial name="_SearchFormPartial" />
+    </div>
+</div>
+
+<div class="row">
+    @if (Model.Any ())
+    {
+        for (int i = 0; i < Model.Count (); i++)
+        {
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            @Model[i].Name<span> Parking lot</span>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table border="0" cellpadding="5" width="100%">
+                            <tr>
+                                <td width="50%">No of 2 wheel slots</td>
+                                <td width="50%">@Model[i].SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>
+                            </tr>
+                            <tr>
+                                <td>No of 4 wheel slots</td>
+                                <td>@Model[i].SlotViewModels.Where(x => x.SlotTypeId == 2).Count()</td>
+                            </tr>
+                            <tr>
+                                <td>Total Booked slots</td>
+                                <td>@Model[i].SlotViewModels.Where(x => x.IsBooked).Count()</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="ParkingLot" asp-controller="Booking" asp-route-id="@Model[i].Id"
+                           class="btn btn-success">Book Now</a>
+                        <input type="button" class="btn btn-primary" value="Bookmark" />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-md-12 mt-3">
+            <div class="card text-center" style="padding: 10px">
+                <p><h3>Oops :/</h3></p>
+                <p>we could not find any parking lot.</p>
+                <p>Try another keyword, be more specific about your area, city or parking lot name.</p>
+            </div>
+        </div>
+    }
+</div>

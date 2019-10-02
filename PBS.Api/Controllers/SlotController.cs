@@ -86,6 +86,28 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
         }
 
+        [HttpPost (ApiRoutes.Slot.MakeBooked)]
+        public object MakeBooked (int id)
+        {
+            SlotViewModel model = _slotService.Get (id);
+
+            if (model == null)
+            {
+                return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
+            }
+
+            model.IsBooked = true;
+
+            bool success = _slotService.Update (model);
+
+            if (success)
+            {
+                return new ResponseDetails (true, "parking slot updated successfully.");
+            }
+
+            return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
+        }
+
         [HttpDelete(ApiRoutes.Slot.Remove)]
         public object Remove(int id)
         {

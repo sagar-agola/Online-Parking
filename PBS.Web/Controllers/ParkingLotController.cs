@@ -6,9 +6,7 @@ using PBS.Business.Core.Models;
 using PBS.Business.Utilities.Helpers;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 
 namespace PBS.Web.Controllers
@@ -197,7 +195,7 @@ namespace PBS.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UploadImage(ParkingImageModel model)
+        public IActionResult UploadImage (ParkingImageModel model)
         {
             if (ModelState.IsValid)
             {
@@ -228,6 +226,29 @@ namespace PBS.Web.Controllers
             }
 
             ModelState.AddModelError ("", "Validation Error.");
+            return View (model);
+        }
+        #endregion
+
+        #region Parking lot list
+        [HttpGet]
+        public IActionResult List ()
+        {
+            ErrorViewModel model = new ErrorViewModel
+            {
+                Message = "Invalid attempt through url."
+            };
+
+            return View ("Error", model);
+        }
+
+        [HttpPost]
+        public IActionResult List (string query)
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "home/search/" + query, HttpMethod.Get);
+
+            List<ParkingLotViewModel> model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
+
             return View (model);
         }
         #endregion

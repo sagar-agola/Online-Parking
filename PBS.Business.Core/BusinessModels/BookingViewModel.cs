@@ -12,7 +12,7 @@ namespace PBS.Business.Core.BusinessModels
         public DateTime EndDateTime { get; set; }
 
         [Required(ErrorMessage = "Vehicle number is required field")]
-        [MaxLength (10, ErrorMessage = "Invalid Vehicle number pattern")]
+        [MaxLength (13, ErrorMessage = "Invalid Vehicle number pattern")]
         public string VehicleNumber { get; set; }
 
         public bool IsActive { get; set; }
@@ -26,5 +26,17 @@ namespace PBS.Business.Core.BusinessModels
         public int SlotId { get; set; }
         public SlotViewModel SlotViewModel { get; set; }
         #endregion
+
+        public string Duration
+        {
+            get
+            {
+                int totalMinutes = (int)(EndDateTime - StartDateTime).TotalMinutes;
+                int hours = totalMinutes / 60;
+                int minutes = totalMinutes % 60;
+
+                return $"{ hours } Hour, { minutes } Minute";
+            }
+        }
     }
 }

@@ -1,0 +1,81 @@
+﻿@model BookingViewModel
+
+<div class="text-center">
+    <h1>
+        <b>@Model.SlotViewModel.ParkingLotViewModel.Name Parking Lot</b>
+    </h1>
+    <hr />
+    <table border="0" width="100%">
+        <tr>
+            <td style="border-right: 1px solid #D8D8D8">
+                <h5>
+                    <b>Customer Information</b>
+                </h5>
+                <table class="mt-2" border="0" width="100%" style="padding: 10px">
+                    <tr>
+                        <td width="50%">Name</td>
+                        <td width="50%">@Model.CustomerViewModel.FirstName @Model.CustomerViewModel.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.CustomerViewModel.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Contect Number</td>
+                        <td>@Model.CustomerViewModel.ContectNumber</td>
+                    </tr>
+                    <tr>
+                        <td>Vehical Number</td>
+                        <td>@Model.VehicleNumber</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="border-right: 1px solid #D8D8D8">
+                <h5>
+                    <b>Booking Details</b>
+                </h5>
+                <table class="mt-2" border="0" width="100%" style="padding: 10%">
+                    <tr>
+                        <td width="50%">Slot Id</td>
+                        <td width="50%">@Model.Id</td>
+                    </tr>
+                    <tr>
+                        <td>Start Date</td>
+                        <td>@Model.StartDateTime.ToShortDateString()</td>
+                    </tr>
+                    <tr>
+                        <td>Start Time</td>
+                        <td>@Model.StartDateTime.ToLongTimeString()</td>
+                    </tr>
+                    <tr>
+                        <td>End Time</td>
+                        <td>@Model.EndDateTime.ToLongTimeString()</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <h5>
+                    <b>Pricing</b>
+                </h5>
+                <table class="mt-2" border="0" width="100%" style="padding: 10px">
+                    <tr>
+                        <td width="50%">Total Duration</td>
+                        <td width="50%">@Model.Duration</td>
+                    </tr>
+                    <tr>
+                        <td>Hourly Rate</td>
+                        <td>10 INR</td>
+                    </tr>
+                    <tr>
+                        <td>Discount</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Total Payable</td>
+                        <td>14.5 INR</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

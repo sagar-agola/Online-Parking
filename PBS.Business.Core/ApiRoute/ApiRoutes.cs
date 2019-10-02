@@ -14,6 +14,15 @@
         }
         #endregion
 
+        #region Home
+        public static class Home
+        {
+            private const string _base = _root + "/home";
+
+            public const string Search = _base + "/search/{query}";
+        }
+        #endregion
+
         #region User
         public static class User
         {
@@ -66,6 +75,7 @@
             public const string Get = _base + "/get/{id}";
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
+            public const string MakeBooked = _base + "/make-booked/{id}";
             public const string Remove = _base + "/remove/{id}";
         }
         #endregion
@@ -89,6 +99,18 @@
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
             public const string Remove = _base + "/remove/{id}";
+        }
+        #endregion
+
+        #region Booking
+        public static class Booking
+        {
+            private const string _base = _root + "/booking";
+
+            public const string Add = _base + "/add";
+            public const string Get = _base + "/get/{id}";
+            public const string GetByUser = _base + "/get/user/{id}";
+            public const string GetAll = _base + "/get-all";
         }
         #endregion
     }

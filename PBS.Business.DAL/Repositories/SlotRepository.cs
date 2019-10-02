@@ -57,9 +57,10 @@ namespace PBS.Business.DAL.Repositories
         private IQueryable<Slot> RetriveEntity ()
         {
             return _context.Slots
+                .AsNoTracking ()
                 .Include (slot => slot.SlotType)
                 .Include (slot => slot.ParkingLot)
-                .IncludeFilter (slot => slot.Bookings.Where (booking => booking.IsActive));
+                .Include (slot => slot.Bookings);
         }
     }
 }

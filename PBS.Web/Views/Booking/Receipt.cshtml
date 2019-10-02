@@ -1,0 +1,87 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Booking Receipt
+        </h3>
+    </div>
+    <div class="card-body">
+        <h1 class="text-center">
+            <b>@Model.SlotViewModel.ParkingLotViewModel.Name Parking Lot</b>
+        </h1>
+        <hr />
+        <div class="row text-center">
+            <div class="col-md-4" style="border-right: 1px solid #D8D8D8">
+                <b>Customer Information</b>
+                <table class="mt-2" border="0" width="100%" style="padding: 10px">
+                    <tr>
+                        <td width="50%">Name</td>
+                        <td width="50%">@Model.CustomerViewModel.FirstName @Model.CustomerViewModel.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.CustomerViewModel.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Contect Number</td>
+                        <td>@Model.CustomerViewModel.ContectNumber</td>
+                    </tr>
+                    <tr>
+                        <td>Vehical Number</td>
+                        <td>@Model.VehicleNumber</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4" style="border-right: 1px solid #D8D8D8">
+                <b>Booking Details</b>
+                <table class="mt-2" border="0" width="100%" style="padding: 10%">
+                    <tr>
+                        <td width="50%">Slot Id</td>
+                        <td width="50%">@Model.Id</td>
+                    </tr>
+                    <tr>
+                        <td>Start Date</td>
+                        <td>@Model.StartDateTime.ToShortDateString()</td>
+                    </tr>
+                    <tr>
+                        <td>Start Time</td>
+                        <td>@Model.StartDateTime.ToLongTimeString()</td>
+                    </tr>
+                    <tr>
+                        <td>End Time</td>
+                        <td>@Model.EndDateTime.ToLongTimeString()</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <b>Pricing</b>
+                <table class="mt-2" border="0" width="100%" style="padding: 10px">
+                    <tr>
+                        <td width="50%">Total Duration</td>
+                        <td width="50%">@Model.Duration</td>
+                    </tr>
+                    <tr>
+                        <td>Hourly Rate</td>
+                        <td>10 INR</td>
+                    </tr>
+                    <tr>
+                        <td>Discount</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Total Payable</td>
+                        <td>14.5 INR</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Print" asp-route-id="@Model.Id" class="btn btn-success">Print</a>
+    </div>
+</div>

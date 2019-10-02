@@ -68,7 +68,7 @@ namespace PBS.Database.Migrations
 
                     b.Property<string>("VehicleNumber")
                         .IsRequired()
-                        .HasMaxLength(10);
+                        .HasMaxLength(13);
 
                     b.HasKey("Id");
 
