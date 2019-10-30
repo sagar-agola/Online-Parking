@@ -5,20 +5,20 @@
 }
 
 @section header {
-    User Roles
+    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;User Roles
 }
 
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title">
-            Role Title : @Model.Title
-        </h4>
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;@Model.Title<span>s</span>
+        </h3>
     </div>
-    <div class="card-body">
+    <div class="panel-body">
         <ul>
             @if (Model.UserViewModels.Any ())
             {
-                foreach(UserViewModel user in Model.UserViewModels)
+                foreach (UserViewModel user in Model.UserViewModels)
                 {
                     <li>@user.FirstName<span> </span>@user.LastName</li>
                 }

@@ -5,201 +5,106 @@
 }
 
 @section header {
-    Users
+    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Users
 }
 
-<h3>Active Users</h3>
-
-<div class="card mt-3">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-1 text-center">
-                <b>Name</b>
-            </div>
-            <div class="col-md-3 text-center">
-                <b>Email</b>
-            </div>
-            <div class="col-md-2 text-center">
-                <b>Contect Number</b>
-            </div>
-            <div class="col-md-1 text-center">
-                <b>Role</b>
-            </div>
-            <div class="col-md-2 text-center">
-                <b>City</b>
-            </div>
-            <div class="col-md-3 text-center">
-                <b>Actions</b>
-            </div>
-        </div>
-
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Active Users
+        </h3>
     </div>
-    <div class="card-body">
-        @foreach (var item in Model.Where (m => m.IsActive))
-        {
-            <div class="row mb-1">
-                <div class="col-md-1 text-center">
-                    @item.FirstName
-                </div>
-                <div class="col-md-3 text-center">
-                    @item.Email
-                </div>
-                <div class="col-md-2 text-center">
-                    @item.ContectNumber
-                </div>
-                <div class="col-md-1 text-center">
-                    @item.RoleViewModel.Title
-                </div>
-                <div class="col-md-2 text-center">
-                    @if (item.AddressViewModel.City == "test")
-                    {
-                        <span>Not added</span>
-                    }
-                    else
-                    {
-                        @item.AddressViewModel.City
-                    }
-                </div>
-                <div class="col-md-3 text-center">
-                    <a class="btn btn-info text-white" onclick="ShowDetails(@item.Id)">Details</a>
-                    <a class="btn btn-danger text-white" onclick="DeleteUser(@item.Id)">Delete</a>
-                    @Html.ActionLink("Edit Role", "UpdateRole", "Users", new
-                    {
-                        userId = item.Id,
-                        roleId = item.RoleId
-                    }, new
-                    {
-                        @class = "btn btn-primary text-white"
-                    })
-                </div>
-            </div>
-
-            <div class="modal fade" id="@("detailsModal" + item.Id)">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">
-                                @item.FirstName<span>'s Details</span>
-                            </h4>
-                            <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        </div>
-                        <div class="modal-body">
-                            <partial name="_UserDetailsPartial" model="@item" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+    <div class="panel-body">
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td><b>Email</b></td>
+                    <td><b>Contect Number</b></td>
+                    <td><b>Role</b></td>
+                    <td><b>City</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where (m => m.IsActive))
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.Email</td>
+                        <td>@item.ContectNumber</td>
+                        <td>@item.RoleViewModel.Title</td>
+                        <td>
+                            @if (item.AddressViewModel.City == "test")
+                            {
+                                <span>Not added</span>
+                            }
+                            else
+                            {
+                                @item.AddressViewModel.City
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            @Html.ActionLink("Edit Role", "UpdateRole", "Users", new
+                            {
+                                userId = item.Id,
+                                roleId = item.RoleId
+                            }, new
+                            {
+                                @class = "btn btn-primary text-white"
+                            })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
-<h3 class="mt-4">Non Active Users</h3>
-
-<div class="card mt-3">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-1 text-center">
-                <b>Name</b>
-            </div>
-            <div class="col-md-3 text-center">
-                <b>Email</b>
-            </div>
-            <div class="col-md-2 text-center">
-                <b>Contect Number</b>
-            </div>
-            <div class="col-md-1 text-center">
-                <b>Role</b>
-            </div>
-            <div class="col-md-2 text-center">
-                <b>City</b>
-            </div>
-            <div class="col-md-3 text-center">
-                <b>Actions</b>
-            </div>
-        </div>
-
+<div class="panel panel-default">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Non Active Users
+        </h3>
     </div>
-    <div class="card-body">
-        @foreach (var item in Model.Where (m => m.IsActive == false))
-        {
-            <div class="row mb-1">
-                <div class="col-md-1 text-center">
-                    @item.FirstName
-                </div>
-                <div class="col-md-3 text-center">
-                    @item.Email
-                </div>
-                <div class="col-md-2 text-center">
-                    @item.ContectNumber
-                </div>
-                <div class="col-md-1 text-center">
-                    @item.RoleViewModel.Title
-                </div>
-                <div class="col-md-2 text-center">
-                    @if (item.AddressViewModel.City == "test")
-                    {
-                        <span>Not added</span>
-                    }
-                    else
-                    {
-                        @item.AddressViewModel.City
-                    }
-                </div>
-                <div class="col-md-3 text-center">
-                    <a class="btn btn-info text-white" onclick="ShowDetails(@item.Id)">Details</a>
-                </div>
-            </div>
-
-            <div class="modal fade" id="@("detailsModal" + item.Id)">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">
-                                @item.FirstName<span>'s Details</span>
-                            </h4>
-                            <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        </div>
-                        <div class="modal-body">
-                            <partial name="_UserDetailsPartial" model="@item" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+    <div class="panel-body">
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td><b>Email</b></td>
+                    <td><b>Contect Number</b></td>
+                    <td><b>Role</b></td>
+                    <td><b>City</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where (m => m.IsActive == false))
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.Email</td>
+                        <td>@item.ContectNumber</td>
+                        <td>@item.RoleViewModel.Title</td>
+                        <td>
+                            @if (item.AddressViewModel.City == "test")
+                            {
+                                <span>Not added</span>
+                            }
+                            else
+                            {
+                                @item.AddressViewModel.City
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-
-<div class="modal fade" id="deleteUserModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete User</h4>
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-            </div>
-            <div class="modal-body">
-                <div id="deleteContent"></div>
-                <form method="post" asp-action="Delete">
-                    <input type="hidden" id="userId" name="userId" />
-                    <div style="padding-top: 10px">
-                        <input type="submit" class="btn btn-success" value="Yes" />
-                        <input type="button" class="btn btn-danger accept-policy" value="No" data-dismiss="modal" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function ShowDetails(id) {
-        var modalId = "detailsModal" + id;
-
-        $('#' + modalId).modal();
-    }
-
-    function DeleteUser(userId) {
-        $('#userId').val(userId);
-        $('#deleteContent').empty().append("Are you sure you want to delete user with Id : " + userId + " ?");
-        $('#deleteUserModal').modal();
-    }
-</script>

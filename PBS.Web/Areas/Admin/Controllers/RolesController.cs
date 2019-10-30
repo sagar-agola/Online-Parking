@@ -28,6 +28,12 @@ namespace PBS.Web.Areas.Admin.Controllers
             return View (model);
         }
 
+        [HttpGet]
+        public IActionResult Create ()
+        {
+            return View ();
+        }
+
         [HttpPost]
         public IActionResult Create (RoleViewModel model)
         {
@@ -55,8 +61,17 @@ namespace PBS.Web.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        [ActionName("Remove")]
+        public IActionResult RemoveGet(int id)
+        {
+            ViewData["Id"] = id;
+            return View ();
+        }
+
         [HttpPost]
-        public IActionResult Remove (int roleId)
+        [ActionName("Remove")]
+        public IActionResult RemovePost (int roleId)
         {
             ResponseDetails response = _apiHelper.SendApiRequest ("", "role/remove/" + roleId, HttpMethod.Delete);
 
@@ -66,12 +81,10 @@ namespace PBS.Web.Areas.Admin.Controllers
             }
             else
             {
-                ErrorViewModel model = new ErrorViewModel
-                {
-                    Message = response.Data.ToString ()
-                };
+                ModelState.AddModelError ("", response.Data.ToString ());
+                ViewData["Id"] = roleId;
 
-                return View ("Error", model);
+                return View ();
             }
         }
 

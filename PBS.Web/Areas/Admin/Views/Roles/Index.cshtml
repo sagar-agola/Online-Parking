@@ -5,99 +5,43 @@
 }
 
 @section header {
-    User Roles
+    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;User Roles
 }
 
 <p>
-    <a href="#" class="btn btn-success text-white" onclick="CreateRole()">Create New</a>
+    <a asp-action="Create" class="btn main-color-bg">Create New</a>
 </p>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-3 text-center font-weight-bold">
-                Id
-            </div>
-            <div class="col-md-3 text-center font-weight-bold">
-                Role Title
-            </div>
-            <div class="col-md-3 text-center font-weight-bold">
-                Number of Users
-            </div>
-            <div class="col-md-3 text-center font-weight-bold">
-                Actions
-            </div>
-        </div>
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;User Roles
+        </h3>
     </div>
-    <div class="card-body">
-        @foreach (RoleViewModel role in Model)
-        {
-            <div class="row mb-1">
-                <div class="col-md-3 text-center">
-                    @role.Id
-                </div>
-                <div class="col-md-3 text-center">
-                    @role.Title
-                </div>
-                <div class="col-md-3 text-center">
-                    @role.UserViewModels.Count
-                </div>
-                <div class="col-md-3 text-center">
-                    <a asp-action="Details" asp-route-id="@role.Id" class="btn btn-info text-white">Details</a>
-                    <a class="btn btn-danger text-white" onclick="RemoveRole(@role.Id)">Delete</a>
-                </div>
-            </div>
-        }
+    <div class="panel-body">
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Id</b></td>
+                    <td><b>Role Title</b></td>
+                    <td><b>Number of Users</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (RoleViewModel role in Model)
+                {
+                    <tr>
+                        <td>@role.Id</td>
+                        <td>@role.Title</td>
+                        <td>@role.UserViewModels.Count</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@role.Id" class="btn btn-info text-white">Details</a>
+                            <a asp-action="Remove" asp-route-id="@role.Id" class="btn btn-danger text-white">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-
-<div class="modal fade" id="createRoleModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    Create Role
-                </h4>
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-            </div>
-            <div class="modal-body">
-                <partial name="_CreateRolePartial" model="@(new RoleViewModel ())" />
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="removeRoleModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    Remove Role
-                </h4>
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-            </div>
-            <div class="modal-body">
-                <div id="deleteContent"></div>
-                <form method="post" asp-action="Remove">
-                    <input type="hidden" id="roleId" name="roleId" />
-                    <div style="padding-top: 10px">
-                        <input type="submit" class="btn btn-success" value="Yes" />
-                        <input type="button" class="btn btn-danger accept-policy" value="No" data-dismiss="modal" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function CreateRole() {
-        $('#createRoleModal').modal();
-    }
-
-    function RemoveRole(roleId) {
-        $('#roleId').val(roleId);
-        $('#deleteContent').empty().append("Are you sure you want to remove role with Id : " + roleId + " ?");
-        $('#removeRoleModal').modal();
-    }
-</script>

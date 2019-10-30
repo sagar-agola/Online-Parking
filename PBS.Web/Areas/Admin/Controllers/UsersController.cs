@@ -44,14 +44,15 @@ namespace PBS.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult Delete(int userId)
+        public IActionResult Details (int id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "user/remove/" + userId, HttpMethod.Delete);
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "user/get/" + id, HttpMethod.Get);
 
             if (response.Success)
             {
-                return RedirectToAction ("Index");
+                UserViewModel model = JsonConvert.DeserializeObject<UserViewModel> (response.Data.ToString ());
+
+                return View (model);
             }
             else
             {
@@ -61,6 +62,32 @@ namespace PBS.Web.Areas.Admin.Controllers
                 };
 
                 return View ("Error", model);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public IActionResult DeleteGet(int id)
+        {
+            ViewData["UserId"] = id;
+            return View ();
+        }
+
+        [HttpPost]
+        [ActionName ("Delete")]
+        public IActionResult DeletePost(int userId)
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "user/remove/" + userId, HttpMethod.Delete);
+
+            if (response.Success)
+            {
+                return RedirectToAction ("Index");
+            }
+            else
+            {
+                ModelState.AddModelError ("", response.Data.ToString ());
+                ViewData["UserId"] = userId;
+                return View (userId);
             }
         }
 

@@ -1,0 +1,64 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Users
+}
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;User Details
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table border="0" class="table table-hover text-center">
+                    <tr>
+                        <td><b>Full Name</b></td>
+                        <td>@Model.FirstName @Model.LastName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email</b></td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td><b>Contact Number</b></td>
+                        <td>@Model.ContectNumber</td>
+                    </tr>
+                    <tr>
+                        <td><b>Role</b></td>
+                        <td>@Model.RoleViewModel.Title</td>
+                    </tr>
+                    <tr>
+                        <td><b>Number Of Parking lot owned</b></td>
+                        <td>@Model.ParkingLotViewModels.Count</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table border="0" class="table table-hover">
+                    <tr>
+                        <td><b>Address</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (Model.AddressViewModel.AddressLine1 == "test")
+                            {
+                                <span>Address not set.</span>
+                            }
+                            else
+                            {
+                                <partial name="_Address" model="Model.AddressViewModel" />
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,82 +7,80 @@
 
     <title>@ViewBag.Title - PBS Admin</title>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/css/simple-sidebar.css" rel="stylesheet" />
+    <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Admin/css/style.css" rel="stylesheet" />
+
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
 
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">PBS Admin</div>
-            <div class="list-group list-group-flush">
-                <a asp-action="Index" asp-controller="Users" asp-area="Admin"
-                   class="list-group-item list-group-item-action bg-light">Users</a>
-                <a asp-action="Index" asp-controller="Roles" asp-area="Admin"
-                   class="list-group-item list-group-item-action bg-light">User Roles</a>
-                <a asp-action="Index" asp-controller="ParkingLots" asp-area="Admin"
-                   class="list-group-item list-group-item-action bg-light">Parking Lots</a>
-                <a asp-action="Requests" asp-controller="ParkingLots" asp-area="Admin"
-                   class="list-group-item list-group-item-action bg-light">Parking Lot Requests</a>
-
-                <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Online Parking Admin</a>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                @if (_tokenDecoder.IsLoggedIn)
+                {
+                    <li class="nav-item">
+                        <a href="#">
+                            Hii, @_tokenDecoder.UserName
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="document.getElementById('LogoutForm').submit();">
+                            Logout
+                        </a>
+                        <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post"></form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a asp-action="Login" asp-controller="Auth">
+                            Login
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
-        <!-- /#sidebar-wrapper -->
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav  mt-2 ml-4 mt-lg-0">
-                        <li class="nav-item">
-                            <h3>
-                                @RenderSection("header", false)
-                            </h3>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        @if (_tokenDecoder.IsLoggedIn)
-                        {
-                            <li class="nav-item">
-                                <div class="dropdown" style="margin-right: 20px">
-                                    <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Hii, @_tokenDecoder.UserName
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">
-                                            My Profile
-                                        </a>
-                                        <a class="dropdown-item" asp-action="UpdateAddress" asp-controller="User">
-                                            Manage Address
-                                        </a>
-                                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">
-                                            Change Password
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <form id="LogoutForm" asp-action="Logout" asp-controller="Auth" method="post">
-                                            <a href="#" class="dropdown-item"
-                                               onclick="document.getElementById('LogoutForm').submit();">Logout</a>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
+    </nav>
+    <!-- END NAVBAR -->
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container">
+            <h1>
+                @RenderSection("header", false)
+            </h1>
+        </div>
+    </header>
+    <!-- END HEADER -->
+
+    <!-- MAIN AREA -->
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <!-- SIDE NAVBAR -->
+                <div class="col-md-3">
+                    <div class="list-group">
+                        <a asp-action="Index" asp-controller="Users" asp-area="Admin"
+                           id="side-users" class="list-group-item list-group-item-action bg-light main-color-bg">Users</a>
+                        <a asp-action="Index" asp-controller="Roles" asp-area="Admin"
+                           id="side-user-roles" class="list-group-item list-group-item-action bg-light">User Roles</a>
+                        <a asp-action="Index" asp-controller="ParkingLots" asp-area="Admin"
+                           id="side-parking-lots" class="list-group-item list-group-item-action bg-light">Parking Lots</a>
+                        <a asp-action="Requests" asp-controller="ParkingLots" asp-area="Admin"
+                           id="side-parking-lot-requests" class="list-group-item list-group-item-action bg-light">Parking Lot Requests</a>
+                    </div>
                 </div>
-            </nav>
-
-            <div class="container-fluid" style="padding: 40px">
-                @RenderBody()
+                <!-- MAIN MIDDLE AREA -->
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
+    </section>
+    <!-- END MAIN AREA -->
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>

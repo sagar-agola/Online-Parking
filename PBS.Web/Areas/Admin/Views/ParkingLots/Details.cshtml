@@ -5,37 +5,37 @@
 }
 
 @section header {
-    Parking lot Details
+    <span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Parking lot Details
 }
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Basic Info
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Basic Info
                 </h3>
             </div>
-            <div class="card-body">
-                <table border="0" cellpadding="5" width="100%">
+            <div class="panel-body">
+                <table border="0" class="table table-hover text-center">
                     <tr>
-                        <td width="60%">Name</td>
-                        <td width="40%">@Model.ParkingLot.Name</td>
+                        <td><b>Name</b></td>
+                        <td>@Model.ParkingLot.Name</td>
                     </tr>
                     <tr>
-                        <td>Is Aproved</td>
+                        <td><b>Is Aproved</b></td>
                         <td>@(Model.ParkingLot.IsAproved ? "Yes" : "No")</td>
                     </tr>
                     <tr>
-                        <td>Is Active</td>
+                        <td><b>Is Active</b></td>
                         <td>@(Model.ParkingLot.IsActive ? "Yes" : "No")</td>
                     </tr>
                     <tr>
-                        <td>Number of slots</td>
+                        <td><b>Number of slots</b></td>
                         <td>@Model.ParkingLot.SlotViewModels.Count</td>
                     </tr>
                     <tr>
-                        <td>Number of booked slots</td>
+                        <td><b>Number of booked slots</b></td>
                         <td>@Model.ParkingLot.SlotViewModels.Where(x => x.IsBooked).Count()</td>
                     </tr>
                 </table>
@@ -43,13 +43,13 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Address
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;&nbsp;Address
                 </h3>
             </div>
-            <div class="card-body">
+            <div class="panel-body">
                 <partial name="_Address" model="Model.ParkingLot.AddressViewModel" />
                 <br />
                 <br />
@@ -57,14 +57,15 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Owner Info
+
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Owner Info
                 </h3>
             </div>
-            <div class="card-body">
-                <table border="0" cellpadding="5" width="100%">
+            <div class="panel-body">
+                <table border="0" class="table table-hover text-center">
                     <tr>
                         <td width="40%">Full Name</td>
                         <td width="60%">@Model.ParkingLot.OwnerViewModel.FirstName @Model.ParkingLot.OwnerViewModel.LastName</td>
@@ -77,28 +78,29 @@
                         <td>Contect Number</td>
                         <td>@Model.ParkingLot.OwnerViewModel.ContectNumber</td>
                     </tr>
-                </table>
+                </table>            
             </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-info text-white" onclick="OwnerDetails()">Full Details</a>
+            <div class="panel-footer">
+                <a asp-action="Details" asp-controller="Users" asp-area="Admin" asp-route-id="@Model.ParkingLot.OwnerId" 
+                   class="btn main-color-bg">Full Details</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card mt-4">
-    <div class="card-header">
-        <h3 class="card-title">
-            Images
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;&nbsp;Images
         </h3>
     </div>
-    <div class="card-body">
+    <div class="panel-body">
         @if (Model.Images.Any ())
         {
             <div class="row">
                 @foreach (string str in Model.Images)
                 {
-                    <div class="col-md-3" style="padding: 10px">
+                    <div class="col-md-4" style="padding: 10px">
                         <img src="data:image/jpeg;base64, @str" class="img-thumbnail" style="height: 250px" />
                     </div>
                 }
@@ -123,25 +125,3 @@
         </div>
     </div>
 }
-
-<div class="modal fade" id="ownerDetailsModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    @Model.ParkingLot.OwnerViewModel.FirstName<span>'s Details</span>
-                </h4>
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-            </div>
-            <div class="modal-body">
-                <partial name="_UserDetailsPartial" model="@Model.ParkingLot.OwnerViewModel" />
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function OwnerDetails() {
-        $('#ownerDetailsModal').modal();
-    }
-</script>
