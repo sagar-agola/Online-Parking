@@ -6,6 +6,7 @@ namespace PBS.Business.Core.BusinessModels
     public class ParkingLotViewModel
     {
         public int Id { get; set; }
+        public string EncryptedId { get; set; }
 
         [Required(ErrorMessage = "Parking name is required.")]
         public string Name { get; set; }
@@ -16,11 +17,13 @@ namespace PBS.Business.Core.BusinessModels
 
         #region Parking Owner
         public int OwnerId { get; set; }
+        public string EncryptedOwnerId { get; set; }
         public UserViewModel OwnerViewModel { get; set; }
         #endregion
 
         #region Parking Address
         public int AddressId { get; set; }
+        public string EncryptedAddressId { get; set; }
         public AddressViewModel AddressViewModel { get; set; }
         #endregion
 

@@ -6,6 +6,7 @@ namespace PBS.Business.Core.BusinessModels
     public class RoleViewModel
     {
         public int Id { get; set; }
+        public string EncryptedId { get; set; }
 
         [Required]
         [MaxLength (50)]

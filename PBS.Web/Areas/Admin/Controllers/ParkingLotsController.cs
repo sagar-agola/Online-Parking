@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Configuration;
 using PBS.Web.Areas.Admin.Models;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -15,10 +18,14 @@ namespace PBS.Web.Areas.Admin.Controllers
     public class ParkingLotsController : Controller
     {
         private readonly IApiHelper _apiHelper;
+        private readonly IDataProtector _dataProtector;
 
-        public ParkingLotsController (IApiHelper apiHelper)
+        public ParkingLotsController (IApiHelper apiHelper,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
         }
 
         public IActionResult Index ()
@@ -36,6 +43,15 @@ namespace PBS.Web.Areas.Admin.Controllers
                 }
             }
 
+            model = model.Select (x =>
+             {
+                 x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                 x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
+                 x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
+
+                 return x;
+             }).ToList ();
+
             return View (model);
         }
 
@@ -50,23 +66,40 @@ namespace PBS.Web.Areas.Admin.Controllers
                 model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
             }
 
+            model = model.Select (x =>
+            {
+                x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
+                x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
+
+                return x;
+            }).ToList ();
+
             return View (model);
         }
 
-        public IActionResult Details (int id)
+        public IActionResult Details (string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + id, HttpMethod.Get);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
+                ParkingLotViewModel parkingLotViewModel = JsonConvert.DeserializeObject<ParkingLotViewModel>
+                    (response.Data.ToString ());
+                parkingLotViewModel.EncryptedId = _dataProtector.Protect (parkingLotViewModel.Id.ToString ());
+                parkingLotViewModel.EncryptedOwnerId = _dataProtector.Protect (parkingLotViewModel.OwnerId.ToString ());
+                parkingLotViewModel.EncryptedAddressId = _dataProtector.Protect (parkingLotViewModel.AddressId.ToString ());
+
                 ParkingLotRequestdetailsModel model = new ParkingLotRequestdetailsModel ()
                 {
-                    ParkingLot = JsonConvert.DeserializeObject<ParkingLotViewModel> (response.Data.ToString ())
+                    ParkingLot = parkingLotViewModel
                 };
 
                 if (model.ParkingLot.ParkingLotImageViewModels.Any ())
                 {
-                    response = _apiHelper.SendApiRequest ("", "parkinglot/all-images/" + id, HttpMethod.Get);
+                    response = _apiHelper.SendApiRequest ("", "parkinglot/all-images/" + newId, HttpMethod.Get);
 
                     if (response.Success)
                     {
@@ -101,9 +134,11 @@ namespace PBS.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Aprove(int id)
+        public IActionResult Aprove (string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/aprove/" + id, HttpMethod.Post);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/aprove/" + newId, HttpMethod.Post);
 
             if (response.Success)
             {

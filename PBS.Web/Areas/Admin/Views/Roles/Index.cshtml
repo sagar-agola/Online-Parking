@@ -22,7 +22,6 @@
         <table border="0" class="table table-hover text-center">
             <thead>
                 <tr>
-                    <td><b>Id</b></td>
                     <td><b>Role Title</b></td>
                     <td><b>Number of Users</b></td>
                     <td><b>Actions</b></td>
@@ -32,12 +31,11 @@
                 @foreach (RoleViewModel role in Model)
                 {
                     <tr>
-                        <td>@role.Id</td>
                         <td>@role.Title</td>
                         <td>@role.UserViewModels.Count</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@role.Id" class="btn btn-info text-white">Details</a>
-                            <a asp-action="Remove" asp-route-id="@role.Id" class="btn btn-danger text-white">Delete</a>
+                            <a asp-action="Details" asp-route-id="@role.EncryptedId" class="btn btn-info text-white">Details</a>
+                            <a asp-action="Remove" asp-route-id="@role.EncryptedId" class="btn btn-danger text-white">Delete</a>
                         </td>
                     </tr>
                 }

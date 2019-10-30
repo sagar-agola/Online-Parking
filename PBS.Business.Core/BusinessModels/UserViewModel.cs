@@ -7,6 +7,8 @@ namespace PBS.Business.Core.BusinessModels
     {
         public int Id { get; set; }
 
+        public string EncryptedId { get; set; }
+
         [Required (ErrorMessage = "Firstname is required field.")]
         [StringLength (50, ErrorMessage = "Maximum 50 character allowed for FirstName")]
         public string FirstName { get; set; }
@@ -35,6 +37,7 @@ namespace PBS.Business.Core.BusinessModels
 
         #region User Role
         public int RoleId { get; set; }
+        public string EncryptedRoleId { get; set; }
         public RoleViewModel RoleViewModel { get; set; }
         #endregion
 
