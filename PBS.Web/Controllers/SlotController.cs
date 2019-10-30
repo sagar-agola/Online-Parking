@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Configuration;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace PBS.Web.Controllers
@@ -12,19 +16,34 @@ namespace PBS.Web.Controllers
     public class SlotController : Controller
     {
         private readonly IApiHelper _apiHelper;
+        private readonly IDataProtector _dataProtector;
 
-        public SlotController (IApiHelper apiHelper)
+        public SlotController (IApiHelper apiHelper,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
         }
 
-        public IActionResult Manage (int id)
+        public IActionResult Manage (string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/parkinglot/" + id, HttpMethod.Get);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/parkinglot/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
                 List<SlotViewModel> model = JsonConvert.DeserializeObject<List<SlotViewModel>> (response.Data.ToString ());
+
+                model = model.Select (x =>
+                 {
+                     x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                     x.EncryptedParkingLotId = _dataProtector.Protect (x.ParkingLotId.ToString ());
+                     x.EncryptedSlotTypeId = _dataProtector.Protect (x.SlotTypeId.ToString ());
+
+                     return x;
+                 }).ToList ();
 
                 ResponseDetails slotTypeResponse = _apiHelper.SendApiRequest ("", "slot-type/get-all", HttpMethod.Get);
 
@@ -47,13 +66,18 @@ namespace PBS.Web.Controllers
             }
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/get/" + id, HttpMethod.Get);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/get/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
                 SlotViewModel model = JsonConvert.DeserializeObject<SlotViewModel> (response.Data.ToString ());
+                model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
+                model.EncryptedParkingLotId = _dataProtector.Protect (model.ParkingLotId.ToString ());
+                model.EncryptedSlotTypeId = _dataProtector.Protect (model.SlotTypeId.ToString ());
 
                 return View (model);
             }
@@ -85,7 +109,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
-                    return RedirectToAction ("Manage", new { Id = model.ParkingLotId });
+                    return RedirectToAction ("Manage", new { Id = _dataProtector.Protect(model.ParkingLotId.ToString()) });
                 }
                 else
                 {
@@ -98,7 +122,7 @@ namespace PBS.Web.Controllers
                 }
             }
 
-            return RedirectToAction ("Manage", new { Id = model.ParkingLotId });
+            return RedirectToAction ("Manage", new { Id = _dataProtector.Protect (model.ParkingLotId.ToString ()) });
         }
 
         [HttpPost]
@@ -108,7 +132,7 @@ namespace PBS.Web.Controllers
 
             if (response.Success)
             {
-                return RedirectToAction ("Manage", new { Id = parkingLotId });
+                return RedirectToAction ("Manage", new { Id = _dataProtector.Protect(parkingLotId.ToString()) });
             }
             else
             {

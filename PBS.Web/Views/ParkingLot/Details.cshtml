@@ -48,8 +48,8 @@
     </div>
     <div class="card-footer">
         <a class="btn btn-success text-white" onclick="UpdateParkingLot()">Update Details</a>
-        <a asp-action="Manage" asp-controller="Slot" asp-route-id="@Model.Id" class="btn btn-info">Manage Slots</a>
-        <a asp-action="Images" asp-route-id="@Model.Id" class="btn btn-secondary">Manage Images</a>
+        <a asp-action="Manage" asp-controller="Slot" asp-route-id="@Model.EncryptedId" class="btn btn-info">Manage Slots</a>
+        <a asp-action="Images" asp-route-id="@Model.EncryptedId" class="btn btn-secondary">Manage Images</a>
     </div>
 </div>
 
@@ -61,10 +61,8 @@
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
             </div>
             <div class="modal-body">
-                <form asp-action="Update" method="post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-
-                    <input asp-for="Id" type="hidden" />
+                <form asp-action="Update" asp-controller="ParkingLot" method="post">
+                    <input asp-for="Id" type="hidden" value="@Model.Id" />
                     <input asp-for="IsActive" type="hidden" />
                     <input asp-for="IsAproved" type="hidden" />
                     <input asp-for="OwnerId" type="hidden" />

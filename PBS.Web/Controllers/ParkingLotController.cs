@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Configuration;
 using PBS.Business.Utilities.Helpers;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace PBS.Web.Controllers
@@ -15,15 +19,17 @@ namespace PBS.Web.Controllers
     {
         private readonly IApiHelper _apiHelper;
         private readonly ITokenDecoder _tokenDecoder;
-        private readonly IConfiguration _configuration;
+        private readonly IDataProtector _dataProtector;
 
         public ParkingLotController (IApiHelper apiHelper,
-                                     ITokenDecoder tokenDecoder,
-                                     IConfiguration configuration)
+            ITokenDecoder tokenDecoder,
+            IConfiguration configuration,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
-            _configuration = configuration;
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
         }
 
         #region Dashboard
@@ -34,6 +40,15 @@ namespace PBS.Web.Controllers
             if (response.Success)
             {
                 List<ParkingLotViewModel> model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
+
+                model = model.Select (x =>
+                 {
+                     x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                     x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
+                     x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
+
+                     return x;
+                 }).ToList ();
 
                 return View (model);
             }
@@ -113,13 +128,18 @@ namespace PBS.Web.Controllers
         #endregion
 
         #region Details
-        public IActionResult Details (int id)
+        public IActionResult Details (string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + id, HttpMethod.Get);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
                 ParkingLotViewModel model = JsonConvert.DeserializeObject<ParkingLotViewModel> (response.Data.ToString ());
+                model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
+                model.EncryptedOwnerId = _dataProtector.Protect (model.OwnerId.ToString ());
+                model.EncryptedAddressId = _dataProtector.Protect (model.AddressId.ToString ());
 
                 return View (model);
             }
@@ -140,13 +160,18 @@ namespace PBS.Web.Controllers
         [HttpPost]
         public IActionResult Update (ParkingLotViewModel model)
         {
+            //model.Id = Convert.ToInt32 (_dataProtector.Unprotect (model.EncryptedId));
+
+            //ModelState.Clear ();
+            //TryValidateModel (model);
+
             if (ModelState.IsValid)
             {
                 ResponseDetails response = _apiHelper.SendApiRequest (model, "parkinglot/update", HttpMethod.Post);
 
                 if (response.Success)
                 {
-                    return RedirectToAction ("Details", new { id = model.Id });
+                    return RedirectToAction ("Details", new { id = _dataProtector.Protect (model.Id.ToString ()) });
                 }
                 else
                 {
@@ -167,9 +192,11 @@ namespace PBS.Web.Controllers
         #endregion
 
         #region Parking lot Images
-        public IActionResult Images (int id)
+        public IActionResult Images (string id)
         {
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkingLot/all-images/" + id, HttpMethod.Get);
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "parkingLot/all-images/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
@@ -177,7 +204,7 @@ namespace PBS.Web.Controllers
 
                 ParkingImageModel ImageModel = new ParkingImageModel ()
                 {
-                    ParkingLotId = id,
+                    ParkingLotId = newId,
                     Images = model
                 };
 
@@ -212,7 +239,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
-                    return RedirectToAction ("Images", new { id = model.ParkingLotId });
+                    return RedirectToAction ("Images", new { id = _dataProtector.Protect (model.ParkingLotId.ToString ()) });
                 }
                 else
                 {
