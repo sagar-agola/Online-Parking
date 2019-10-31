@@ -86,9 +86,7 @@ namespace PBS.Web.Areas.Admin.Controllers
         [ActionName ("Delete")]
         public IActionResult DeleteGet (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
-
-            ViewData["UserId"] = newId;
+            ViewData["UserId"] = id;
             return View ();
         }
 

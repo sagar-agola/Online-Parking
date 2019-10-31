@@ -70,6 +70,7 @@ a {
     margin: auto 10px;
     color: antiquewhite;
     cursor: pointer;
+    margin-bottom: 10PX;
 }
 
 .slot-booked {
@@ -79,6 +80,7 @@ a {
     margin: auto 10px;
     color: antiquewhite;
     cursor: not-allowed;
+    margin-bottom: 10PX;
 }
 
 .slot-link {

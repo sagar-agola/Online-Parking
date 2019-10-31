@@ -10,8 +10,17 @@ namespace PBS.Web.Models
         public int SlotId { get; set; }
 
         [Required]
-        [Display(Name = "Start Date Time")]
-        public DateTime StartDateTime { get; set; }
+        [Display(Name = "Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        [Display (Name = "Hour")]
+        public int StartHour { get; set; }
+
+        [Required]
+        [Display (Name = "Minute")]
+        public int StartMinute { get; set; }
 
         [Required]
         [Display (Name = "Hour")]

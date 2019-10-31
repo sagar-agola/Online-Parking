@@ -18,6 +18,10 @@ namespace PBS.Business.DAL.Repositories
 
         public Booking Add (Booking model)
         {
+            Slot slot = _context.Slots.FirstOrDefault (x => x.Id == model.SlotId);
+            slot.IsBooked = true;
+            _context.Slots.Update (slot);
+
             _context.Bookings.Add (model);
 
             return model;
@@ -33,9 +37,12 @@ namespace PBS.Business.DAL.Repositories
             return RetriveEntities ().ToList ();
         }
 
-        public List<Booking> GetByUser(int userId)
+        public List<Booking> GetByUser (int userId)
         {
-            return RetriveEntities ().Where (e => e.CustomerId == userId).ToList ();
+            return RetriveEntities ()
+                .Where (e => e.CustomerId == userId)
+                .OrderByDescending(e => e.StartDateTime)
+                .ToList ();
         }
 
         public bool BookingExists (int id)

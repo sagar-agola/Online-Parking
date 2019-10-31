@@ -15,16 +15,34 @@
             </div>
             <div class="card-body">
                 <form asp-action="Confirm">
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
 
                     <input asp-for="UserId" type="hidden" />
                     <input asp-for="SlotId" type="hidden" />
 
                     <div class="form-group">
-                        <label asp-for="StartDateTime" class="control-label font-weight-bold"></label>
-                        <input asp-for="StartDateTime" class="form-control" />
-                        <span asp-validation-for="StartDateTime" class="text-danger"></span>
+                        <label class="control-label font-weight-bold">Start Time</label>
+                        <br />
+                        <small class="text-info">Time must be in 24 hour format.</small>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="StartDate" class="control-label"></label>
+                                <input asp-for="StartDate" class="form-control" type="date" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="StartHour" class="control-label"></label>
+                                <input asp-for="StartHour" class="form-control" />
+                                <span asp-validation-for="StartHour" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="StartMinute" class="control-label"></label>
+                                <input asp-for="StartMinute" class="form-control" />
+                                <span asp-validation-for="StartMinute" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
+                    <hr />
                     <div class="form-group">
                         <label class="control-label font-weight-bold">Booking Duration</label>
                         <div class="row">
@@ -40,6 +58,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr />
                     <div class="form-group">
                         <label class="control-label font-weight-bold">Vehical Number</label>
                         <div class="row">

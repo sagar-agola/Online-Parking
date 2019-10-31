@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Business.Core.BusinessModels
 {
@@ -8,6 +10,8 @@ namespace PBS.Business.Core.BusinessModels
         public string EncryptedId { get; set; }
 
         public bool IsBooked { get; set; }
+
+        public bool CanBook { get; set; }
 
         #region Slot parking lot
         public int ParkingLotId { get; set; }
