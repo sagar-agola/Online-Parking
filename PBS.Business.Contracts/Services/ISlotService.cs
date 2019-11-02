@@ -12,5 +12,6 @@ namespace PBS.Business.Contracts.Services
         SlotViewModel Add (SlotViewModel model);
         bool Update (SlotViewModel model);
         bool Remove (int id);
+        bool MakeAvailable (int id);
     }
 }

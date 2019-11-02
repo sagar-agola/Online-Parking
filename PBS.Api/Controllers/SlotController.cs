@@ -108,6 +108,19 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
         }
 
+        [HttpPost (ApiRoutes.Slot.MakeAvailable)]
+        public object MakeAvailable (int id)
+        {
+            bool success = _slotService.MakeAvailable (id);
+
+            if (success)
+            {
+                return new ResponseDetails (true, "Slot is now free.");
+            }
+
+            return new ResponseDetails (false, $"Parking Slot with Id : { id } does not exists.");
+        }
+
         [HttpDelete(ApiRoutes.Slot.Remove)]
         public object Remove(int id)
         {

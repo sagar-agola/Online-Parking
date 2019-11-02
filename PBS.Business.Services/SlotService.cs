@@ -5,6 +5,7 @@ using PBS.Business.Core.BusinessModels;
 using PBS.Business.Utilities.Mappings;
 using PBS.Database.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Business.Services
 {
@@ -87,6 +88,27 @@ namespace PBS.Business.Services
                 Slot modelMapping = _mapper.Map<Slot> (model);
 
                 _unitOfWork.SlotRepository.Update (modelMapping);
+                _unitOfWork.SaveChanges ();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool MakeAvailable (int id)
+        {
+            if (_unitOfWork.SlotRepository.SlotExists (id))
+            {
+                Slot slotModel = _unitOfWork.SlotRepository.Get (id);
+                Booking bookingModel = slotModel.Bookings.FirstOrDefault (x => x.IsActive);
+
+                slotModel.IsBooked = false;
+                bookingModel.IsActive = false;
+
+                _unitOfWork.SlotRepository.Update (slotModel);
+                _unitOfWork.BookingRepository.Update (bookingModel);
+
                 _unitOfWork.SaveChanges ();
 
                 return true;

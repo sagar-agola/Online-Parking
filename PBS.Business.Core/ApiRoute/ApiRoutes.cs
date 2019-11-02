@@ -76,6 +76,7 @@
             public const string Add = _base + "/add";
             public const string Update = _base + "/update";
             public const string MakeBooked = _base + "/make-booked/{id}";
+            public const string MakeAvailable = _base + "/make-available/{id}";
             public const string Remove = _base + "/remove/{id}";
         }
         #endregion

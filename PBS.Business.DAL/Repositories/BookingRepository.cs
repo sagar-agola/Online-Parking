@@ -45,6 +45,11 @@ namespace PBS.Business.DAL.Repositories
                 .ToList ();
         }
 
+        public void Update (Booking model)
+        {
+            _context.Bookings.Update (model);
+        }
+
         public bool BookingExists (int id)
         {
             return _context.Bookings.Any (Booking => Booking.Id == id);

@@ -9,5 +9,6 @@ namespace PBS.Business.Contracts.Repositories
         Booking Get (int id);
         System.Collections.Generic.List<Booking> GetAll ();
         System.Collections.Generic.List<Booking> GetByUser (int userId);
+        void Update (Booking model);
     }
 }
