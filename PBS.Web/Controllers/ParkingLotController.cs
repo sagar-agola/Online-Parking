@@ -276,6 +276,15 @@ namespace PBS.Web.Controllers
 
             List<ParkingLotViewModel> model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
 
+            model = model.Select (x =>
+            {
+                x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
+                x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
+
+                return x;
+            }).ToList ();
+
             return View (model);
         }
         #endregion

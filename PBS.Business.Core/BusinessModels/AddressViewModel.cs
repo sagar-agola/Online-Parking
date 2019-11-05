@@ -6,6 +6,7 @@ namespace PBS.Business.Core.BusinessModels
     public class AddressViewModel
     {
         public int? Id { get; set; }
+        public string EncryptedId { get; set; }
 
         [Required (ErrorMessage = "Address line 1 is required.")]
         [Display(Name = "Address Line 1")]

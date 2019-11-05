@@ -6,7 +6,6 @@ namespace PBS.Business.Core.BusinessModels
     public class UserViewModel
     {
         public int Id { get; set; }
-
         public string EncryptedId { get; set; }
 
         [Required (ErrorMessage = "Firstname is required field.")]

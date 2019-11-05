@@ -6,6 +6,7 @@ namespace PBS.Business.Core.BusinessModels
     public class SlotTypeViewModel
     {
         public int Id { get; set; }
+        public string EncryptedId { get; set; }
 
         [Required]
         [MaxLength (50)]

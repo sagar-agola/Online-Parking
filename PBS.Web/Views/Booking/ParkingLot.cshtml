@@ -18,7 +18,7 @@
             {
                 if (!(Model.SlotViewModels[i].CanBook) && Model.SlotViewModels[i].SlotTypeViewModel.Title == "2 Wheel")
                 {    
-                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].EncryptedId"
                        class="slot-link">
                         <div class="disabled slot-booked bg-danger text-center">
                             @Model.SlotViewModels[i].Id
@@ -27,7 +27,7 @@
                 }
                 else if (Model.SlotViewModels[i].CanBook && Model.SlotViewModels[i].SlotTypeViewModel.Title == "2 Wheel")
                 {    
-                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].EncryptedId"
                        class="slot-link">
                         <div class="slot bg-success text-center">
                             @Model.SlotViewModels[i].Id
@@ -51,7 +51,7 @@
             {
                 if (!(Model.SlotViewModels[i].CanBook) && Model.SlotViewModels[i].SlotTypeViewModel.Title == "4 Wheel")
                 {
-                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].EncryptedId"
                        class="slot-link">
                         <div class="disabled slot-booked bg-danger text-center">
                             @Model.SlotViewModels[i].Id
@@ -60,7 +60,7 @@
                 }
                 else if (Model.SlotViewModels[i].CanBook && Model.SlotViewModels[i].SlotTypeViewModel.Title == "4 Wheel")
                 {
-                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].Id"
+                    <a asp-action="Confirm" asp-controller="Booking" asp-route-id="@Model.SlotViewModels[i].EncryptedId"
                        class="slot-link">
                         <div class="slot bg-success text-center">
                             @Model.SlotViewModels[i].Id
