@@ -23,9 +23,10 @@ namespace PBS.Web.Controllers
             DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
         }
 
+        #region Manage
         public IActionResult Manage (string id)
         {
             int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
@@ -37,13 +38,10 @@ namespace PBS.Web.Controllers
                 List<SlotViewModel> model = JsonConvert.DeserializeObject<List<SlotViewModel>> (response.Data.ToString ());
 
                 model = model.Select (x =>
-                 {
-                     x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
-                     x.EncryptedParkingLotId = _dataProtector.Protect (x.ParkingLotId.ToString ());
-                     x.EncryptedSlotTypeId = _dataProtector.Protect (x.SlotTypeId.ToString ());
-
-                     return x;
-                 }).ToList ();
+                {
+                    x = PopulateHelperProperties (x);
+                    return x;
+                }).ToList ();
 
                 ResponseDetails slotTypeResponse = _apiHelper.SendApiRequest ("", "slot-type/get-all", HttpMethod.Get);
 
@@ -65,8 +63,10 @@ namespace PBS.Web.Controllers
                 return View ("Error", model);
             }
         }
+        #endregion
 
-        public IActionResult Details(string id)
+        #region Details
+        public IActionResult Details (string id)
         {
             int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
 
@@ -75,9 +75,8 @@ namespace PBS.Web.Controllers
             if (response.Success)
             {
                 SlotViewModel model = JsonConvert.DeserializeObject<SlotViewModel> (response.Data.ToString ());
-                model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
-                model.EncryptedParkingLotId = _dataProtector.Protect (model.ParkingLotId.ToString ());
-                model.EncryptedSlotTypeId = _dataProtector.Protect (model.SlotTypeId.ToString ());
+
+                model = PopulateHelperProperties (model);
 
                 return View (model);
             }
@@ -91,9 +90,78 @@ namespace PBS.Web.Controllers
                 return View ("Error", model);
             }
         }
+        #endregion
 
+        #region Make Available
+        public IActionResult MakeAvailable (string id, string parkingLotId)
+        {
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/make-available/" + newId, HttpMethod.Post);
+
+            if (response.Success)
+            {
+                return RedirectToAction ("Manage", new { id = parkingLotId });
+            }
+            else
+            {
+                ErrorViewModel model = new ErrorViewModel ()
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", model);
+            }
+        }
+        #endregion
+
+        #region Enable-Disable Booking
+        public IActionResult DisableBooking (string id, string parkingLotId)
+        {
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/make-booked/" + newId, HttpMethod.Post);
+
+            if (response.Success)
+            {
+                return RedirectToAction ("Manage", new { id = parkingLotId });
+            }
+            else
+            {
+                ErrorViewModel model = new ErrorViewModel ()
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", model);
+            }
+        }
+
+        public IActionResult EnableBooking (string id, string parkingLotId)
+        {
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/remove-booked/" + newId, HttpMethod.Post);
+
+            if (response.Success)
+            {
+                return RedirectToAction ("Manage", new { id = parkingLotId });
+            }
+            else
+            {
+                ErrorViewModel errorModel = new ErrorViewModel ()
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", errorModel);
+            }
+        }
+        #endregion
+
+        #region Create
         [HttpPost]
-        public IActionResult Create(CreateSlotModel model)
+        public IActionResult Create (CreateSlotModel model)
         {
             // TODO : learn how to validate model in pop up
             if (ModelState.IsValid)
@@ -109,7 +177,7 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
-                    return RedirectToAction ("Manage", new { Id = _dataProtector.Protect(model.ParkingLotId.ToString()) });
+                    return RedirectToAction ("Manage", new { Id = _dataProtector.Protect (model.ParkingLotId.ToString ()) });
                 }
                 else
                 {
@@ -124,15 +192,17 @@ namespace PBS.Web.Controllers
 
             return RedirectToAction ("Manage", new { Id = _dataProtector.Protect (model.ParkingLotId.ToString ()) });
         }
+        #endregion
 
+        #region Delete
         [HttpPost]
-        public IActionResult Delete(int slotId, int parkingLotId)
+        public IActionResult Delete (int slotId, int parkingLotId)
         {
             ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/remove/" + slotId, HttpMethod.Delete);
 
             if (response.Success)
             {
-                return RedirectToAction ("Manage", new { Id = _dataProtector.Protect(parkingLotId.ToString()) });
+                return RedirectToAction ("Manage", new { Id = _dataProtector.Protect (parkingLotId.ToString ()) });
             }
             else
             {
@@ -144,5 +214,56 @@ namespace PBS.Web.Controllers
                 return View ("Error", model);
             }
         }
+        #endregion
+
+        #region Private Methods
+        private SlotViewModel PopulateHelperProperties (SlotViewModel model)
+        {
+            model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
+            model.EncryptedParkingLotId = _dataProtector.Protect (model.ParkingLotId.ToString ());
+            model.EncryptedSlotTypeId = _dataProtector.Protect (model.SlotTypeId.ToString ());
+
+            model.BookingViewModels = model.BookingViewModels.Select (x =>
+            {
+                x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
+                x.EncryptedCustomerId = _dataProtector.Protect (x.CustomerId.ToString ());
+                x.EncryptedSlotId = _dataProtector.Protect (x.SlotId.ToString ());
+
+                return x;
+            }).ToList ();
+
+            if (model.IsBooked)
+            {
+                if (model.BookingViewModels.Any ())
+                {
+                    if (model.BookingViewModels.Any (b => b.IsActive))
+                    {
+                        model.CanMakeAvailable = true;
+                        model.Status = "Booked";
+                    }
+                    else
+                    {
+                        model.CanDelete = true;
+                        model.CanEnableBooking = true;
+                        model.Status = "Booking Disabled";
+                    }
+                }
+                else
+                {
+                    model.CanDelete = true;
+                    model.CanEnableBooking = true;
+                    model.Status = "Booking Disabled";
+                }
+            }
+            else
+            {
+                model.Status = "Available";
+                model.CanDelete = true;
+                model.CanDisableBooking = true;
+            }
+
+            return model;
+        }
+        #endregion
     }
 }

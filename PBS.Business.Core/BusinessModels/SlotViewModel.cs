@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace PBS.Business.Core.BusinessModels
 {
@@ -11,7 +9,14 @@ namespace PBS.Business.Core.BusinessModels
 
         public bool IsBooked { get; set; }
 
+        #region Helper Properties
         public bool CanBook { get; set; }
+        public bool CanDelete { get; set; }
+        public bool CanEnableBooking { get; set; }
+        public bool CanDisableBooking { get; set; }
+        public bool CanMakeAvailable { get; set; }
+        public string Status { get; set; }
+        #endregion
 
         #region Slot parking lot
         public int ParkingLotId { get; set; }

@@ -94,3 +94,31 @@ a {
     text-decoration: none;
     color: lightgray;
 }
+
+.active-booking {
+    border-left: 8px solid #973a37;
+    background-color: #eca9a7;
+    padding: 10px;
+}
+
+.normal-booking {
+    border-left: 8px solid #408040;
+    background-color: #bde2bd;
+    padding: 10px;
+}
+
+.my-panel-header {
+    background-color: #d9d9d9;
+    padding: 10px;
+    border-left: 8px solid black;
+}
+
+.my-panel-body {
+    background-color: #ececec;
+    padding: 10px;
+    border-left: 8px solid black;
+}
+
+.control-label {
+    font-weight: bold;
+}

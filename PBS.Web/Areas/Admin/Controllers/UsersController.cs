@@ -25,7 +25,7 @@ namespace PBS.Web.Areas.Admin.Controllers
             DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
         }
 
         public IActionResult Index ()

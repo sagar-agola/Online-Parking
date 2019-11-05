@@ -13,15 +13,19 @@
 <p>
     <a class="btn btn-success text-white" onclick="AddNewSlot()">Create New Slot</a>
 </p>
-
+<p class="alert alert-warning">
+    <b>Make Available - </b><span>Removes current booking and mark that slot as availabe for ferther bookings.</span><br />
+    <b>Disable Booking - </b><span>Use this button to temperarly close booking for that slot.</span><br />
+    <b>Enable Booking - </b><span>Use this button to restart booking for that slot.</span><br />
+</p>
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-2 text-center font-weight-bold">Slot Id</div>
             <div class="col-md-2 text-center font-weight-bold">Is Booked?</div>
-            <div class="col-md-2 text-center font-weight-bold">Slot Type</div>
+            <div class="col-md-1 text-center font-weight-bold">Slot Type</div>
             <div class="col-md-2 text-center font-weight-bold">Total Bookings</div>
-            <div class="col-md-3 text-center font-weight-bold">Actions</div>
+            <div class="col-md-2 text-center font-weight-bold">Status</div>
+            <div class="col-md-5 text-center font-weight-bold">Actions</div>
         </div>
     </div>
     <div class="card-body">
@@ -29,26 +33,39 @@
         {
             <div class="row" style="padding: 3px">
                 <div class="col-md-2 text-center">
-                    @slot.Id
-                </div>
-                <div class="col-md-2 text-center">
                     @(slot.IsBooked ? "Yes" : "No")
                 </div>
-                <div class="col-md-2 text-center">
+                <div class="col-md-1 text-center">
                     @slot.SlotTypeViewModel.Title
                 </div>
                 <div class="col-md-2 text-center">
                     @slot.BookingViewModels.Count
                 </div>
-                <div class="col-md-3 text-center">
+                <div class="col-md-2 text-center">
+                    @slot.Status
+                </div>
+                <div class="col-md-5 text-center">
                     <a asp-action="Details" asp-route-id="@slot.EncryptedId" class="btn btn-info">Details</a>
-                    @if (slot.IsBooked)
-                    {
-                        <a href="#" class="btn btn-danger disabled">Delete</a>
-                    }
-                    else
+                    @if (slot.CanDelete)
                     {
                         <a class="btn btn-danger text-white" onclick="DeleteSlot(@slot.Id, @slot.ParkingLotId)">Delete</a>
+                    }
+
+                    @if (slot.CanMakeAvailable)
+                    {
+                        <a asp-action="MakeAvailable" asp-route-id="@slot.EncryptedId"
+                           asp-route-parkingLotId="@slot.EncryptedParkingLotId" class="btn btn-success">Make Available</a>
+                    }
+
+                    @if (slot.CanEnableBooking)
+                    {
+                        <a asp-action="EnableBooking" asp-route-id="@slot.EncryptedId"
+                           asp-route-parkingLotId="@slot.EncryptedParkingLotId" class="btn btn-primary">Enable Booking</a>
+                    }
+                    @if (slot.CanDisableBooking)
+                    {
+                        <a asp-action="DisableBooking" asp-route-id="@slot.EncryptedId"
+                           asp-route-parkingLotId="@slot.EncryptedParkingLotId" class="btn btn-primary">Disable Booking</a>
                     }
                 </div>
             </div>
@@ -61,11 +78,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create New Slot</h4>
-                <a href="#" class="close" data-dismiss="modal">&times;</a>  
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
             </div>
             <div class="modal-body">
-                <partial name="_CreateSlot" model="@new CreateSlotModel () 
-                         { 
+                <partial name="_CreateSlot" model="@new CreateSlotModel ()
+                         {
                             SlotTypes = Model.SlotTypes,
                             ParkingLotId = Model.Slots[0].ParkingLotId
                          }" />

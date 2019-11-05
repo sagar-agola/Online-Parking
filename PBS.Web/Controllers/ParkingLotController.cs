@@ -29,7 +29,7 @@ namespace PBS.Web.Controllers
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterpurposeString);
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
         }
 
         #region Dashboard

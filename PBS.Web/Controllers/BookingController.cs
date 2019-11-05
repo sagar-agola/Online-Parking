@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using PBS.Business.Utilities.Configuration;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
 using Rotativa.AspNetCore;
@@ -16,11 +18,16 @@ namespace PBS.Web.Controllers
     {
         private readonly IApiHelper _apiHelper;
         private readonly ITokenDecoder _tokenDecoder;
+        private readonly IDataProtector _dataProtector;
 
-        public BookingController (IApiHelper apiHelper, ITokenDecoder tokenDecoder)
+        public BookingController (IApiHelper apiHelper,
+            ITokenDecoder tokenDecoder,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings purposeStrings)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
+            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
         }
 
         [HttpGet]
@@ -46,6 +53,33 @@ namespace PBS.Web.Controllers
             else
             {
                 ErrorViewModel model = new ErrorViewModel
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", model);
+            }
+        }
+
+        public IActionResult Details (string id)
+        {
+            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/get/" + newId, HttpMethod.Get);
+
+            if (response.Success)
+            {
+                BookingViewModel model = JsonConvert.DeserializeObject<BookingViewModel> (response.Data.ToString ());
+
+                model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
+                model.EncryptedSlotId = _dataProtector.Protect (model.SlotId.ToString ());
+                model.EncryptedCustomerId = _dataProtector.Protect (model.CustomerId.ToString ());
+
+                return View (model);
+            }
+            else
+            {
+                ErrorViewModel model = new ErrorViewModel ()
                 {
                     Message = response.Data.ToString ()
                 };
@@ -191,6 +225,8 @@ namespace PBS.Web.Controllers
                         return false;
                     }
                 }
+
+                return false;
             }
 
             return true;

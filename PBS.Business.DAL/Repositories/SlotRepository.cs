@@ -60,7 +60,9 @@ namespace PBS.Business.DAL.Repositories
                 .AsNoTracking ()
                 .Include (slot => slot.SlotType)
                 .Include (slot => slot.ParkingLot)
-                .Include (slot => slot.Bookings);
+                .Include (slot => slot.Bookings)
+                    .ThenInclude (booking => booking.Customer);
+
         }
     }
 }

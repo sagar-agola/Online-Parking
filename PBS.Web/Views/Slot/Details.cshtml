@@ -4,34 +4,228 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">
+            Slot Details
+        </h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div style="border-right: 1px solid #D8D8D8">
+                    <h5>
+                        <b>Basic Info</b>
+                    </h5>
+                    <table border="0" width="100%">
+                        <tr>
+                            <td width="50%">Id</td>
+                            <td width="50%">@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>@Model.Status</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>@Model.SlotTypeViewModel.Title</td>
+                        </tr>
+                        <tr>
+                            <td>Total Bookings</td>
+                            <td>@Model.BookingViewModels.Count</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5>
+                    <b>Parking Lot Info</b>
+                </h5>
+                <table border="0" width="100%">
+                    <tr>
+                        <td width="50%">Name</td>
+                        <td width="50%">@Model.ParkingLotViewModel.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Is Active</td>
+                        <td>@(Model.ParkingLotViewModel.IsAproved ? "Yes" : "No")</td>
+                    </tr>
+                    <tr>
+                        <td>Is Aproved</td>
+                        <td>@(Model.ParkingLotViewModel.IsAproved ? "Yes" : "No")</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        @if (Model.CanDelete)
+        {
+            <a class="btn btn-danger text-white" onclick="DeleteSlot(@Model.Id, @Model.ParkingLotId)">Delete</a>
+        }
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsBooked)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsBooked)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ParkingLotId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ParkingLotId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SlotTypeId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SlotTypeId)
-        </dd>
-    </dl>
+        @if (Model.CanMakeAvailable)
+        {
+            <a asp-action="MakeAvailable" asp-route-id="@Model.EncryptedId"
+               asp-route-parkingLotId="@Model.EncryptedParkingLotId" class="btn btn-success">Make Available</a>
+        }
+
+        @if (Model.CanEnableBooking)
+        {
+            <a asp-action="EnableBooking" asp-route-id="@Model.EncryptedId"
+               asp-route-parkingLotId="@Model.EncryptedParkingLotId" class="btn btn-primary">Enable Booking</a>
+        }
+        @if (Model.CanDisableBooking)
+        {
+            <a asp-action="DisableBooking" asp-route-id="@Model.EncryptedId"
+               asp-route-parkingLotId="@Model.EncryptedParkingLotId" class="btn btn-primary">Disable Booking</a>
+        }
+
+    </div>
 </div>
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h1 class="card-title">
+            Booking Details
+        </h1>
+    </div>
+    <div class="card-body">
+        @if (Model.BookingViewModels.Any ())
+        {
+            <div class="row">
+                @foreach (BookingViewModel item in Model.BookingViewModels)
+                {
+                    <div class="col-md-6 mb-3">
+                        @if (item.IsActive)
+                        {
+                            <div class="active-booking">
+                                <table border="0" width="100%">
+                                    <tr>
+                                        <td colspan="2">
+                                            <p>
+                                                <b>Booking Id - @item.Id</b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">
+                                            <b>Customer Name</b>
+                                        </td>
+                                        <td width="60%">
+                                            @item.CustomerViewModel.FirstName @item.CustomerViewModel.LastName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Date</b>
+                                        </td>
+                                        <td>
+                                            @item.StartDateTime.ToLongDateString() @item.StartDateTime.ToLongTimeString()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Total Amount</b>
+                                        </td>
+                                        <td>
+                                            150 INR
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-right">
+                                            <a asp-action="Details" asp-controller="Booking" asp-route-id="@item.EncryptedId"
+                                               class="btn btn-danger">Full Details</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="normal-booking">
+                                <table border="0" width="100%">
+                                    <tr>
+                                        <td colspan="2">
+                                            <p>
+                                                <b>Booking Id - @item.Id</b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">
+                                            <b>Customer Name</b>
+                                        </td>
+                                        <td width="60%">
+                                            @item.CustomerViewModel.FirstName @item.CustomerViewModel.LastName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Date</b>
+                                        </td>
+                                        <td>
+                                            @item.StartDateTime.ToLongDateString() @item.StartDateTime.ToLongTimeString()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Total Amount</b>
+                                        </td>
+                                        <td>
+                                            150 INR
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-right">
+                                            <a asp-action="Details" asp-controller="Booking" asp-route-id="@item.EncryptedId"
+                                               class="btn btn-success">Full Details</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>None at the moment.</p>
+        }
+
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSlotModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Slot</h4>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to remove this slot?
+                </p>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" id="slotId" name="slotId" />
+                    <input type="hidden" id="parkingLotId" name="parkingLotId" />
+                    <div style="padding-top: 10px">
+                        <input type="submit" class="btn btn-success" value="Yes" />
+                        <input type="button" class="btn btn-danger accept-policy" value="No" data-dismiss="modal" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function DeleteSlot(slotId, parkingLotId) {
+        $('#slotId').val(slotId);
+        $('#parkingLotId').val(parkingLotId);
+        $('#deleteSlotModal').modal();
+    }
+</script>

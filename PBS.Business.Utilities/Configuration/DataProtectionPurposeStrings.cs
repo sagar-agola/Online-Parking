@@ -2,7 +2,7 @@
 {
     public class DataProtectionPurposeStrings
     {
-        public readonly string MasterpurposeString = "MasterpurposeString";
+        public readonly string MasterPurposeString = "MasterpurposeString";
 
         //public readonly string UserRouteValue = "UserRouteValue";
         //public readonly string RoleRouteValue = "RoleRouteValue";

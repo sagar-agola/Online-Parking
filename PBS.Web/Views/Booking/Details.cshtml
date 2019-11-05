@@ -1,0 +1,123 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">
+            Booking Details
+        </h1>
+    </div>
+    <div class="card-body">
+        <div class="row" style="margin: 10px 0px">
+            <div class="col-md-6">
+                <div class="row" style="margin: 10px 0px">
+                    <div class="col-md-12 my-panel-header">
+                        <h4 class="font-weight-bold">
+                            Booking Information
+                        </h4>
+                    </div>
+                    <div class="col-md-12 my-panel-body">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold text-right">
+                                <span>Id</span><br />
+                                <span>Is Active?</span><br />
+                                <span>Start Date</span><br />
+                                <span>Time</span><br />
+                                <span>Vehical Number</span><br />
+                                <span>Duration</span><br />
+                            </div>
+                            <div class="col-md-8">
+                                <span>@Model.Id</span><br />
+                                <span>@Model.Id</span><br />
+                                <span>@Model.StartDateTime.ToLongDateString()</span><br />
+                                <span>@Model.StartDateTime.ToLongTimeString()</span><br />
+                                <span>@Model.VehicleNumber</span><br />
+                                <span>@Model.Duration</span><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="row" style="margin: 10px 0px">
+                    <div class="col-md-12 my-panel-body">
+                        <h3>
+                            <b>Grand Total</b> - 150 INR
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row" style="margin: 10px 0px">
+                    <div class="col-md-12 my-panel-header">
+                        <h4 class="font-weight-bold">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            Customer Information
+                        </h4>
+                    </div>
+                    <div class="col-md-12 my-panel-body">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold text-right">
+                                <span>Id</span><br />
+                                <span>Name</span><br />
+                                <span>Email</span><br />
+                                <span>Contect Number</span>
+                            </div>
+                            <div class="col-md-8">
+                                <span>
+                                    @Model.CustomerViewModel.Id<br />
+                                </span>
+                                <span>
+                                    @Model.CustomerViewModel.FirstName @Model.CustomerViewModel.LastName<br />
+                                </span>
+                                <span>
+                                    @Model.CustomerViewModel.Email<br />
+                                </span>
+                                <span>
+                                    @Model.CustomerViewModel.ContectNumber
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="row" style="margin: 10px 0px">
+                    <div class="col-md-12 my-panel-header">
+                        <h4 class="font-weight-bold">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            Slot Information
+                        </h4>
+                    </div>
+                    <div class="col-md-12 my-panel-body">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-3 font-weight-bold text-right">
+                                <span>Id</span><br />
+                                <span>Type</span><br />
+                                <span>Hourly Rate</span><br />
+                            </div>
+                            <div class="col-md-8">
+                                <span>
+                                    @Model.SlotViewModel.SlotTypeId<br />
+                                </span>
+                                <span>
+                                    @Model.SlotViewModel.SlotTypeViewModel.Title<br />
+                                </span>
+                                <span>
+                                    50 INR
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

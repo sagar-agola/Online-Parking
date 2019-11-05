@@ -18,7 +18,7 @@ namespace PBS.Business.Utilities.Mappings
         {
             SlotViewModel modelMapping = _mapper.Map<SlotViewModel> (model);
 
-            modelMapping.BookingViewModels = _mapper.Map<List<BookingViewModel>> (model.Bookings);
+            modelMapping.BookingViewModels = MapBookings (model.Bookings);
             modelMapping.SlotTypeViewModel = _mapper.Map<SlotTypeViewModel> (model.SlotType);
             modelMapping.ParkingLotViewModel = _mapper.Map<ParkingLotViewModel> (model.ParkingLot);
 
@@ -32,6 +32,22 @@ namespace PBS.Business.Utilities.Mappings
             for (int i = 0; i < model.Count; i++)
             {
                 modelMapping.Add (MapSlot (model[i]));
+            }
+
+            return modelMapping;
+        }
+
+        private List<BookingViewModel> MapBookings (List<Booking> model)
+        {
+            List<BookingViewModel> modelMapping = new List<BookingViewModel> ();
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                BookingViewModel booking = _mapper.Map<BookingViewModel> (model[i]);
+
+                booking.CustomerViewModel = _mapper.Map<UserViewModel> (model[i].Customer);
+
+                modelMapping.Add (booking);
             }
 
             return modelMapping;

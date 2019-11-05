@@ -97,15 +97,25 @@ namespace PBS.Api.Controllers
             }
 
             model.IsBooked = true;
+            _slotService.Update (model);
 
-            bool success = _slotService.Update (model);
+            return new ResponseDetails (true, "parking slot is now marked as booked.");
+        }
 
-            if (success)
+        [HttpPost (ApiRoutes.Slot.RemoveBooked)]
+        public object RemoveBooked (int id)
+        {
+            SlotViewModel model = _slotService.Get (id);
+
+            if (model == null)
             {
-                return new ResponseDetails (true, "parking slot updated successfully.");
+                return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
             }
 
-            return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
+            model.IsBooked = false;
+            _slotService.Update (model);
+
+            return new ResponseDetails (true, "parking slot is now marked as not booked.");
         }
 
         [HttpPost (ApiRoutes.Slot.MakeAvailable)]
