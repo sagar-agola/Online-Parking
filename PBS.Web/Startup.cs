@@ -36,6 +36,7 @@ namespace PBS.Web
             services.AddSingleton<IWebConfiguration, WebConfiguration> ();
             services.AddSingleton<IMailClient, MailClient> ();
             services.AddSingleton<DataProtectionPurposeStrings> ();
+            services.AddSingleton<DataProtector> ();
 
             services.AddSession ();
 

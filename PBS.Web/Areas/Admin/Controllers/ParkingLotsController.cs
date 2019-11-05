@@ -18,14 +18,13 @@ namespace PBS.Web.Areas.Admin.Controllers
     public class ParkingLotsController : Controller
     {
         private readonly IApiHelper _apiHelper;
-        private readonly IDataProtector _dataProtector;
+        private readonly DataProtector _dataProtector;
 
         public ParkingLotsController (IApiHelper apiHelper,
-            IDataProtectionProvider dataProtectionProvider,
-            DataProtectionPurposeStrings purposeStrings)
+            DataProtector dataProtector)
         {
             _apiHelper = apiHelper;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
+            _dataProtector = dataProtector;
         }
 
         public IActionResult Index ()
@@ -43,14 +42,7 @@ namespace PBS.Web.Areas.Admin.Controllers
                 }
             }
 
-            model = model.Select (x =>
-             {
-                 x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
-                 x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
-                 x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
-
-                 return x;
-             }).ToList ();
+            _dataProtector.ProtectParkingLotRouteValues (model);
 
             return View (model);
         }
@@ -66,21 +58,14 @@ namespace PBS.Web.Areas.Admin.Controllers
                 model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
             }
 
-            model = model.Select (x =>
-            {
-                x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
-                x.EncryptedOwnerId = _dataProtector.Protect (x.OwnerId.ToString ());
-                x.EncryptedAddressId = _dataProtector.Protect (x.AddressId.ToString ());
-
-                return x;
-            }).ToList ();
+            _dataProtector.ProtectParkingLotRouteValues (model);
 
             return View (model);
         }
 
         public IActionResult Details (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + newId, HttpMethod.Get);
 
@@ -88,9 +73,8 @@ namespace PBS.Web.Areas.Admin.Controllers
             {
                 ParkingLotViewModel parkingLotViewModel = JsonConvert.DeserializeObject<ParkingLotViewModel>
                     (response.Data.ToString ());
-                parkingLotViewModel.EncryptedId = _dataProtector.Protect (parkingLotViewModel.Id.ToString ());
-                parkingLotViewModel.EncryptedOwnerId = _dataProtector.Protect (parkingLotViewModel.OwnerId.ToString ());
-                parkingLotViewModel.EncryptedAddressId = _dataProtector.Protect (parkingLotViewModel.AddressId.ToString ());
+
+                _dataProtector.ProtectParkingLotRouteValues (parkingLotViewModel);
 
                 ParkingLotRequestdetailsModel model = new ParkingLotRequestdetailsModel ()
                 {
@@ -136,7 +120,7 @@ namespace PBS.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Aprove (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/aprove/" + newId, HttpMethod.Post);
 

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
-using PBS.Business.Utilities.Configuration;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
 using Rotativa.AspNetCore;
@@ -18,23 +16,22 @@ namespace PBS.Web.Controllers
     {
         private readonly IApiHelper _apiHelper;
         private readonly ITokenDecoder _tokenDecoder;
-        private readonly IDataProtector _dataProtector;
+        private readonly DataProtector _dataProtector;
 
         public BookingController (IApiHelper apiHelper,
             ITokenDecoder tokenDecoder,
-            IDataProtectionProvider dataProtectionProvider,
-            DataProtectionPurposeStrings purposeStrings)
+            DataProtector dataProtector)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
+            _dataProtector = dataProtector;
         }
 
         #region Parking Lot (search results)
         [HttpGet]
         public IActionResult ParkingLot (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "parkinglot/get/" + newId, HttpMethod.Get);
 
@@ -43,14 +40,14 @@ namespace PBS.Web.Controllers
                 ParkingLotViewModel model = JsonConvert.DeserializeObject<ParkingLotViewModel>
                     (response.Data.ToString ());
 
-                ProtectParkingLotRouteValues (model);
+                _dataProtector.ProtectParkingLotRouteValues (model);
 
                 model.SlotViewModels = model.SlotViewModels.Select (x =>
                 {
                     // populate can book property logic
                     x.CanBook = DetermineWhetherCanSlotBook (x);
 
-                    ProtectSlotRouteValues (x);
+                    _dataProtector.ProtectSlotRouteValues (x);
 
                     return x;
                 }).ToList ();
@@ -72,7 +69,7 @@ namespace PBS.Web.Controllers
         #region Details
         public IActionResult Details (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/get/" + newId, HttpMethod.Get);
 
@@ -80,7 +77,7 @@ namespace PBS.Web.Controllers
             {
                 BookingViewModel model = JsonConvert.DeserializeObject<BookingViewModel> (response.Data.ToString ());
 
-                ProtectBookingRouteValues (model);
+                _dataProtector.ProtectBookingRouteValues (model);
 
                 return View (model);
             }
@@ -100,7 +97,7 @@ namespace PBS.Web.Controllers
         [HttpGet]
         public IActionResult Confirm (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ConfirmBookingModel model = new ConfirmBookingModel
             {
@@ -147,7 +144,7 @@ namespace PBS.Web.Controllers
                     BookingViewModel returnedModel = JsonConvert.DeserializeObject<BookingViewModel>
                         (response.Data.ToString ());
 
-                    return RedirectToAction ("Receipt", new { id = _dataProtector.Protect (returnedModel.Id.ToString ()) });
+                    return RedirectToAction ("Receipt", new { id = _dataProtector.Protect (returnedModel.Id) });
                 }
                 else
                 {
@@ -171,7 +168,7 @@ namespace PBS.Web.Controllers
         [HttpGet]
         public IActionResult Receipt (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/get/" + newId, HttpMethod.Get);
 
@@ -180,7 +177,7 @@ namespace PBS.Web.Controllers
                 BookingViewModel model = JsonConvert.DeserializeObject<BookingViewModel>
                     (response.Data.ToString ());
 
-                ProtectBookingRouteValues (model);
+                _dataProtector.ProtectBookingRouteValues (model);
 
                 return View (model);
             }
@@ -197,7 +194,7 @@ namespace PBS.Web.Controllers
 
         public IActionResult Print (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/get/" + newId, HttpMethod.Get);
 
@@ -229,6 +226,8 @@ namespace PBS.Web.Controllers
             List<BookingViewModel> model = JsonConvert.DeserializeObject<List<BookingViewModel>>
                 (response.Data.ToString ());
 
+            _dataProtector.ProtectBookingRouteValues (model);
+
             return View (model);
         }
         #endregion
@@ -252,27 +251,6 @@ namespace PBS.Web.Controllers
             }
 
             return true;
-        }
-
-        private void ProtectParkingLotRouteValues (ParkingLotViewModel model)
-        {
-            model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
-            model.EncryptedOwnerId = _dataProtector.Protect (model.OwnerId.ToString ());
-            model.EncryptedAddressId = _dataProtector.Protect (model.AddressId.ToString ());
-        }
-
-        private void ProtectBookingRouteValues (BookingViewModel model)
-        {
-            model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
-            model.EncryptedSlotId = _dataProtector.Protect (model.SlotId.ToString ());
-            model.EncryptedCustomerId = _dataProtector.Protect (model.CustomerId.ToString ());
-        }
-
-        private void ProtectSlotRouteValues (SlotViewModel model)
-        {
-            model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
-            model.EncryptedParkingLotId = _dataProtector.Protect (model.ParkingLotId.ToString ());
-            model.EncryptedSlotTypeId = _dataProtector.Protect (model.SlotTypeId.ToString ());
         }
         #endregion
     }

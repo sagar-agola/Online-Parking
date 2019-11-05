@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
-using PBS.Business.Utilities.Configuration;
 using PBS.Web.Areas.Admin.Models;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 
 namespace PBS.Web.Areas.Admin.Controllers
@@ -18,14 +14,13 @@ namespace PBS.Web.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         private readonly IApiHelper _apiHelper;
-        private readonly IDataProtector _dataProtector;
+        private readonly DataProtector _dataProtector;
 
         public UsersController (IApiHelper apiHelper,
-            IDataProtectionProvider dataProtectionProvider,
-            DataProtectionPurposeStrings purposeStrings)
+            DataProtector dataProtector)
         {
             _apiHelper = apiHelper;
-            _dataProtector = dataProtectionProvider.CreateProtector (purposeStrings.MasterPurposeString);
+            _dataProtector = dataProtector;
         }
 
         public IActionResult Index ()
@@ -36,13 +31,7 @@ namespace PBS.Web.Areas.Admin.Controllers
             {
                 List<UserViewModel> model = JsonConvert.DeserializeObject<List<UserViewModel>> (response.Data.ToString ());
 
-                model = model.Select (x =>
-                {
-                    x.EncryptedId = _dataProtector.Protect (x.Id.ToString ());
-                    x.EncryptedRoleId = _dataProtector.Protect (x.RoleId.ToString ());
-
-                    return x;
-                }).ToList ();
+                _dataProtector.ProtectUserRouteValues (model);
 
                 return View (model);
             }
@@ -59,15 +48,15 @@ namespace PBS.Web.Areas.Admin.Controllers
 
         public IActionResult Details (string id)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (id));
+            int newId = _dataProtector.Unprotect (id);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "user/get/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
                 UserViewModel model = JsonConvert.DeserializeObject<UserViewModel> (response.Data.ToString ());
-                model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
-                model.EncryptedRoleId = _dataProtector.Protect (model.RoleId.ToString ());
+
+                _dataProtector.ProtectUserRouteValues (model);
 
                 return View (model);
             }
@@ -94,7 +83,7 @@ namespace PBS.Web.Areas.Admin.Controllers
         [ActionName ("Delete")]
         public IActionResult DeletePost (string userId)
         {
-            int newId = Convert.ToInt32 (_dataProtector.Unprotect (userId));
+            int newId = _dataProtector.Unprotect (userId);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "user/remove/" + newId, HttpMethod.Delete);
 
@@ -114,8 +103,8 @@ namespace PBS.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateRole (string userId, string roleId)
         {
-            int newUserId = Convert.ToInt32 (_dataProtector.Unprotect (userId));
-            int newRoleId = Convert.ToInt32 (_dataProtector.Unprotect (roleId));
+            int newUserId = _dataProtector.Unprotect (userId);
+            int newRoleId = _dataProtector.Unprotect (roleId);
 
             ResponseDetails response = _apiHelper.SendApiRequest ("", "role/get-all", HttpMethod.Get);
 
