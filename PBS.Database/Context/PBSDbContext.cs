@@ -17,5 +17,16 @@ namespace PBS.Database.Context
         public DbSet<ParkingLotImage> ParkingLotImages { get; set; }
         public DbSet<Slot> Slots { get; set; }
         public DbSet<SlotType> SlotTypes { get; set; }
+
+        protected override void OnModelCreating (ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ParkingLot> ()
+                .Property (x => x.HourlyRate)
+                .HasDefaultValue (0.0);
+
+            modelBuilder.Entity<Slot> ()
+                .Property (x => x.HourlyRate)
+                .HasDefaultValue (0.0);
+        }
     }
 }
