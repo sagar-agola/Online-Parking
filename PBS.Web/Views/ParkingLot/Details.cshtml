@@ -25,6 +25,14 @@
                             <td width="50%">Is Active</td>
                             <td width="50%">@(Model.IsActive ? "Yes" : "No")</td>
                         </tr>
+                        <tr>          
+                            <td>2 Wheeler Hourly Rate</td>
+                            <td>@Model.TwoWheelerHourlyRate INR</td>
+                        </tr>
+                        <tr>
+                            <td>4 Wheeler Hourly Rate</td>
+                            <td>@Model.FourWheelerHourlyRate INR</td>
+                        </tr>
                         <tr>
                             <td>Number of 2 Wheel slots</td>
                             <td>@Model.SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PBS.Business.Contracts.Services;
 using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Api.Controllers
 {
@@ -18,10 +15,10 @@ namespace PBS.Api.Controllers
 
         public SlotController (ISlotService slotService)
         {
-            this._slotService = slotService;
+            _slotService = slotService;
         }
 
-        [HttpPost(ApiRoutes.Slot.Add)]
+        [HttpPost (ApiRoutes.Slot.Add)]
         public object Add (SlotViewModel model)
         {
             model = _slotService.Add (model);
@@ -34,7 +31,7 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpGet(ApiRoutes.Slot.GetAll)]
+        [HttpGet (ApiRoutes.Slot.GetAll)]
         public object GetAll ()
         {
             List<SlotViewModel> model = _slotService.GetAll ();
@@ -47,8 +44,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, "None at the moment.");
         }
 
-        [HttpGet(ApiRoutes.Slot.Get)]
-        public object Get(int id)
+        [HttpGet (ApiRoutes.Slot.Get)]
+        public object Get (int id)
         {
             SlotViewModel model = _slotService.Get (id);
 
@@ -60,8 +57,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpGet(ApiRoutes.Slot.GetByParkingLot)]
-        public object GetByParkingLot(int id)
+        [HttpGet (ApiRoutes.Slot.GetByParkingLot)]
+        public object GetByParkingLot (int id)
         {
             List<SlotViewModel> model = _slotService.GetByParkingLot (id);
 
@@ -73,8 +70,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (true, model);
         }
 
-        [HttpPost(ApiRoutes.Slot.Update)]
-        public object Update(SlotViewModel model)
+        [HttpPost (ApiRoutes.Slot.Update)]
+        public object Update (SlotViewModel model)
         {
             bool success = _slotService.Update (model);
 
@@ -131,8 +128,8 @@ namespace PBS.Api.Controllers
             return new ResponseDetails (false, $"Parking Slot with Id : { id } does not exists.");
         }
 
-        [HttpDelete(ApiRoutes.Slot.Remove)]
-        public object Remove(int id)
+        [HttpDelete (ApiRoutes.Slot.Remove)]
+        public object Remove (int id)
         {
             bool success = _slotService.Remove (id);
 

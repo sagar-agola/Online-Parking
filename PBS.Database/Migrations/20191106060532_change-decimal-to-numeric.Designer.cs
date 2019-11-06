@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBS.Database.Context;
 
 namespace PBS.Database.Migrations
 {
     [DbContext(typeof(PbsDbContext))]
-    partial class PbsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191106060532_change-decimal-to-numeric")]
+    partial class changedecimaltonumeric
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +149,10 @@ namespace PBS.Database.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("HourlyRate")
+                    b.Property<decimal>("HourlyRate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasColumnType("numeric(2,2)")
+                        .HasDefaultValue(0m);
 
                     b.Property<bool>("IsBooked");
 

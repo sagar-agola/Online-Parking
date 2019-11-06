@@ -163,7 +163,8 @@ namespace PBS.Web.Controllers
                 {
                     IsBooked = false,
                     ParkingLotId = model.ParkingLotId,
-                    SlotTypeId = model.SlotTypeId
+                    SlotTypeId = model.SlotTypeId,
+                    HourlyRate = model.HourlyRate
                 };
 
                 ResponseDetails response = _apiHelper.SendApiRequest (slot, "slot/add", HttpMethod.Post);
@@ -184,6 +185,32 @@ namespace PBS.Web.Controllers
             }
 
             return RedirectToAction ("Manage", new { Id = _dataProtector.Protect (model.ParkingLotId) });
+        }
+        #endregion
+
+        #region Change Hourly Rate
+        public IActionResult ChangeHourlyRate (SlotViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDetails response = _apiHelper.SendApiRequest (model, "slot/update", HttpMethod.Post);
+
+                if (response.Success)
+                {
+                    return RedirectToAction ("Details", new { Id = _dataProtector.Protect (model.Id) });
+                }
+                else
+                {
+                    ErrorViewModel errorModel = new ErrorViewModel ()
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", errorModel);
+                }
+            }
+
+            return RedirectToAction ("Details", new { Id = _dataProtector.Protect (model.Id) });
         }
         #endregion
 

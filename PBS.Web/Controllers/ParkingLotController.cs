@@ -35,6 +35,7 @@ namespace PBS.Web.Controllers
             {
                 List<ParkingLotViewModel> model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
 
+                model = CalculateHourlyRate (model);
                 _dataProtector.ProtectParkingLotRouteValues (model);
 
                 return View (model);
@@ -77,7 +78,8 @@ namespace PBS.Web.Controllers
                     lot.SlotViewModels.Add (new SlotViewModel ()
                     {
                         IsBooked = false,
-                        SlotTypeId = 1
+                        SlotTypeId = 1,
+                        HourlyRate = model.TwoWheelerHourlyRate
                     });
                 }
 
@@ -86,7 +88,8 @@ namespace PBS.Web.Controllers
                     lot.SlotViewModels.Add (new SlotViewModel ()
                     {
                         IsBooked = false,
-                        SlotTypeId = 2
+                        SlotTypeId = 2,
+                        HourlyRate = model.FourWheelerHourlyRate
                     });
                 }
 
@@ -125,6 +128,7 @@ namespace PBS.Web.Controllers
             {
                 ParkingLotViewModel model = JsonConvert.DeserializeObject<ParkingLotViewModel> (response.Data.ToString ());
 
+                model = CalculateHourlyRate (model);
                 _dataProtector.ProtectParkingLotRouteValues (model);
 
                 return View (model);
@@ -257,9 +261,47 @@ namespace PBS.Web.Controllers
 
             List<ParkingLotViewModel> model = JsonConvert.DeserializeObject<List<ParkingLotViewModel>> (response.Data.ToString ());
 
+            model = CalculateHourlyRate (model);
             _dataProtector.ProtectParkingLotRouteValues (model);
 
             return View (model);
+        }
+        #endregion
+
+        #region Private Methods
+        private static List<ParkingLotViewModel> CalculateHourlyRate (List<ParkingLotViewModel> model)
+        {
+            return model.Select (x =>
+            {
+                return CalculateHourlyRate (x);
+            }).ToList ();
+        }
+
+        private static ParkingLotViewModel CalculateHourlyRate (ParkingLotViewModel model)
+        {
+            int TwoWheelerTotal = 0;
+            int FourWheelerTotal = 0;
+            int totalTwoWheelerSlots = 0;
+            int totalFourWheelerSlots = 0;
+
+            model.SlotViewModels.ForEach (s =>
+            {
+                if (s.SlotTypeViewModel.Title == "2 Wheel")
+                {
+                    TwoWheelerTotal += s.HourlyRate;
+                    totalTwoWheelerSlots++;
+                }
+                else
+                {
+                    FourWheelerTotal += s.HourlyRate;
+                    totalFourWheelerSlots++;
+                }
+            });
+
+            model.TwoWheelerHourlyRate = TwoWheelerTotal / totalTwoWheelerSlots;
+            model.FourWheelerHourlyRate = FourWheelerTotal / totalFourWheelerSlots;
+
+            return model;
         }
         #endregion
     }

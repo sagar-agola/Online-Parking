@@ -13,10 +13,8 @@ namespace PBS.Database.Models
         [Column (TypeName = "text")]
         public string Description { get; set; }
 
-        [Column (TypeName = "decimal(2,2)")]
-        [RegularExpression (@"^\d+\.\d{0,2}$")]
-        [Range (0, 99.99)]
-        public decimal HourlyRate { get; set; }
+        [Range (0, 99)]
+        public int HourlyRate { get; set; }
 
         #region Slot parking lot
         public int ParkingLotId { get; set; }

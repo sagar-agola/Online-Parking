@@ -8,11 +8,13 @@ namespace PBS.Business.Core.BusinessModels
         public int Id { get; set; }
         public string EncryptedId { get; set; }
 
-        [Required(ErrorMessage = "Parking name is required.")]
+        [Required (ErrorMessage = "Parking name is required.")]
         public string Name { get; set; }
 
+        [Display (Name = "Is Aproved")]
         public bool IsAproved { get; set; }
 
+        [Display (Name = "Is Active")]
         public bool IsActive { get; set; }
 
         #region Parking Owner
@@ -30,6 +32,14 @@ namespace PBS.Business.Core.BusinessModels
         #region Navigational Properties
         public List<ParkingLotImageViewModel> ParkingLotImageViewModels { get; set; } = new List<ParkingLotImageViewModel> ();
         public List<SlotViewModel> SlotViewModels { get; set; } = new List<SlotViewModel> ();
+        #endregion
+
+        #region Helper Properties
+        [Display (Name = "2 Wheeler Hourly Rate")]
+        public int TwoWheelerHourlyRate { get; set; }
+
+        [Display (Name = "4 Wheeler Hourly Rate")]
+        public int FourWheelerHourlyRate { get; set; }
         #endregion
     }
 }

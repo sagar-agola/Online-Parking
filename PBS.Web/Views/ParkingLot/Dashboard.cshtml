@@ -28,6 +28,14 @@
                                 <td>@(Model[i].IsAproved ? "Yes" : "No")</td>
                             </tr>
                             <tr>
+                                <td>2 Wheeler Hourly Rate</td>
+                                <td>@Model[i].TwoWheelerHourlyRate INR</td>
+                            </tr>
+                            <tr>
+                                <td>4 Wheeler Hourly Rate</td>
+                                <td>@Model[i].FourWheelerHourlyRate INR</td>
+                            </tr>
+                            <tr>
                                 <td>Number Of 2 wheel Slots</td>
                                 <td>@Model[i].SlotViewModels.Where(x => x.SlotTypeId == 1).Count()</td>
                             </tr>

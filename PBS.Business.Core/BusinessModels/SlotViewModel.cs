@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PBS.Business.Core.BusinessModels
 {
@@ -7,7 +8,14 @@ namespace PBS.Business.Core.BusinessModels
         public int Id { get; set; }
         public string EncryptedId { get; set; }
 
+        [Display(Name = "Is Booked")]
         public bool IsBooked { get; set; }
+
+        public string Description { get; set; }
+
+        [Display(Name = "Hourly Rate")]
+        [Range (0, 99, ErrorMessage = "Slot hourly rate can be 99 INR at max.")]
+        public int HourlyRate { get; set; }
 
         #region Helper Properties
         public bool CanBook { get; set; }

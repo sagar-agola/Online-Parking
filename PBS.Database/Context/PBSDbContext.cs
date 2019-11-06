@@ -20,10 +20,6 @@ namespace PBS.Database.Context
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ParkingLot> ()
-                .Property (x => x.HourlyRate)
-                .HasDefaultValue (0.0);
-
             modelBuilder.Entity<Slot> ()
                 .Property (x => x.HourlyRate)
                 .HasDefaultValue (0.0);

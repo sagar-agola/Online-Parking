@@ -11,7 +11,8 @@
     <div class="card-body">
         <form asp-action="Add">
             <div class="row">
-                <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+                <div class="col-md-6">
                     <h3>basic Info</h3>
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
@@ -19,23 +20,53 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
-                    <h3>Slots</h3>
-                    <div class="form-group">
-                        <label asp-for="NoOf2WheelSlot" class="control-label"></label>
-                        <input asp-for="NoOf2WheelSlot" class="form-control" />
-                        <span asp-validation-for="NoOf2WheelSlot" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>2 Wheel Slots</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="NoOf2WheelSlot" class="control-label">Total Number of Slots</label>
+                                <input asp-for="NoOf2WheelSlot" class="form-control" />
+                                <span asp-validation-for="NoOf2WheelSlot" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TwoWheelerHourlyRate" class="control-label">Hourly Rate</label>
+                                <input asp-for="TwoWheelerHourlyRate" class="form-control" />
+                                <span asp-validation-for="TwoWheelerHourlyRate" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="NoOf4WheelSlot" class="control-label"></label>
-                        <input asp-for="NoOf4WheelSlot" class="form-control" />
-                        <span asp-validation-for="NoOf4WheelSlot" class="text-danger"></span>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>4 Wheel Slots</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="NoOf4WheelSlot" class="control-label">Total Number of Slots</label>
+                                <input asp-for="NoOf4WheelSlot" class="form-control" />
+                                <span asp-validation-for="NoOf4WheelSlot" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FourWheelerHourlyRate" class="control-label">Hourly Rate</label>
+                                <input asp-for="FourWheelerHourlyRate" class="form-control" />
+                                <span asp-validation-for="FourWheelerHourlyRate" class="text-danger"></span>
+                            </div>
+
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Submit" />
                     </div>
 
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <h3>Address</h3>
                     <div class="form-group">
                         <label asp-for="AddressViewModel.AddressLine1" class="control-label"></label>
@@ -89,10 +120,6 @@
                         <input asp-for="AddressViewModel.State" class="form-control" />
                         <span asp-validation-for="AddressViewModel.State" class="text-danger"></span>
                     </div>
-
-                </div>
-                <div class="col-md-4">
-                    <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
                 </div>
             </div>
         </form>
