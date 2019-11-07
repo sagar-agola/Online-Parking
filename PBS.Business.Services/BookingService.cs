@@ -58,5 +58,20 @@ namespace PBS.Business.Services
 
             return _bookingMapping.MapBookingList (model);
         }
+
+        public bool Update (BookingViewModel model)
+        {
+            if (_unitofWork.BookingRepository.BookingExists (model.Id))
+            {
+                Booking modelMapping = _mapper.Map<Booking> (model);
+
+                _unitofWork.BookingRepository.Update (modelMapping);
+                _unitofWork.SaveChanges ();
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

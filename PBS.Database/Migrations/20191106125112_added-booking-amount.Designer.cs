@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBS.Database.Context;
 
 namespace PBS.Database.Migrations
 {
     [DbContext(typeof(PbsDbContext))]
-    partial class PbsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191106125112_added-booking-amount")]
+    partial class addedbookingamount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,17 +58,13 @@ namespace PBS.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                    b.Property<int>("Amount");
 
                     b.Property<int>("CustomerId");
 
                     b.Property<DateTime>("EndDateTime");
 
                     b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsConfirmed");
 
                     b.Property<int>("SlotId");
 

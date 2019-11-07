@@ -14,11 +14,17 @@
                 </h3>
             </div>
             <div class="card-body">
+                <p class="alert alert-info">
+                    <b>
+                        Hourly Rate - @Model.HourlyRate INR
+                    </b>
+                </p>
                 <form asp-action="Confirm">
                     <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
 
                     <input asp-for="UserId" type="hidden" />
                     <input asp-for="SlotId" type="hidden" />
+                    <input asp-for="HourlyRate" type="hidden" />
 
                     <div class="form-group">
                         <label class="control-label font-weight-bold">Start Time</label>
@@ -81,6 +87,11 @@
                                 <label asp-for="Number" class="control-label"></label>
                                 <input asp-for="Number" class="form-control" />
                                 <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <small class="text-info">
+                                    <b>Example</b> : GJ - 13 - CC - 1969
+                                </small>
                             </div>
                         </div>
                     </div>

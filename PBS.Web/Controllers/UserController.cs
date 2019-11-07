@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
-using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.MailClient;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
@@ -16,19 +15,18 @@ namespace PBS.Web.Controllers
     {
         private readonly IApiHelper _apiHelper;
         private readonly ITokenDecoder _tokenDecoder;
-        private readonly IEncryptionHelper _encryptionHelper;
         private readonly IMailClient _client;
-        private const int KEY = 5;
+        private readonly DataProtector _dataProtector;
 
         public UserController (IApiHelper apiHelper,
-                               ITokenDecoder tokenDecoder,
-                               IEncryptionHelper encryptionHelper,
-                               IMailClient client)
+            ITokenDecoder tokenDecoder,
+            IMailClient client,
+            DataProtector dataProtector)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
-            _encryptionHelper = encryptionHelper;
             _client = client;
+            _dataProtector = dataProtector;
         }
 
         #region Change Password Actions
@@ -76,9 +74,9 @@ namespace PBS.Web.Controllers
             {
                 string OTP = HttpContext.Session.GetString ("OTP");
 
-                OTP = _encryptionHelper.Decrypt (OTP, KEY);
+                int plainOTP = _dataProtector.Unprotect (OTP);
 
-                if (OTP.CompareTo (model.OTP) != 0)
+                if (plainOTP != Convert.ToInt32 (model.OTP))
                 {
                     ModelState.AddModelError ("", "Invalid OTP.");
                     return View (model);
@@ -247,12 +245,13 @@ namespace PBS.Web.Controllers
 
             int otp = random.Next (1111, 9999);
 
-            string encryptedOtp = _encryptionHelper.Encrypt (otp.ToString (), KEY);
+            string encryptedOtp = _dataProtector.Protect (otp);
 
             string body = "Dear " + _tokenDecoder.UserName + ", <br /><br />" + "Kindly enter below number as OTP for changing" +
                 " your account password.<br />OTP: " + otp.ToString () + "<br /><br />Greetings,<br />Parking Booking System.";
 
             _client.SendEmail (model.Email, _tokenDecoder.UserName, "OTP for change password", body);
+
             return encryptedOtp;
         }
         #endregion

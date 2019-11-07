@@ -24,6 +24,13 @@ namespace PBS.Business.Core.BusinessModels
         public bool CanDisableBooking { get; set; }
         public bool CanMakeAvailable { get; set; }
         public string Status { get; set; }
+        public double PerMinuteRate
+        {
+            get
+            {
+                return HourlyRate / 60;
+            }
+        }
         #endregion
 
         #region Slot parking lot

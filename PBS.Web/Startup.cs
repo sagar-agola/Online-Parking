@@ -32,7 +32,6 @@ namespace PBS.Web
             services.AddSingleton<IApiHelper, ApiHelper> ();
             services.AddSingleton<ITokenDecoder, TokenDecoder> ();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor> ();
-            services.AddSingleton<IEncryptionHelper, EncryptionHelper> ();
             services.AddSingleton<IWebConfiguration, WebConfiguration> ();
             services.AddSingleton<IMailClient, MailClient> ();
             services.AddSingleton<DataProtectionPurposeStrings> ();

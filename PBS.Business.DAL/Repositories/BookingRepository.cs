@@ -18,10 +18,6 @@ namespace PBS.Business.DAL.Repositories
 
         public Booking Add (Booking model)
         {
-            Slot slot = _context.Slots.FirstOrDefault (x => x.Id == model.SlotId);
-            slot.IsBooked = true;
-            _context.Slots.Update (slot);
-
             _context.Bookings.Add (model);
 
             return model;

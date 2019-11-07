@@ -113,6 +113,7 @@
             public const string Get = _base + "/get/{id}";
             public const string GetByUser = _base + "/get/user/{id}";
             public const string GetAll = _base + "/get-all";
+            public const string ConfirmBooking = _base + "/confirm-booking/{id}";
         }
         #endregion
     }

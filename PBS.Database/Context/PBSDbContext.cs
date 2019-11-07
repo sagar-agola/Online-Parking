@@ -22,7 +22,11 @@ namespace PBS.Database.Context
         {
             modelBuilder.Entity<Slot> ()
                 .Property (x => x.HourlyRate)
-                .HasDefaultValue (0.0);
+                .HasDefaultValue (0);
+
+            modelBuilder.Entity<Booking> ()
+                .Property (x => x.Amount)
+                .HasDefaultValue (0);
         }
     }
 }

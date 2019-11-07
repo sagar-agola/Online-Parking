@@ -99,10 +99,13 @@ namespace PBS.Web.Controllers
         {
             int newId = _dataProtector.Unprotect (id);
 
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "slot/get/" + newId, HttpMethod.Get);
+
             ConfirmBookingModel model = new ConfirmBookingModel
             {
                 SlotId = newId,
-                UserId = _tokenDecoder.UserId
+                UserId = _tokenDecoder.UserId,
+                HourlyRate = JsonConvert.DeserializeObject<SlotViewModel> (response.Data.ToString ()).HourlyRate
             };
 
             return View (model);
@@ -134,7 +137,9 @@ namespace PBS.Web.Controllers
                     StartDateTime = model.StartDate,
                     EndDateTime = EndDate,
                     VehicleNumber = VehicalNumber,
-                    IsActive = true
+                    IsActive = true,
+                    IsConfirmed = false,
+                    Amount = Convert.ToInt32 ((EndDate - model.StartDate).TotalHours * model.HourlyRate)
                 };
 
                 ResponseDetails response = _apiHelper.SendApiRequest (bookingModel, "booking/add", HttpMethod.Post);
@@ -144,7 +149,7 @@ namespace PBS.Web.Controllers
                     BookingViewModel returnedModel = JsonConvert.DeserializeObject<BookingViewModel>
                         (response.Data.ToString ());
 
-                    return RedirectToAction ("Receipt", new { id = _dataProtector.Protect (returnedModel.Id) });
+                    return RedirectToAction ("Payment", new { id = _dataProtector.Protect (returnedModel.Id) });
                 }
                 else
                 {
@@ -160,6 +165,38 @@ namespace PBS.Web.Controllers
             {
                 ModelState.AddModelError ("", "Validation error");
                 return View (model);
+            }
+        }
+        #endregion
+
+        #region Booking Payment
+        [HttpGet]
+        public IActionResult Payment (string id)
+        {
+            ViewData["Id"] = id;
+            return View ();
+        }
+
+        [HttpPost]
+        [ActionName("Payment")]
+        public IActionResult PaymentPost (string id)
+        {
+            int newId = _dataProtector.Unprotect (id);
+
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/confirm-booking/" + newId, HttpMethod.Post);
+
+            if (response.Success)
+            {
+                return RedirectToAction ("Receipt", new { id });
+            }
+            else
+            {
+                ErrorViewModel model = new ErrorViewModel ()
+                {
+                    Message = response.Data.ToString ()
+                };
+
+                return View ("Error", model);
             }
         }
         #endregion

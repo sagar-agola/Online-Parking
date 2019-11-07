@@ -9,6 +9,8 @@ namespace PBS.Web.Models
 
         public int SlotId { get; set; }
 
+        public int HourlyRate { get; set; }
+
         [Required]
         [Display(Name = "Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]

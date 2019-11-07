@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h1>Payment</h1>
+
+<form asp-action="Payment" method="post">
+    @{ 
+        string id = ViewData["Id"].ToString();
+    }
+    <input type="hidden" value="@id" />
+    <input type="submit" value="Make Payment" />
+</form>

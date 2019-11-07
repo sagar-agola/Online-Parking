@@ -18,6 +18,10 @@ namespace PBS.Business.Core.BusinessModels
 
         public bool IsActive { get; set; }
 
+        public bool IsConfirmed { get; set; }
+
+        public int Amount { get; set; }
+
         #region Booking Customer
         public int CustomerId { get; set; }
         public string EncryptedCustomerId { get; set; }

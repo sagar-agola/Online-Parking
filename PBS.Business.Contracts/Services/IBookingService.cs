@@ -8,5 +8,6 @@ namespace PBS.Business.Contracts.Services
         BookingViewModel Get (int id);
         System.Collections.Generic.List<BookingViewModel> GetAll ();
         System.Collections.Generic.List<BookingViewModel> GetByUser (int userId);
+        bool Update (BookingViewModel model);
     }
 }

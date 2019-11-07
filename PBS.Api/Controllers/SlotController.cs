@@ -12,10 +12,12 @@ namespace PBS.Api.Controllers
     public class SlotController : ControllerBase
     {
         private readonly ISlotService _slotService;
+        private readonly IBookingService _bookingService;
 
-        public SlotController (ISlotService slotService)
+        public SlotController (ISlotService slotService, IBookingService bookingService)
         {
             _slotService = slotService;
+            _bookingService = bookingService;
         }
 
         [HttpPost (ApiRoutes.Slot.Add)]
@@ -90,7 +92,7 @@ namespace PBS.Api.Controllers
 
             if (model == null)
             {
-                return new ResponseDetails (false, $"Parking Slot with Id : { model.Id } does not exists.");
+                return new ResponseDetails (false, $"Parking Slot with Id : { id.ToString () } does not exists.");
             }
 
             model.IsBooked = true;
