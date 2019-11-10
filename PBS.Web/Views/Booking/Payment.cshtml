@@ -1,14 +1,163 @@
-﻿
+﻿@model PaymentModel
+
 @{
     ViewData["Title"] = "Payment";
 }
 
-<h1>Payment</h1>
+<div class="card">
+    <form asp-action="Payment" method="post">
+        <div class="card-header">
+            <h1 class="card-title">
+                Booking Payment
+            </h1>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="text-right">
+                        <small class="text-info mb-3">
+                            <b>*</b> indicated required field
+                        </small>
+                    </div>
+                    <h3 class="font-weight-bold">
+                        Card Information
+                    </h3>
+                    <div class="row mb-4">
+                        <div class="col-md-8">
 
-<form asp-action="Payment" method="post">
-    @{ 
-        string id = ViewData["Id"].ToString();
-    }
-    <input type="hidden" value="@id" />
-    <input type="submit" value="Make Payment" />
-</form>
+                            <input asp-for="Booking.Id" type="hidden" value="@Model.Booking.Id" />
+                            <input asp-for="Amount" type="hidden" value="@Model.Booking.Amount" />
+
+                            <div class="form-group">
+                                <label asp-for="CardNumber" class="control-label"></label>*
+                                <input asp-for="CardNumber" class="form-control" type="password" />
+                                <span asp-validation-for="CardNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="ExpMonth" class="control-label">Expiation Date*</label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input asp-for="ExpMonth" class="form-control" placeholder="DD" autocomplete="off" />
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input asp-for="ExpYear" class="form-control" placeholder="YYYY" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="ExpMonth" class="text-danger"></span>
+                                    <span asp-validation-for="ExpYear" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CardCode" class="control-label"></label>*
+                                <input asp-for="CardCode" class="form-control" autocomplete="off" />
+                                <span asp-validation-for="CardCode"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="font-weight-bold">
+                        Billing User Information
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="BillTo.FirstName" class="control-label"></label>
+                            <input asp-for="BillTo.FirstName" class="form-control mb-2" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BillTo.LastName" class="control-label"></label>
+                            <input asp-for="BillTo.LastName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BillTo.City" class="control-label"></label>
+                            <input asp-for="BillTo.City" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BillTo.State" class="control-label"></label>
+                            <input asp-for="BillTo.State" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="my-panel-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="font-weight-bold">
+                                    Invoice
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="text-right">
+                                    Invoice Id - @Model.Booking.Id
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-panel-body">
+                        <h5 class="font-weight-bold">
+                            @Model.Booking.SlotViewModel.ParkingLotViewModel.Name Parking lot
+                        </h5>
+                        <table border="0" width="100%" cellpadding="2">
+                            <tr>
+                                <td width="40%" class="text-right font-weight-bold pr-4">Slot Id</td>
+                                <td>@Model.Booking.SlotId</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Booking User</td>
+                                <td>@Model.Booking.CustomerViewModel.FirstName @Model.Booking.CustomerViewModel.FirstName</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Slot Type</td>
+                                <td>@Model.Booking.SlotViewModel.SlotTypeViewModel.Title</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Date</td>
+                                <td>@Model.Booking.StartDateTime.ToLongDateString()</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Time</td>
+                                <td>@Model.Booking.StartDateTime.ToLongTimeString()</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Duration</td>
+                                <td>@Model.Booking.Duration</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <h4 class="font-weight-bold pt-3">
+                                        payment Details
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Hourly Rate</td>
+                                <td>@Model.Booking.SlotViewModel.HourlyRate INR</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Total amount</td>
+                                <td>@Model.Booking.Amount INR</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Tax <small>GST 10%</small></td>
+                                <td>@Model.Booking.Tax INR</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold pr-4">Grand Total</td>
+                                <td>@(Model.Booking.Amount + Model.Booking.Tax) INR</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary" value="Submit" />
+        </div>
+    </form>
+</div>

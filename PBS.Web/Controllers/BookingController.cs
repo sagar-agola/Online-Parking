@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PBS.Business.Core.AuthorizeNetApiModels.Request;
+using PBS.Business.Core.AuthorizeNetApiModels.Response;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using PBS.Web.Helpers;
@@ -146,10 +148,12 @@ namespace PBS.Web.Controllers
 
                 if (response.Success)
                 {
-                    BookingViewModel returnedModel = JsonConvert.DeserializeObject<BookingViewModel>
+                    bookingModel = JsonConvert.DeserializeObject<BookingViewModel>
                         (response.Data.ToString ());
 
-                    return RedirectToAction ("Payment", new { id = _dataProtector.Protect (returnedModel.Id) });
+                    _dataProtector.ProtectBookingRouteValues (bookingModel);
+
+                    return RedirectToAction ("Payment", new { id = _dataProtector.Protect (bookingModel.Id) });
                 }
                 else
                 {
@@ -173,21 +177,22 @@ namespace PBS.Web.Controllers
         [HttpGet]
         public IActionResult Payment (string id)
         {
-            ViewData["Id"] = id;
-            return View ();
-        }
-
-        [HttpPost]
-        [ActionName("Payment")]
-        public IActionResult PaymentPost (string id)
-        {
             int newId = _dataProtector.Unprotect (id);
 
-            ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/confirm-booking/" + newId, HttpMethod.Post);
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "booking/get/" + newId, HttpMethod.Get);
 
             if (response.Success)
             {
-                return RedirectToAction ("Receipt", new { id });
+                BookingViewModel bookingModel = JsonConvert.DeserializeObject<BookingViewModel> (response.Data.ToString ());
+
+                _dataProtector.ProtectBookingRouteValues (bookingModel);
+
+                PaymentModel model = new PaymentModel ()
+                {
+                    Booking = bookingModel
+                };
+
+                return View (model);
             }
             else
             {
@@ -197,6 +202,73 @@ namespace PBS.Web.Controllers
                 };
 
                 return View ("Error", model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Payment (PaymentModel model)
+        {
+            ModelState.Remove ("Booking");
+
+            TryValidateModel (model);
+
+            if (ModelState.IsValid)
+            {
+                ApiRequestBody reqestBody = BuildRequestBody (model);
+                ErrorViewModel errorModel = new ErrorViewModel ();
+
+                ResponseDetails response = _apiHelper.SendPaymentApiRequest (reqestBody);
+
+                if (response.Success)
+                {
+                    ApiResponseBody responseBody = JsonConvert.DeserializeObject<ApiResponseBody> (response.Data.ToString ());
+
+                    if (responseBody.Messages.ResultCode.ToLower () == "ok")
+                    {
+                        if (responseBody.TransactionResponse.ResponseCode == "1")
+                        {
+                            int newId = Convert.ToInt32 (responseBody.RefId);
+
+                            response = _apiHelper.SendApiRequest ("", "booking/confirm-booking/" + newId, HttpMethod.Post);
+
+                            if (response.Success)
+                            {
+                                return RedirectToAction ("Receipt", new { id = _dataProtector.Protect (newId) });
+                            }
+                            else
+                            {
+                                errorModel.Message = response.Data.ToString ();
+                            }
+                        }
+                        else
+                        {
+                            string error = responseBody.TransactionResponse.Errors.First ().ErrorText;
+                            if (string.IsNullOrEmpty (error))
+                            {
+                                errorModel.Message = "Transaction failed.";
+                            }
+                            else
+                            {
+                                errorModel.Message = error;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        errorModel.Message = responseBody.Messages.Message.First ().Text;
+                    }
+                }
+                else
+                {
+                    errorModel.Message = response.Data.ToString ();
+                }
+
+                return View ("Error", errorModel);
+            }
+            else
+            {
+                ModelState.AddModelError ("", "Validation Failed.");
+                return RedirectToAction ("Payment", new { id = _dataProtector.Protect (model.Booking.Id) });
             }
         }
         #endregion
@@ -288,6 +360,41 @@ namespace PBS.Web.Controllers
             }
 
             return true;
+        }
+
+        private ApiRequestBody BuildRequestBody (PaymentModel model)
+        {
+            return new ApiRequestBody ()
+            {
+                CreateTransactionRequest = new CreateTransactionRequest ()
+                {
+                    TransactionRequest = new TransactionRequest ()
+                    {
+                        Amount = model.Amount + (model.Amount / 10),
+                        Payment = new Payment ()
+                        {
+                            CreditCard = new CreditCard ()
+                            {
+                                CardNumber = model.CardNumber,
+                                CardCode = model.CardCode,
+                                ExpirationDate = $"{ model.ExpYear }-{ model.ExpMonth }"
+                            }
+                        },
+                        Tax = new Tax ()
+                        {
+                            Amount = model.Amount / 10,
+                            Name = "GST",
+                            Description = "Gift from modiji"
+                        },
+                        Customer = new Customer ()
+                        {
+                            Id = _tokenDecoder.UserId.ToString (),
+                        },
+                        BillTo = model.BillTo
+                    },
+                    RefId = model.Booking.Id.ToString ()
+                }
+            };
         }
         #endregion
     }

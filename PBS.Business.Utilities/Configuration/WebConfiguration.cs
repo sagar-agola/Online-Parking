@@ -9,9 +9,7 @@ namespace PBS.Business.Utilities.Configuration
         {
             get
             {
-                IConfigurationRoot root = GetConfigurationRoot ();
-
-                return root.GetSection ("AppSettings:SenderName").Value;
+                return GetConfigurationRoot ().GetSection ("AppSettings:SenderName").Value;
             }
         }
 
@@ -19,9 +17,7 @@ namespace PBS.Business.Utilities.Configuration
         {
             get
             {
-                IConfigurationRoot root = GetConfigurationRoot ();
-
-                return root.GetSection ("AppSettings:Email").Value;
+                return GetConfigurationRoot ().GetSection ("AppSettings:Email").Value;
             }
         }
 
@@ -29,9 +25,7 @@ namespace PBS.Business.Utilities.Configuration
         {
             get
             {
-                IConfigurationRoot root = GetConfigurationRoot ();
-
-                return root.GetSection ("AppSettings:Password").Value;
+                return GetConfigurationRoot ().GetSection ("AppSettings:Password").Value;
             }
         }
 

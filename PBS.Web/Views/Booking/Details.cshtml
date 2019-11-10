@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-8">
                                 <span>@Model.Id</span><br />
-                                <span>@Model.Id</span><br />
+                                <span>@(Model.IsActive ? "Yes" : "No")</span><br />
                                 <span>@Model.StartDateTime.ToLongDateString()</span><br />
                                 <span>@Model.StartDateTime.ToLongTimeString()</span><br />
                                 <span>@Model.VehicleNumber</span><br />
@@ -46,8 +46,11 @@
                 <div class="row" style="margin: 10px 0px">
                     <div class="col-md-12 my-panel-body">
                         <h3>
-                            <b>Grand Total</b> - @Model.Amount INR
+                            <b>Grand Total</b> - @Model.Amount INR<br />
                         </h3>
+                        <div class="text-right">
+                            <small><b>* 5% GST EXCLUDED</b></small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +113,7 @@
                                     @Model.SlotViewModel.SlotTypeViewModel.Title<br />
                                 </span>
                                 <span>
-                                    @Model.SlotViewModel.HourlyRate INR
+                                    @Model.SlotViewModel.HourlyRate INR <small>(<b>Note:</b> This is current hourly rate)</small>
                                 </span>
                             </div>
                         </div>

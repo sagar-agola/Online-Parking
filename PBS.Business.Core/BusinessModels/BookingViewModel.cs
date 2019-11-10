@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace PBS.Business.Core.BusinessModels
 {
@@ -12,8 +11,6 @@ namespace PBS.Business.Core.BusinessModels
 
         public DateTime EndDateTime { get; set; }
 
-        [Required(ErrorMessage = "Vehicle number is required field")]
-        [MaxLength (13, ErrorMessage = "Invalid Vehicle number pattern")]
         public string VehicleNumber { get; set; }
 
         public bool IsActive { get; set; }
@@ -34,16 +31,26 @@ namespace PBS.Business.Core.BusinessModels
         public SlotViewModel SlotViewModel { get; set; }
         #endregion
 
+        #region helper Properties
         public string Duration
         {
             get
             {
-                int totalMinutes = (int)(EndDateTime - StartDateTime).TotalMinutes;
+                int totalMinutes = (int) (EndDateTime - StartDateTime).TotalMinutes;
                 int hours = totalMinutes / 60;
                 int minutes = totalMinutes % 60;
 
                 return $"{ hours } Hour, { minutes } Minute";
             }
         }
+
+        public int Tax
+        {
+            get
+            {
+                return Amount / 10;
+            }
+        }
+        #endregion
     }
 }

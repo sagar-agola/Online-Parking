@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using PBS.Business.Core.AuthorizeNetApiModels.Request;
 using PBS.Business.Core.Models;
 using System;
 using System.Net.Http;
@@ -18,14 +19,6 @@ namespace PBS.Web.Helpers
             _tokenDecoder = tokenDecoder;
         }
 
-        /// <summary>
-        /// Common helper method to send API request
-        /// </summary>
-        /// <typeparam name="T">Generic type of data</typeparam>
-        /// <param name="data">data to send over API request</param>
-        /// <param name="url">Relative URL of API</param>
-        /// <param name="httpMethod">Method of API request</param>
-        /// <returns></returns>
         public ResponseDetails SendApiRequest<T> (T data, string url, HttpMethod httpMethod)
         {
             ResponseDetails responseModel = new ResponseDetails ();
@@ -40,13 +33,7 @@ namespace PBS.Web.Helpers
                     baseUrl += Convert.ToString (data);
                 }
 
-                HttpClient client = new HttpClient
-                {
-                    BaseAddress = new Uri (baseUrl)
-                };
-
-                client.DefaultRequestHeaders.Accept.Clear ();
-                client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));
+                HttpClient client = GetClient (baseUrl);
 
                 if (_tokenDecoder.IsLoggedIn)
                 {
@@ -103,5 +90,70 @@ namespace PBS.Web.Helpers
 
             return responseModel;
         }
+
+        public ResponseDetails SendPaymentApiRequest (ApiRequestBody requestBody)
+        {
+            ResponseDetails responseDetails = new ResponseDetails ();
+
+            try
+            {
+                string loginId = _configuration.GetSection ("AppSettings:LoginId").Value;
+                string transactionKey = _configuration.GetSection ("AppSettings:TransactionKey").Value;
+
+                requestBody.CreateTransactionRequest.MerchantAuthentication = new MerchantAuthentication ()
+                {
+                    Name = loginId,
+                    TransactionKey = transactionKey
+                };
+
+                string url = "https://apitest.authorize.net/xml/v1/request.api";
+
+                HttpClient client = GetClient (url);
+
+                JObject json = JObject.FromObject (requestBody);
+
+                HttpResponseMessage response = client.PostAsJsonAsync (url, json).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    HttpContent content = response.Content;
+                    string result = content.ReadAsStringAsync ().Result;
+
+                    dynamic returnObj = JObject.Parse (result);
+
+                    responseDetails.Success = true;
+                    responseDetails.Data = returnObj;
+                }
+                else
+                {
+                    responseDetails.Success = false;
+                    responseDetails.Data = response.ReasonPhrase;
+                }
+            }
+            catch (Exception ex)
+            {
+                responseDetails.Success = false;
+                responseDetails.Data = ex.Message;
+
+                return responseDetails;
+            }
+
+            return responseDetails;
+        }
+
+        #region Private Methods
+        private static HttpClient GetClient (string baseUrl)
+        {
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri (baseUrl)
+            };
+
+            client.DefaultRequestHeaders.Accept.Clear ();
+            client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));
+
+            return client;
+        }
+        #endregion
     }
 }
