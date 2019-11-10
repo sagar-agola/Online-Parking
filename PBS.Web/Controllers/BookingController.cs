@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PBS.Business.Core.AuthorizeNetApiModels.Request;
 using PBS.Business.Core.AuthorizeNetApiModels.Response;
@@ -18,15 +19,18 @@ namespace PBS.Web.Controllers
     {
         private readonly IApiHelper _apiHelper;
         private readonly ITokenDecoder _tokenDecoder;
+        private readonly IConfiguration _configuration;
         private readonly DataProtector _dataProtector;
 
         public BookingController (IApiHelper apiHelper,
             ITokenDecoder tokenDecoder,
+            IConfiguration configuration,
             DataProtector dataProtector)
         {
             _apiHelper = apiHelper;
             _tokenDecoder = tokenDecoder;
             _dataProtector = dataProtector;
+            _configuration = configuration;
         }
 
         #region Parking Lot (search results)
@@ -173,7 +177,7 @@ namespace PBS.Web.Controllers
         }
         #endregion
 
-        #region Booking Payment
+        #region Payment
         [HttpGet]
         public IActionResult Payment (string id)
         {
@@ -208,10 +212,6 @@ namespace PBS.Web.Controllers
         [HttpPost]
         public IActionResult Payment (PaymentModel model)
         {
-            ModelState.Remove ("Booking");
-
-            TryValidateModel (model);
-
             if (ModelState.IsValid)
             {
                 ApiRequestBody reqestBody = BuildRequestBody (model);
@@ -364,10 +364,18 @@ namespace PBS.Web.Controllers
 
         private ApiRequestBody BuildRequestBody (PaymentModel model)
         {
+            string loginId = _configuration.GetSection ("AppSettings:LoginId").Value;
+            string transactionKey = _configuration.GetSection ("AppSettings:TransactionKey").Value;
+
             return new ApiRequestBody ()
             {
                 CreateTransactionRequest = new CreateTransactionRequest ()
                 {
+                    MerchantAuthentication = new MerchantAuthentication ()
+                    {
+                        Name = loginId,
+                        TransactionKey = transactionKey
+                    },
                     TransactionRequest = new TransactionRequest ()
                     {
                         Amount = model.Amount + (model.Amount / 10),

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
-using PBS.Business.Core.AuthorizeNetApiModels.Request;
 using PBS.Business.Core.Models;
 using System;
 using System.Net.Http;
@@ -91,21 +90,12 @@ namespace PBS.Web.Helpers
             return responseModel;
         }
 
-        public ResponseDetails SendPaymentApiRequest (ApiRequestBody requestBody)
+        public ResponseDetails SendPaymentApiRequest<T> (T requestBody)
         {
             ResponseDetails responseDetails = new ResponseDetails ();
 
             try
             {
-                string loginId = _configuration.GetSection ("AppSettings:LoginId").Value;
-                string transactionKey = _configuration.GetSection ("AppSettings:TransactionKey").Value;
-
-                requestBody.CreateTransactionRequest.MerchantAuthentication = new MerchantAuthentication ()
-                {
-                    Name = loginId,
-                    TransactionKey = transactionKey
-                };
-
                 string url = "https://apitest.authorize.net/xml/v1/request.api";
 
                 HttpClient client = GetClient (url);
