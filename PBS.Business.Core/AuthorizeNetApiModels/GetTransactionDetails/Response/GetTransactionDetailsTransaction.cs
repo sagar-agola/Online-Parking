@@ -9,6 +9,9 @@ namespace PBS.Business.Core.AuthorizeNetApiModels.GetTransactionDetails.Response
         [JsonProperty ("transId")]
         public string TransId { get; set; }
 
+        [JsonIgnore]
+        public string EncryptedTransactionId { get; set; }
+
         [JsonProperty ("submitTimeUTC")]
         public DateTime SubmitTimeUTC { get; set; }
 

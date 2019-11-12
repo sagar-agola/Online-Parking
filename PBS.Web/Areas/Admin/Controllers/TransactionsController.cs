@@ -15,6 +15,7 @@ using PBS.Web.Areas.Admin.Models;
 using PBS.Web.Helpers;
 using PBS.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PBS.Web.Areas.Admin.Controllers
@@ -24,12 +25,15 @@ namespace PBS.Web.Areas.Admin.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IApiHelper _apiHelper;
+        private readonly DataProtector _dataProtector;
 
         public TransactionsController (IConfiguration configuration,
-            IApiHelper apiHelper)
+            IApiHelper apiHelper,
+            DataProtector dataProtector)
         {
             _configuration = configuration;
             _apiHelper = apiHelper;
+            _dataProtector = dataProtector;
         }
 
         #region Index (List of Batches)
@@ -50,6 +54,7 @@ namespace PBS.Web.Areas.Admin.Controllers
                     if (ResponseBody.Transactions != null)
                     {
                         model.Transactions = ResponseBody.Transactions;
+                        model.Transactions = ProtectTransactionId (model.Transactions);
                     }
 
                     return View (model);
@@ -88,6 +93,11 @@ namespace PBS.Web.Areas.Admin.Controllers
                 if (responseBody.Messages.ResultCode.ToLower () == "ok")
                 {
                     model.BatchItems = responseBody.BatchList;
+
+                    if (model.BatchItems != null)
+                    {
+                        model.BatchItems = ProtectBatchId (model.BatchItems);
+                    }
                 }
                 else
                 {
@@ -110,6 +120,7 @@ namespace PBS.Web.Areas.Admin.Controllers
                 if (transactionsResponseBody.Messages.ResultCode.ToLower () == "ok")
                 {
                     model.Transactions = transactionsResponseBody.Transactions;
+                    model.Transactions = ProtectTransactionId (model.Transactions);
 
                     // got all data now return view
                     return View (model);
@@ -126,11 +137,15 @@ namespace PBS.Web.Areas.Admin.Controllers
 
             return View ("Error", errorModel);
         }
+
+
         #endregion
 
         #region Batch Details (List of Transactions)
         public IActionResult BatchDetails (string id)
         {
+            id = _dataProtector.UnprotectString (id);
+
             ErrorViewModel errorModel = new ErrorViewModel ();
             GetTransactionRequestBody requestBody = BuildGetTransactionsRequestBody (id);
 
@@ -146,6 +161,8 @@ namespace PBS.Web.Areas.Admin.Controllers
                     {
                         SettledTransactions = responseBody.Transactions
                     };
+
+                    model.SettledTransactions = ProtectTransactionId (model.SettledTransactions);
 
                     return View (model);
                 }
@@ -166,6 +183,8 @@ namespace PBS.Web.Areas.Admin.Controllers
         #region Transaction Details
         public IActionResult Details (string id)
         {
+            id = _dataProtector.UnprotectString (id);
+
             ErrorViewModel errorModel = new ErrorViewModel ();
             GetTransactionDetailsRequestBody requestBody = BuildGetTransactionDetailsModel (id);
 
@@ -181,6 +200,8 @@ namespace PBS.Web.Areas.Admin.Controllers
                     {
                         Transaction = responseBody.Transaction
                     };
+
+                    model.Transaction.EncryptedTransactionId = _dataProtector.Protect (model.Transaction.TransId);
 
                     return View (model);
                 }
@@ -251,7 +272,6 @@ namespace PBS.Web.Areas.Admin.Controllers
             };
         }
 
-
         private MerchantAuthentication BuildMerchantAuthenticationModel ()
         {
             return new MerchantAuthentication ()
@@ -276,6 +296,26 @@ namespace PBS.Web.Areas.Admin.Controllers
             }
 
             return true;
+        }
+
+        private List<BatchItem> ProtectBatchId (List<BatchItem> model)
+        {
+            return model.Select (x =>
+            {
+                x.EncryptedBatchId = _dataProtector.Protect (x.BatchId);
+
+                return x;
+            }).ToList ();
+        }
+
+        private List<Transaction> ProtectTransactionId (List<Transaction> model)
+        {
+            return model.Select (x =>
+            {
+                x.EncryptedTransactionId = _dataProtector.Protect (x.TransId);
+
+                return x;
+            }).ToList ();
         }
         #endregion
     }

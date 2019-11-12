@@ -10,6 +10,9 @@ namespace PBS.Business.Core.AuthorizeNetApiModels.Request
         [JsonProperty ("id")]
         public string Id { get; set; }
 
+        [JsonIgnore]
+        public string EncryptedId { get; set; }
+
         [JsonProperty ("email")]
         public string Email { get; set; }
     }

@@ -21,7 +21,9 @@
                     <td>@item.TransactionStatus</td>
                     <td>@item.Amount INR</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.TransId" class="btn main-color-bg">Details</a>
+                        <a asp-action="Details" asp-route-id="@item.EncryptedTransactionId" class="btn main-color-bg">
+                            Details
+                        </a>
                     </td>
                 </tr>
             }

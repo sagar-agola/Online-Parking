@@ -41,7 +41,7 @@
                             <td>@item.SettlementTimeUTC.ToShortDateString() @item.SettlementTimeUTC.ToShortTimeString()</td>
                             <td>@item.PaymentMethod</td>
                             <td>
-                                <a asp-action="BatchDetails" asp-route-id="@item.BatchId" class="btn main-color-bg">Details</a>
+                                <a asp-action="BatchDetails" asp-route-id="@item.EncryptedBatchId" class="btn main-color-bg">Details</a>
                             </td>
                         </tr>
                     }

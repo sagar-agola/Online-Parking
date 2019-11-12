@@ -22,9 +22,19 @@ namespace PBS.Web.Helpers
             return Convert.ToInt32 (_dataProtector.Unprotect (input));
         }
 
+        public string UnprotectString (string input)
+        {
+            return _dataProtector.Unprotect (input);
+        }
+
         public string Protect (int input)
         {
             return _dataProtector.Protect (input.ToString ());
+        }
+
+        public string Protect (string input)
+        {
+            return _dataProtector.Protect (input);
         }
 
         #region User
