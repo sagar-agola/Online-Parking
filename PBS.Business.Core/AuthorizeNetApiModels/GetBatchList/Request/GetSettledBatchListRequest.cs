@@ -7,12 +7,12 @@ namespace PBS.Business.Core.AuthorizeNetApiModels.GetBatchList.Request
     public class GetSettledBatchListRequest
     {
         [JsonProperty ("merchantAuthentication")]
-        public MerchantAuthentication MerchantAuthentication { get; set; };
+        public MerchantAuthentication MerchantAuthentication { get; set; }
 
         [JsonProperty ("firstSettlementDate")]
         public DateTime FirstSettlementDate { get; set; }
 
         [JsonProperty ("lastSettlementDate")]
-        public DateTime lastSettlementDate { get; set; };
+        public DateTime lastSettlementDate { get; set; }
     }
 }

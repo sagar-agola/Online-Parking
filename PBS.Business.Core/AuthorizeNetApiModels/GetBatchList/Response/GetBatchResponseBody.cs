@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PBS.Business.Core.AuthorizeNetApiModels.GetBatchList.Response
 {
-    public class ResponseBody
+    public class GetBatchResponseBody
     {
         [JsonProperty ("batchList")]
         public List<BatchItem> BatchList { get; set; }

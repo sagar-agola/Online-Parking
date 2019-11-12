@@ -1,0 +1,144 @@
+﻿@model TransactionDetailsModel
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Transactions
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Basic Trasaction Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Transaction Id</p>
+                        <p>Time Submitted<small>(UTC)</small></p>
+                        <p>Time Submitted<small>(Local)</small></p>
+                        <p>Type</p>
+                        <p>Status</p>
+                        <p>Response</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.Transaction.TransId</p>
+                        <p>@Model.Transaction.SubmitTimeUTC</p>
+                        <p>@Model.Transaction.SubmitTimeLocal</p>
+                        <p>@Model.Transaction.TransactionType</p>
+                        <p>@Model.Transaction.TransactionStatus</p>
+                        <p>@Model.Transaction.ResponseReason</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Trasaction Batch Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    @if (Model.Transaction.Batch != null)
+                    {
+                        <div class="col-md-6 text-right" style="font-weight: 600">
+                            <p>Batch Id</p>
+                            <p>Sattlement Time<small>(UTC)</small></p>
+                            <p>Sattlement TIme<small>(Local)</small></p>
+                            <p>Sattlement State</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>@Model.Transaction.Batch.BatchId</p>
+                            <p>@Model.Transaction.Batch.SettlementTimeUTC</p>
+                            <p>@Model.Transaction.Batch.SettlementTimeLocal</p>
+                            <p>@Model.Transaction.Batch.SettlementState</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <p>Not Batched</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Payment Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Amount</p>
+                        <p>Tax</p>
+                        <p>Card Number</p>
+                        <p>Card Type</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.Transaction.AuthAmount INR</p>
+                        <p>@Model.Transaction.Tax.Amount INR</p>
+                        <p>@Model.Transaction.Payment.CreditCard.CardNumber</p>
+                        <p>@Model.Transaction.Payment.CreditCard.CardType</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Trasaction Customer Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Customer Id</p>
+                        <p>Type</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@(Model.Transaction.Customer.Id != null ? Model.Transaction.Customer.Id : "Not Available")</p>
+                        <p>@(Model.Transaction.Customer.Type != null ? Model.Transaction.Customer.Type : "Not Available")</p>
+                    </div>
+                </div>
+                <h4 style="background-color: whitesmoke; padding: 8px" class="text-center">
+                    <b>Billing Customer Information</b>
+                </h4>
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>FirstName</p>
+                        <p>LastName</p>
+                        <p>City</p>
+                        <p>State</p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.Transaction.BillTo != null)
+                        {
+                            <p>@(Model.Transaction.BillTo.FirstName != null ? Model.Transaction.BillTo.FirstName : "Not Available")</p>
+                            <p>@(Model.Transaction.BillTo.LastName != null ? Model.Transaction.BillTo.LastName : "Not Available")</p>
+                            <p>@(Model.Transaction.BillTo.City != null ? Model.Transaction.BillTo.City : "Not Available")</p>
+                            <p>@(Model.Transaction.BillTo.State != null ? Model.Transaction.BillTo.State : "Not Available")</p>
+                        }
+                        else
+                        {
+                            <p>Not Available</p><p>Not Available</p><p>Not Available</p><p>Not Available</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

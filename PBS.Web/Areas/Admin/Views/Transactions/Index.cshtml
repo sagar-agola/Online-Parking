@@ -1,0 +1,71 @@
+﻿@model TransactionsIndexModel
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Transactions
+}
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Sattled Transaction Batches
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="mb-10">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <partial name="_GetTransactionBatchPartial" model="@Model" />
+        </div>
+
+        <hr />
+
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Batch Id</b></td>
+                    <td><b>Sattlement Time</b></td>
+                    <td><b>Payment Method</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.BatchItems.Any ())
+                {
+                    @foreach (var item in Model.BatchItems)
+                    {
+                        <tr>
+                            <td>@item.BatchId</td>
+                            <td>@item.SettlementTimeUTC.ToShortDateString() @item.SettlementTimeUTC.ToShortTimeString()</td>
+                            <td>@item.PaymentMethod</td>
+                            <td>
+                                <a asp-action="BatchDetails" asp-route-id="@item.BatchId" class="btn main-color-bg">Details</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">
+                            We didn't find any record for supplied parameters.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Unsattled Transaction
+        </h3>
+    </div>
+    <div class="panel-body">
+        <partial name="_TransactionListPartial" model="@Model.Transactions" />
+    </div>
+</div>

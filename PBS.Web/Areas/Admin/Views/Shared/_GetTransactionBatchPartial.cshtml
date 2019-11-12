@@ -1,0 +1,41 @@
+﻿@model TransactionsIndexModel
+
+<form asp-action="Index" asp-controller="Transactions" method="post">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="StartDate" class="control-label"></label>
+                    </div>
+                    <div class="col-md-8">
+                        <input asp-for="StartDate" class="form-control" type="date" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="Days" class="control-label"></label>
+                    </div>
+                    <div class="col-md-9">
+                        <input asp-for="Days" class="form-control" />
+                        <span asp-validation-for="Days" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <input type="submit" class="btn main-color-bg" value="Search" />
+            @*<div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <input type="submit" class="btn main-color-bg" value="Search" />
+                </div>
+            </div>*@
+        </div>
+    </div>
+</form>

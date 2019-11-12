@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace PBS.Business.Core.AuthorizeNetApiModels.GetBatchList.Response
 {
@@ -7,8 +8,8 @@ namespace PBS.Business.Core.AuthorizeNetApiModels.GetBatchList.Response
         [JsonProperty ("batchId")]
         public string BatchId { get; set; }
 
-        [JsonProperty ("settlementState")]
-        public string SettlementState { get; set; }
+        [JsonProperty ("settlementTimeUTC")]
+        public DateTime SettlementTimeUTC { get; set; }
 
         [JsonProperty ("paymentMethod")]
         public string PaymentMethod { get; set; }

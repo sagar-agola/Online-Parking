@@ -1,0 +1,20 @@
+﻿@model BatchDetailsModel
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Transactions
+}
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Transactions
+        </h3>
+    </div>
+    <div class="panel-body">
+        <partial name="_TransactionListPartial" model="@Model.SettledTransactions" />
+    </div>
+</div>

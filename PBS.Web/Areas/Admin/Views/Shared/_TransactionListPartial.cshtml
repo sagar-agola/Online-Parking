@@ -1,0 +1,38 @@
+﻿@model List<PBS.Business.Core.AuthorizeNetApiModels.GetTransactions.Response.Transaction>
+
+<table border="0" class="table table-hover text-center">
+    <thead>
+        <tr>
+            <td><b>Transaction Id</b></td>
+            <td><b>Submitted Time</b></td>
+            <td><b>Status</b></td>
+            <td><b>Amount</b></td>
+            <td><b>Actions</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any ())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TransId</td>
+                    <td>@item.SubmitTimeUTC</td>
+                    <td>@item.TransactionStatus</td>
+                    <td>@item.Amount INR</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.TransId" class="btn main-color-bg">Details</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    We didn't find any transactions.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
