@@ -10,10 +10,13 @@ namespace PBS.Web.Controllers
     public class AuthController : Controller
     {
         private readonly IApiHelper _apiHelper;
+        private readonly ITokenDecoder tokenDecoder;
 
-        public AuthController (IApiHelper apiHelper)
+        public AuthController (IApiHelper apiHelper,
+            ITokenDecoder tokenDecoder)
         {
             _apiHelper = apiHelper;
+            this.tokenDecoder = tokenDecoder;
         }
 
         [HttpGet]
@@ -96,6 +99,16 @@ namespace PBS.Web.Controllers
             HttpContext.Session.Remove ("token");
 
             return RedirectToAction ("Login", "Auth");
+        }
+
+        public new IActionResult Unauthorized ()
+        {
+            return View ();
+        }
+
+        public IActionResult LoginRequired ()
+        {
+            return View ();
         }
     }
 }
