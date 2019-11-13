@@ -8,6 +8,7 @@ namespace PBS.Business.Contracts.Repositories
         bool BookingExists (int id);
         Booking Get (int id);
         System.Collections.Generic.List<Booking> GetAll ();
+        System.Collections.Generic.List<Booking> GetByParkingLot (int parkingLotId);
         System.Collections.Generic.List<Booking> GetByUser (int userId);
         void Update (Booking model);
     }

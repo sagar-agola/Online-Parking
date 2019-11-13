@@ -54,9 +54,26 @@ namespace PBS.Business.Services
 
         public List<BookingViewModel> GetByUser (int userId)
         {
-            List<Booking> model = _unitofWork.BookingRepository.GetByUser (userId);
+            if (_unitofWork.UserRepository.UserExists (userId))
+            {
+                List<Booking> model = _unitofWork.BookingRepository.GetByUser (userId);
 
-            return _bookingMapping.MapBookingList (model);
+                return _bookingMapping.MapBookingList (model);
+            }
+
+            return new List<BookingViewModel> ();
+        }
+
+        public List<BookingViewModel> GetByParkingLot (int parkingLotId)
+        {
+            if (_unitofWork.ParkingLotRepository.ParkingLotExists (parkingLotId))
+            {
+                List<Booking> model = _unitofWork.BookingRepository.GetByParkingLot (parkingLotId);
+
+                return _bookingMapping.MapBookingList (model);
+            }
+
+            return new List<BookingViewModel> ();
         }
 
         public bool Update (BookingViewModel model)

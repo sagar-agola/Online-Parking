@@ -1,0 +1,115 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp;&nbsp;Bookings
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Basic Booking Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Booking Id</p>
+                        <p>Date</p>
+                        <p>Time</p>
+                        <p>Duration</p>
+                        <p>Is Active</p>
+                        <p>Vehical number</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.Id</p>
+                        <p>@Model.StartDateTime.ToShortDateString()</p>
+                        <p>@Model.StartDateTime.ToShortTimeString()</p>
+                        <p>@Model.Duration</p>
+                        <p>@(Model.IsActive ? "Yes" : "No")</p>
+                        <p>@Model.VehicleNumber</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;&nbsp;Payment Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Slot Hourly Rate</p>
+                        <p>Total</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.SlotViewModel.HourlyRate INR</p>
+                        <p>
+                            @Model.Amount INR<br />
+                            <small class="text-info"><b>*Note: </b>10% GST Tax is exclusive</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Customer Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Customer Id</p>
+                        <p>Name</p>
+                        <p>Email</p>
+                        <p>Contact Number</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.CustomerId</p>
+                        <p>@Model.CustomerViewModel.FirstName @Model.CustomerViewModel.LastName</p>
+                        <p>@Model.CustomerViewModel.Email</p>
+                        <p>@Model.CustomerViewModel.ContectNumber</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <a asp-action="Details" asp-controller="Users" asp-area="Admin" asp-route-id="@Model.EncryptedCustomerId"
+                   class="btn main-color-bg">Full Details</a>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Parking Slot Information
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 text-right" style="font-weight: 600">
+                        <p>Slot Id</p>
+                        <p>Slot Type</p>
+                        <p>Parking Lot Name</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@Model.SlotId</p>
+                        <p>@Model.SlotViewModel.SlotTypeViewModel.Title</p>
+                        <p>@Model.SlotViewModel.ParkingLotViewModel.Name</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

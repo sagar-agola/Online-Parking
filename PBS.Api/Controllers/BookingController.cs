@@ -4,6 +4,7 @@ using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Api.Controllers
 {
@@ -58,7 +59,25 @@ namespace PBS.Api.Controllers
         {
             List<BookingViewModel> model = _bookingService.GetByUser (id);
 
-            return new ResponseDetails (true, model);
+            if (model.Any ())
+            {
+                return new ResponseDetails (true, model);
+            }
+
+            return new ResponseDetails (false, model);
+        }
+
+        [HttpGet (ApiRoutes.Booking.GetByParkingLot)]
+        public object BetByParkingLot (int id)
+        {
+            List<BookingViewModel> model = _bookingService.GetByParkingLot (id);
+
+            if (model.Any ())
+            {
+                return new ResponseDetails (true, model);
+            }
+
+            return new ResponseDetails (false, model);
         }
 
         [HttpPost (ApiRoutes.Booking.ConfirmBooking)]

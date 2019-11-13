@@ -97,6 +97,13 @@ namespace PBS.Web.Helpers
             model.EncryptedId = _dataProtector.Protect (model.Id.ToString ());
             model.EncryptedSlotId = _dataProtector.Protect (model.SlotId.ToString ());
             model.EncryptedCustomerId = _dataProtector.Protect (model.CustomerId.ToString ());
+
+            if (model.SlotViewModel != null)
+            {
+                model.SlotViewModel.EncryptedId = _dataProtector.Protect (model.SlotViewModel.Id.ToString ());
+                model.SlotViewModel.EncryptedSlotTypeId = _dataProtector.Protect (model.SlotViewModel.SlotTypeId.ToString ());
+                model.SlotViewModel.EncryptedParkingLotId = _dataProtector.Protect (model.SlotViewModel.ParkingLotId.ToString ());
+            }
         }
 
         public void ProtectBookingRouteValues (List<BookingViewModel> model)

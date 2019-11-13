@@ -41,6 +41,14 @@ namespace PBS.Business.DAL.Repositories
                 .ToList ();
         }
 
+        public List<Booking> GetByParkingLot (int parkingLotId)
+        {
+            return RetriveEntities ()
+                .Where (e => e.Slot.ParkingLotId == parkingLotId)
+                .OrderByDescending (e => e.StartDateTime)
+                .ToList ();
+        }
+
         public void Update (Booking model)
         {
             _context.Bookings.Update (model);

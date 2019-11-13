@@ -1,0 +1,50 @@
+﻿@model List<BookingViewModel>
+
+<table border="0" class="table table-hover text-center">
+    <thead>
+        <tr>
+            <td><b>Booking Id</b></td>
+            <td><b>Customer</b></td>
+            <td><b>Parking Lot</b></td>
+            <td><b>Duration</b></td>
+            <td><b>Is Active?</b></td>
+            <td><b>Actions</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any ())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        <a asp-action="Index" asp-route-userId="@item.EncryptedCustomerId" style="color: black">
+                            @item.CustomerViewModel.FirstName @item.CustomerViewModel.LastName
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Index" asp-route-parkingLotId="@item.SlotViewModel.EncryptedParkingLotId" style="color: black">
+                            @item.SlotViewModel.ParkingLotViewModel.Name
+                        </a>
+                    </td>
+                    <td>@item.Duration INR</td>
+                    <td>@(item.IsActive ? "Yes" : "No")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.EncryptedId" class="btn main-color-bg">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">
+                    We didn't find any Booking.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

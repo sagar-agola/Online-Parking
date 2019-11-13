@@ -1,0 +1,20 @@
+﻿@model List<BookingViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp;&nbsp;Bookings
+}
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Bookings
+        </h3>
+    </div>
+    <div class="panel-body">
+        <partial name="_DisplayBookingListPartial" model="@Model" />
+    </div>
+</div>

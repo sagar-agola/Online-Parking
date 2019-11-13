@@ -119,8 +119,11 @@ namespace PBS.Web.Areas.Admin.Controllers
 
                 if (transactionsResponseBody.Messages.ResultCode.ToLower () == "ok")
                 {
-                    model.Transactions = transactionsResponseBody.Transactions;
-                    model.Transactions = ProtectTransactionId (model.Transactions);
+                    if (transactionsResponseBody.Transactions != null)
+                    {
+                        model.Transactions = transactionsResponseBody.Transactions;
+                        model.Transactions = ProtectTransactionId (model.Transactions);
+                    }
 
                     // got all data now return view
                     return View (model);
@@ -137,8 +140,6 @@ namespace PBS.Web.Areas.Admin.Controllers
 
             return View ("Error", errorModel);
         }
-
-
         #endregion
 
         #region Batch Details (List of Transactions)
