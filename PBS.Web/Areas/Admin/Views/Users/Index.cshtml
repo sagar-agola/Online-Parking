@@ -8,6 +8,12 @@
     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Users
 }
 
+<p>
+    <a asp-action="AddAdmin" class="btn main-color-bg">
+        Add New Admin
+    </a>
+</p>
+
 <div class="panel">
     <div class="panel-heading main-color-bg">
         <h3 class="panel-title">
@@ -27,7 +33,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Where (m => m.IsActive))
+                @foreach (var item in Model.Where (m => m.IsActive
+                 && m.RoleViewModel.Title != "Admin" && m.RoleViewModel.Title != "Super Admin"))
                 {
                     <tr>
                         <td>@item.FirstName</td>
@@ -63,6 +70,64 @@
     </div>
 </div>
 
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;System Admins
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td><b>Email</b></td>
+                    <td><b>Contect Number</b></td>
+                    <td><b>Role</b></td>
+                    <td><b>City</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where (m => m.RoleViewModel.Title == "Admin" || m.RoleViewModel.Title == "Super Admin"))
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.Email</td>
+                        <td>@item.ContectNumber</td>
+                        <td>@item.RoleViewModel.Title</td>
+                        <td>
+                            @if (item.AddressViewModel.City == "test")
+                            {
+                                <span>Not added</span>
+                            }
+                            else
+                            {
+                                @item.AddressViewModel.City
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.EncryptedId" class="btn btn-info">Details</a>
+                            @if (_tokenDecoder.UserRole == "Super Admin")
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.EncryptedId" class="btn btn-danger">Delete</a>
+                                @Html.ActionLink("Edit Role", "UpdateRole", "Users", new
+                                {
+                                    userId = item.EncryptedId,
+                                    roleId = item.EncryptedRoleId
+                                }, new
+                                {
+                                    @class = "btn btn-primary text-white"
+                                })
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="panel panel-default">
     <div class="panel-heading main-color-bg">
         <h3 class="panel-title">
@@ -82,7 +147,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Where (m => m.IsActive == false))
+                @foreach (var item in Model.Where (m => !m.IsActive 
+                 && m.RoleViewModel.Title != "Admin" && m.RoleViewModel.Title != "Super Admin"))
                 {
                     <tr>
                         <td>@item.FirstName</td>

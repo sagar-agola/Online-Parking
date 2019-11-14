@@ -17,7 +17,7 @@ namespace PBS.Business.DAL.Repositories
 
         public bool EmailExists (string email)
         {
-            return _context.Users.Any (user => user.Email == email);
+            return _context.Users.Any (user => user.IsActive && user.Email == email);
         }
 
         public User Login (string email)

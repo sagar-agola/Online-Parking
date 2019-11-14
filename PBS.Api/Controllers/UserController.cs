@@ -4,6 +4,7 @@ using PBS.Business.Core.ApiRoute;
 using PBS.Business.Core.BusinessModels;
 using PBS.Business.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PBS.Api.Controllers
 {
@@ -21,11 +22,6 @@ namespace PBS.Api.Controllers
         public object GetAll ()
         {
             List<UserViewModel> model = _userService.GetAll ();
-
-            if (model == null)
-            {
-                return new ResponseDetails (false, "None at the moment.");
-            }
 
             return new ResponseDetails (true, model);
         }

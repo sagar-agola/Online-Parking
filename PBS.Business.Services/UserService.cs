@@ -33,7 +33,7 @@ namespace PBS.Business.Services
                 return _userMapping.MapUserList (model);
             }
 
-            return null;
+            return new List<UserViewModel>();
         }
 
         public UserViewModel Get (int id)

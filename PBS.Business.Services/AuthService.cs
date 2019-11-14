@@ -47,7 +47,6 @@ namespace PBS.Business.Services
                 return null;
             }
 
-            model.RoleId = 2; // Role : User
             model.IsActive = true;
 
             PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);

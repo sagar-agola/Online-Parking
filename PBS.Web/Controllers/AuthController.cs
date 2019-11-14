@@ -61,6 +61,8 @@ namespace PBS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.RoleId = 4;
+
                 model.AddressViewModel = new AddressViewModel ()
                 {
                     AddressLine1 = "test",

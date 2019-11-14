@@ -1,0 +1,48 @@
+﻿@model AddAdminModel
+
+@{
+    ViewData["Title"] = "Add Admin";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Users
+}
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;Add New Admin
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form asp-action="AddAdmin" method="post">
+            <div class="row">
+                <div class="col-md-1">
+                    <label asp-for="Email" class="control-label"></label>
+                </div>
+                <div class="col-md-4">
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-1">
+                    <label asp-for="Role" class="control-label"></label>
+                </div>
+                <div class="col-md-4">
+                    <select asp-for="Role" asp-items="@(new SelectList(Model.Roles, "Id", "Title"))"
+                            class="form-control">
+                        <option value="-1">-- Select Role --</option>
+                    </select>
+                    <span class="text-info">
+                        <small>
+                            <b>*Note: </b>Select Admin role to create new admin
+                        </small>
+                    </span>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 col-md-offset-1">
+                    <input type="submit" class="btn main-color-bg" value="Create" style="margin-top: 10px" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

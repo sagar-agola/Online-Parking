@@ -23,29 +23,20 @@ namespace PBS.Web.Areas.Admin.Controllers
             _dataProtector = dataProtector;
         }
 
+        #region Index
         public IActionResult Index ()
         {
             ResponseDetails response = _apiHelper.SendApiRequest ("", "user/get-all", HttpMethod.Get);
 
-            if (response.Success)
-            {
-                List<UserViewModel> model = JsonConvert.DeserializeObject<List<UserViewModel>> (response.Data.ToString ());
+            List<UserViewModel> model = JsonConvert.DeserializeObject<List<UserViewModel>> (response.Data.ToString ());
 
-                _dataProtector.ProtectUserRouteValues (model);
+            _dataProtector.ProtectUserRouteValues (model);
 
-                return View (model);
-            }
-            else
-            {
-                ErrorViewModel model = new ErrorViewModel
-                {
-                    Message = response.Data.ToString ()
-                };
-
-                return View ("Error", model);
-            }
+            return View (model);
         }
+        #endregion
 
+        #region Details
         public IActionResult Details (string id)
         {
             int newId = _dataProtector.Unprotect (id);
@@ -70,7 +61,9 @@ namespace PBS.Web.Areas.Admin.Controllers
                 return View ("Error", model);
             }
         }
+        #endregion
 
+        #region Delete
         [HttpGet]
         [ActionName ("Delete")]
         public IActionResult DeleteGet (string id)
@@ -99,7 +92,9 @@ namespace PBS.Web.Areas.Admin.Controllers
                 return View (newId);
             }
         }
+        #endregion
 
+        #region Update Role
         [HttpGet]
         public IActionResult UpdateRole (string userId, string roleId)
         {
@@ -138,5 +133,67 @@ namespace PBS.Web.Areas.Admin.Controllers
                 return View ("Error", errorModel);
             }
         }
+        #endregion
+
+        #region Add Admin
+        [HttpGet]
+        public IActionResult AddAdmin ()
+        {
+            ResponseDetails response = _apiHelper.SendApiRequest ("", "role/get-all", HttpMethod.Get);
+
+            AddAdminModel model = new AddAdminModel ()
+            {
+                Roles = JsonConvert.DeserializeObject<List<RoleViewModel>> (response.Data.ToString ())
+            };
+
+            return View (model);
+        }
+
+        [HttpPost]
+        public IActionResult AddAdmin (AddAdminModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserViewModel userModel = new UserViewModel ()
+                {
+                    FirstName = "New Admin",
+                    Email = model.Email,
+                    Password = "Pwd123",
+                    ConfirmPassword = "Pwd123",
+                    RoleId = model.Role,
+                    IsActive = true,
+                    AddressViewModel = new AddressViewModel ()
+                    {
+                        AddressLine1 = "test",
+                        AddressLine2 = "test",
+                        City = "test",
+                        PinCode = "111111",
+                        SubDistrict = "test",
+                        District = "test",
+                        State = "test",
+                        LandMark = "test"
+                    }
+                };
+
+                ResponseDetails response = _apiHelper.SendApiRequest (userModel, "auth/register", HttpMethod.Post);
+
+                if (response.Success)
+                {
+                    return RedirectToAction ("Index");
+                }
+                else
+                {
+                    ErrorViewModel errorModel = new ErrorViewModel ()
+                    {
+                        Message = response.Data.ToString ()
+                    };
+
+                    return View ("Error", errorModel);
+                }
+            }
+
+            return RedirectToAction ("AddAdmin");
+        }
+        #endregion
     }
 }

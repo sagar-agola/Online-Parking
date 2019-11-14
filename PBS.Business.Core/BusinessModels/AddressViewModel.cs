@@ -41,6 +41,5 @@ namespace PBS.Business.Core.BusinessModels
 
         public List<ParkingLotViewModel> ParkingLotViewModels { get; set; }
         #endregion
-
     }
 }
