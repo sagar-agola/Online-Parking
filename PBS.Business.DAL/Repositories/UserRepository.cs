@@ -47,6 +47,7 @@ namespace PBS.Business.DAL.Repositories
             if (UserExists (id))
             {
                 User user = _context.Users
+                    .AsNoTracking ()
                     .Include (u => u.Role)
                     .Include (u => u.Address)
                     .Include (u => u.ParkingLots)

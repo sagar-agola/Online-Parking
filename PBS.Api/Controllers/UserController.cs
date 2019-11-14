@@ -91,5 +91,22 @@ namespace PBS.Api.Controllers
 
             return new ResponseDetails (true, "Role updated successfully.");
         }
+
+        [HttpPost (ApiRoutes.User.ConfirmEmail)]
+        public object ConfirmEmail (int id)
+        {
+            UserViewModel model = _userService.Get (id);
+
+            if (model == null)
+            {
+                return new ResponseDetails (false, $"User with Id: { id } is not found.");
+            }
+
+            model.IsEmailConfirmed = true;
+
+            _userService.Update (model);
+
+            return new ResponseDetails (true, "Your email id now Confirmed successfully.");
+        }
     }
 }

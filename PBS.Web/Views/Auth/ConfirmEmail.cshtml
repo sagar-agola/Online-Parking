@@ -1,0 +1,38 @@
+﻿@model ConfirmEmailModel
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">
+                    Confirm Email
+                </h1>
+            </div>
+            <div class="card-body">
+                <form asp-action="ChangePassword">
+                    <div class="form-group">
+                        <input asp-for="Id" class="form-control" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control disabled" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OTP" class="control-label"></label>
+                        <input asp-for="OTP" class="form-control" />
+                        <span asp-validation-for="OTP" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Confirm" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

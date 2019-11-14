@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PBS.Business.Utilities.Configuration;
-using PBS.Business.Utilities.Helpers;
 using PBS.Business.Utilities.MailClient;
 using PBS.Web.Helpers;
 using Rotativa.AspNetCore;
@@ -36,6 +35,7 @@ namespace PBS.Web
             services.AddSingleton<IMailClient, MailClient> ();
             services.AddSingleton<DataProtectionPurposeStrings> ();
             services.AddSingleton<DataProtector> ();
+            services.AddSingleton<MailSender> ();
 
             services.AddSession ();
 
@@ -63,15 +63,15 @@ namespace PBS.Web
 
             app.UseMvc (routes =>
             {
-                 routes.MapRoute (
-                     name: "default",
-                     template: "{controller=Home}/{action=Index}/{id?}"
-                 );
+                routes.MapRoute (
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                );
 
-                 routes.MapRoute (
-                   name: "Admin",
-                   template: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
-                 );
+                routes.MapRoute (
+                  name: "Admin",
+                  template: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+                );
             });
         }
     }

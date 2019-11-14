@@ -34,6 +34,8 @@ namespace PBS.Business.Core.BusinessModels
 
         public bool IsActive { get; set; }
 
+        public bool IsEmailConfirmed { get; set; }
+
         #region User Role
         public int RoleId { get; set; }
         public string EncryptedRoleId { get; set; }

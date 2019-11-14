@@ -5,6 +5,6 @@ namespace PBS.Business.Utilities.Helpers
 {
     public interface ITokenManager
     {
-        string GetToken (List<Claim> claims);
+        string BuildToken (List<Claim> claims);
     }
 }

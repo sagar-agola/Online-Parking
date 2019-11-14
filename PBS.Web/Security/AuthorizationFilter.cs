@@ -23,12 +23,19 @@ namespace PBS.Web.Security
             }
             else
             {
-                if (_role != "NotRequired")
+                if (_tokenDecoder.IsEmailConfirmed)
                 {
-                    if (_tokenDecoder.UserRole != _role)
+                    if (_role != "NotRequired")
                     {
-                        context.Result = new RedirectResult ("Unauthorized");
+                        if (_tokenDecoder.UserRole != _role)
+                        {
+                            context.Result = new RedirectResult ("Unauthorized");
+                        }
                     }
+                }
+                else
+                {
+                    context.Result = new RedirectResult ("EmailConfirmationRequired");
                 }
             }
         }

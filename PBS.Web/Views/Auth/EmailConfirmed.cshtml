@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "EmailConfirmed";
+}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card mt-5 text-center" style="padding: 10px">
+            <h1 class="font-weight-bold">
+                Email Confirmed
+            </h1>
+            <h5>
+                Your email is now confirmed.<br />
+                Please louout and Log back in to access restricted pages.
+            </h5>
+            
+            <form id="LogoutForm" asp-action="Logout" method="post">
+                <p>
+                    <a href="#" class="btn btn-link"
+                       onclick="document.getElementById('LogoutForm').submit();">Logout</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

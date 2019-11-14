@@ -49,6 +49,12 @@
                                         <a class="dropdown-item" asp-action="ChangePassword" asp-controller="User">
                                             Change Password
                                         </a>
+                                        @if (!_tokenDecoder.IsEmailConfirmed)
+                                        {
+                                            <a class="dropdown-item" asp-action="ConfirmEmail" asp-controller="Auth">
+                                                Confirm Email
+                                            </a>
+                                        }
                                         <a class="dropdown-item" asp-action="All" asp-controller="Booking">
                                             My Bookings
                                         </a>

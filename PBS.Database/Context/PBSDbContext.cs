@@ -27,6 +27,10 @@ namespace PBS.Database.Context
             modelBuilder.Entity<Booking> ()
                 .Property (x => x.Amount)
                 .HasDefaultValue (0);
+
+            modelBuilder.Entity<User> ()
+                .Property (x => x.IsEmailConfirmed)
+                .HasDefaultValue (false);
         }
     }
 }

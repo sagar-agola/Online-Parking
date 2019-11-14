@@ -34,7 +34,7 @@ namespace PBS.Api.Controllers
 
             List<Claim> claims = GetClaims (response);
 
-            string token = _tokenManager.GetToken (claims);
+            string token = _tokenManager.BuildToken (claims);
 
             return new ResponseDetails (true, token);
         }
@@ -56,7 +56,7 @@ namespace PBS.Api.Controllers
 
             List<Claim> claims = GetClaims (user);
 
-            string token = _tokenManager.GetToken (claims);
+            string token = _tokenManager.BuildToken (claims);
 
             return new ResponseDetails (true, token);
         }
@@ -67,7 +67,8 @@ namespace PBS.Api.Controllers
             {
                 new Claim (ClaimTypes.NameIdentifier, model.Id.ToString ()),
                 new Claim (ClaimTypes.Name, model.FirstName + " " + model.LastName),
-                new Claim (ClaimTypes.Role, model.RoleViewModel.Title)
+                new Claim (ClaimTypes.Role, model.RoleViewModel.Title),
+                new Claim ("IsEmailConfirmed", model.IsEmailConfirmed.ToString())
             };
 
             foreach (UserClaimViewModel claim in model.UserClaimViewModels)

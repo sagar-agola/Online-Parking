@@ -17,7 +17,7 @@ namespace PBS.Business.Utilities.Helpers
             _configuration = configuration;
         }
 
-        public string GetToken (List<Claim> claims)
+        public string BuildToken (List<Claim> claims)
         {
             SymmetricSecurityKey key = new SymmetricSecurityKey (Encoding.UTF8
                 .GetBytes (_configuration.Token));

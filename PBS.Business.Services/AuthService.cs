@@ -48,6 +48,7 @@ namespace PBS.Business.Services
             }
 
             model.IsActive = true;
+            model.IsEmailConfirmed = false;
 
             PasswordManager.CreatePasswordHash (model.Password, out byte[] passwordHash, out byte[] passwordSalt);
 

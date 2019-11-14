@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
@@ -33,12 +34,7 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = RowToken;
-
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
-                JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;
-
-                return int.Parse (tokenS.Claims.First (claim => claim.Type == "nameid").Value);
+                return Convert.ToInt32 (SecurityToken.Claims.First (claim => claim.Type == "nameid").Value);
             }
         }
 
@@ -46,12 +42,7 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = RowToken;
-
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
-                JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;
-
-                return tokenS.Claims.First (claim => claim.Type == "unique_name").Value;
+                return SecurityToken.Claims.First (claim => claim.Type == "unique_name").Value;
             }
         }
 
@@ -59,12 +50,24 @@ namespace PBS.Web.Helpers
         {
             get
             {
-                string token = RowToken;
+                return SecurityToken.Claims.First (claim => claim.Type == "role").Value;
+            }
+        }
 
+        public bool IsEmailConfirmed
+        {
+            get
+            {
+                return Convert.ToBoolean(SecurityToken.Claims.First (claim => claim.Type == "IsEmailConfirmed").Value);
+            }
+        }
+
+        private JwtSecurityToken SecurityToken
+        {
+            get
+            {
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler ();
-                JwtSecurityToken tokenS = handler.ReadToken (token) as JwtSecurityToken;
-
-                return tokenS.Claims.First (claim => claim.Type == "role").Value;
+                return handler.ReadToken (RowToken) as JwtSecurityToken;
             }
         }
     }

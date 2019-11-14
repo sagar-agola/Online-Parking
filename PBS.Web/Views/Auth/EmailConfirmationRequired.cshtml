@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Email Confirmation Required";
+}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card mt-5 text-center" style="padding: 10px">
+            <h1 class="font-weight-bold">
+                Email Confirmation Required
+            </h1>
+            <h5>
+                You need to confirm your email to view this page.
+            </h5>
+            <p>
+                <a asp-action="ConfirmEmail" asp-controller="Auth">Confirm Email Here</a>
+            </p>
+        </div>
+    </div>
+</div>
+

@@ -22,6 +22,8 @@ namespace PBS.Database.Models
 
         public bool IsActive { get; set; }
 
+        public bool IsEmailConfirmed { get; set; }
+
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
