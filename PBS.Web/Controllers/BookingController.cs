@@ -51,7 +51,7 @@ namespace PBS.Web.Controllers
                 model.SlotViewModels = model.SlotViewModels.Select (x =>
                 {
                     // populate can book property logic
-                    x.CanBook = DetermineWhetherCanSlotBook (x);
+                    x.CanBook = CanBookSlot (x);
 
                     _dataProtector.ProtectSlotRouteValues (x);
 
@@ -342,7 +342,7 @@ namespace PBS.Web.Controllers
         #endregion
 
         #region Private Methods
-        private bool DetermineWhetherCanSlotBook (SlotViewModel model)
+        private bool CanBookSlot (SlotViewModel model)
         {
             if (model.IsBooked)
             {
