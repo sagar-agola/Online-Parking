@@ -100,19 +100,6 @@ namespace PBS.Web.Controllers
         }
         #endregion
 
-        #region Fotgot Password
-        //[HttpGet]
-        //public IActionResult ForgotPassword () => View ();
-
-        //[HttpPost]
-        //public IActionResult ForgotPassword(string email)
-        //{
-        //    string encryptedOtp = _mailSender.GanerateAndSendOTP (email);
-
-        //    HttpContext.Session.SetString ("OTP", encryptedOtp);
-        //}
-        #endregion
-
         #region View Profile
         public IActionResult Profile ()
         {
