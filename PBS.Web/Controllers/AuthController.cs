@@ -74,8 +74,10 @@ namespace PBS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Remove hardcoded role Id in future
                 model.RoleId = 4;
 
+                // Make address optional in future
                 model.AddressViewModel = new AddressViewModel ()
                 {
                     AddressLine1 = "test",
@@ -119,6 +121,7 @@ namespace PBS.Web.Controllers
         }
         #endregion
 
+        #region Confirm Email
         [HttpGet]
         public IActionResult ConfirmEmail ()
         {
@@ -194,17 +197,18 @@ namespace PBS.Web.Controllers
             return View ();
         }
 
+        public IActionResult EmailConfirmationRequired ()
+        {
+            return View ();
+        }
+        #endregion
+
         public new IActionResult Unauthorized ()
         {
             return View ();
         }
 
         public IActionResult LoginRequired ()
-        {
-            return View ();
-        }
-
-        public IActionResult EmailConfirmationRequired ()
         {
             return View ();
         }

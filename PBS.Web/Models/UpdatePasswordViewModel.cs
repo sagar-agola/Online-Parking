@@ -4,8 +4,6 @@ namespace PBS.Web.Models
 {
     public class UpdatePasswordViewModel
     {
-        public int? Id { get; set; }
-
         [Display(Name = "New Password")]
         [Required (ErrorMessage = "Password is required field.")]
         [MinLength (6, ErrorMessage = "Password must be atleast 6 character long.")]

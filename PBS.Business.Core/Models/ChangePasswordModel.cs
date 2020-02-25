@@ -4,7 +4,7 @@ namespace PBS.Business.Core.Models
 {
     public class ChangePasswordModel
     {
-        public int Id { get; set; }
+        public string Email { get; set; }
 
         [Required (ErrorMessage = "Password is required field.")]
         [MinLength (6, ErrorMessage = "Password must be atleast 6 character long.")]

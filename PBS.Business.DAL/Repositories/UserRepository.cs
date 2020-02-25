@@ -79,21 +79,14 @@ namespace PBS.Business.DAL.Repositories
             return false;
         }
 
-        public bool ChangePassword (ChangePasswordDbModel model)
+        public void ChangePassword (ChangePasswordDbModel model)
         {
-            if (UserExists (model.Id))
-            {
-                User user = _context.Users.First (u => u.Id == model.Id);
+            User user = _context.Users.First (u => u.Email == model.Email);
 
-                user.PasswordHash = model.PasswordHash;
-                user.PasswordSalt = model.PasswordSalt;
+            user.PasswordHash = model.PasswordHash;
+            user.PasswordSalt = model.PasswordSalt;
 
-                _context.Users.Update (user);
-
-                return true;
-            }
-
-            return false;
+            _context.Users.Update (user);
         }
 
         public bool MakeOwner(int userId)

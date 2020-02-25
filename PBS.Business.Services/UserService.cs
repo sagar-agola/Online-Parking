@@ -82,19 +82,20 @@ namespace PBS.Business.Services
 
             ChangePasswordDbModel dbModel = new ChangePasswordDbModel
             {
-                Id = model.Id,
+                Email = model.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
             };
 
-            bool success = _unitOfWork.UserRepository.ChangePassword (dbModel);
-
-            if (success)
+            if (_unitOfWork.AuthRepository.EmailExists (model.Email))
             {
+                _unitOfWork.UserRepository.ChangePassword (dbModel);
                 _unitOfWork.SaveChanges ();
+
+                return true;
             }
 
-            return success;
+            return false;
         }
 
         public bool ChangeRole (ChangeUserRoleModel model)

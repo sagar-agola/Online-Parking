@@ -29,18 +29,9 @@ namespace PBS.Web.Controllers
             _mailSender = mailSender;
         }
 
-        #region Change Password Actions
+        #region Change Password
         [HttpGet]
-        public IActionResult ChangePassword ()
-        {
-            ChangePasswordViewModel model = new ChangePasswordViewModel
-            {
-                Id = _tokenDecoder.UserId,
-                Email = string.Empty
-            };
-
-            return View (model);
-        }
+        public IActionResult ChangePassword () => View ();
 
         [HttpPost]
         public IActionResult ChangePassword (ChangePasswordViewModel model)
@@ -48,6 +39,8 @@ namespace PBS.Web.Controllers
             if (ModelState.IsValid)
             {
                 string encryptedOtp = _mailSender.GanerateAndSendOTP (model.Email);
+
+                TempData["Email"] = model.Email;
 
                 HttpContext.Session.SetString ("OTP", encryptedOtp);
                 return RedirectToAction ("UpdatePassword");
@@ -58,18 +51,11 @@ namespace PBS.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult UpdatePassword ()
-        {
-            return View ();
-        }
+        public IActionResult UpdatePassword () => View ();
 
         [HttpPost]
         public IActionResult UpdatePassword (UpdatePasswordViewModel model)
         {
-            model.Id = _tokenDecoder.UserId;
-
-            TryValidateModel (model);
-
             if (ModelState.IsValid)
             {
                 string OTP = HttpContext.Session.GetString ("OTP");
@@ -85,7 +71,7 @@ namespace PBS.Web.Controllers
 
                 ChangePasswordModel changePasswordModel = new ChangePasswordModel
                 {
-                    Id = model.Id == null ? 0 : int.Parse (model.Id.ToString ()),
+                    Email = TempData["Email"].ToString (),
                     Password = model.Password
                 };
 
@@ -112,6 +98,19 @@ namespace PBS.Web.Controllers
 
             return View (model);
         }
+        #endregion
+
+        #region Fotgot Password
+        //[HttpGet]
+        //public IActionResult ForgotPassword () => View ();
+
+        //[HttpPost]
+        //public IActionResult ForgotPassword(string email)
+        //{
+        //    string encryptedOtp = _mailSender.GanerateAndSendOTP (email);
+
+        //    HttpContext.Session.SetString ("OTP", encryptedOtp);
+        //}
         #endregion
 
         #region View Profile
@@ -239,8 +238,6 @@ namespace PBS.Web.Controllers
                 };
             }
         }
-
-        
         #endregion
     }
 }

@@ -10,7 +10,7 @@ namespace PBS.Business.Contracts.Repositories
         User Get (int id);
         bool Update (User model);
         void Remove (int id);
-        bool ChangePassword (ChangePasswordDbModel model);
+        void ChangePassword (ChangePasswordDbModel model);
         bool UserExists (int id);
         bool MakeOwner (int userId);
     }
