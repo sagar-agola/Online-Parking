@@ -10,16 +10,27 @@ namespace PBS.Api.Controllers
     public class AddressController : ControllerBase
     {
         private readonly IAddressService _addressService;
+        private readonly IUserService _userService;
 
-        public AddressController (IAddressService addressService)
+        public AddressController (IAddressService addressService, IUserService userService)
         {
             _addressService = addressService;
+            _userService = userService;
         }
 
         [HttpPost (ApiRoutes.Address.Add)]
-        public object Add (AddressViewModel model)
+        public object Add (int id, AddressViewModel model)
         {
             model = _addressService.Add (model);
+            
+            UserViewModel userModel = _userService.Get (id);
+            userModel.AddressId = model.Id;
+            userModel = _userService.Update (userModel);
+
+            if (userModel == null)
+            {
+                return new ResponseDetails (false, "Address not saved.");
+            }
 
             return new ResponseDetails (true, model);
         }

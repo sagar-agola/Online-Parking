@@ -44,7 +44,7 @@
         {
             private const string _base = _root + "/address";
 
-            public const string Add = _base + "/add";
+            public const string Add = _base + "/add/{id}";
             public const string Update = _base + "/update";
         }
         #endregion

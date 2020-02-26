@@ -192,7 +192,16 @@ namespace PBS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ResponseDetails response = _apiHelper.SendApiRequest (model, "address/update", HttpMethod.Post);
+                ResponseDetails response;
+
+                if (model.Id == null)
+                {
+                    response = _apiHelper.SendApiRequest (model, $"address/add/{ _tokenDecoder.UserId }", HttpMethod.Post);
+                }
+                else
+                {
+                    response = _apiHelper.SendApiRequest (model, "address/update", HttpMethod.Post);
+                }
 
                 if (response.Success)
                 {
