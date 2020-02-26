@@ -21,7 +21,6 @@ namespace PBS.Business.Utilities.Mappings
 
             modelMapping.RoleViewModel = _mapper.Map<RoleViewModel> (model.Role);
             modelMapping.AddressViewModel = _mapper.Map<AddressViewModel> (model.Address);
-            modelMapping.UserClaimViewModels = _mapper.Map<List<UserClaimViewModel>> (model.UserClaims);
             modelMapping.BookingViewModels = MapBookings (model.Bookings);
             modelMapping.ParkingLotViewModels = MapParkingLots (model.ParkingLots);
 

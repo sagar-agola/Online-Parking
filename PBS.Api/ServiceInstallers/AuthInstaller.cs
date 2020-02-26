@@ -10,27 +10,20 @@ namespace PBS.Api.ServiceInstallers
     {
         public void InstallServices (IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer (options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = configuration.GetSection ("AppSettings:JwtIssuer").Value,
-                        ValidAudience = configuration.GetSection ("AppSettings:JwtAudience").Value,
-                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.ASCII
-                            .GetBytes (configuration.GetSection ("AppSettings:Token").Value))
-                    };
-                });
-
-            services.AddAuthorization (options =>
+            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme).AddJwtBearer (options =>
             {
-                options.AddPolicy ("test", policy => policy.RequireClaim ("test"));
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration.GetSection ("AppSettings:JwtIssuer").Value,
+                    ValidAudience = configuration.GetSection ("AppSettings:JwtAudience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey (Encoding.ASCII
+                        .GetBytes (configuration.GetSection ("AppSettings:Token").Value))
+                };
             });
-
         }
     }
 }

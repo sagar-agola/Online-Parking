@@ -71,11 +71,6 @@ namespace PBS.Api.Controllers
                 new Claim ("IsEmailConfirmed", model.IsEmailConfirmed.ToString())
             };
 
-            foreach (UserClaimViewModel claim in model.UserClaimViewModels)
-            {
-                claims.Add (new Claim (claim.ClaimType, claim.ClaimTitle));
-            }
-
             return claims;
         }
     }

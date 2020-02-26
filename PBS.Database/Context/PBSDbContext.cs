@@ -9,7 +9,6 @@ namespace PBS.Database.Context
         { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<UserClaim> Claims { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Booking> Bookings { get; set; }

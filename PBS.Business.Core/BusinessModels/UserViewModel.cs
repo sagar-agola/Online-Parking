@@ -50,7 +50,6 @@ namespace PBS.Business.Core.BusinessModels
         #region Navigational Properties
         public List<ParkingLotViewModel> ParkingLotViewModels { get; set; }
         public List<BookingViewModel> BookingViewModels { get; set; }
-        public List<UserClaimViewModel> UserClaimViewModels { get; set; }
         #endregion
     }
 }

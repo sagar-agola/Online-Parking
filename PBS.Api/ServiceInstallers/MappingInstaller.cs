@@ -14,7 +14,6 @@ namespace PBS.Api.ServiceInstallers
 #pragma warning restore CS0618 // Type or member is obsolete
 
             services.AddSingleton<IUserMapping, UserMapping> ();
-            services.AddSingleton<IClaimMapping, ClaimMapping> ();
             services.AddSingleton<IParkingLotMapping, ParkingLotMapping> ();
             services.AddSingleton<ISlotMapping, SlotMapping> ();
             services.AddSingleton<IRoleMapping, RoleMapping> ();
