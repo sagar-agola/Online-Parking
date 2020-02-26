@@ -6,7 +6,7 @@
 
 <div class="card">
     <div class="card-header">
-        @if (Model.AddressLine1 == "test")
+        @if (Model == null)
         {
             <h1 class="card-title">Add Address</h1>
         }
@@ -84,7 +84,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-5">
                 <h2>Current Address</h2>
-                @if (Model.AddressLine1 == "test")
+                @if (Model == null)
                 {
                     <span>Not set at the moment.</span>
                 }

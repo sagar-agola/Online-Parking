@@ -34,7 +34,7 @@ namespace PBS.Database.Models
         #endregion
 
         #region User Address
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public Address Address { get; set; }
         #endregion
 

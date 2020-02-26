@@ -41,7 +41,7 @@
                         Address
                     </dt>
                     <dd class="col-md-8">
-                        @if (Model.AddressViewModel.AddressLine1 == "test")
+                        @if (Model.AddressViewModel == null)
                         {
                             <span>Address not set.</span><br />
                             <a asp-action="UpdateAddress">Add</a>

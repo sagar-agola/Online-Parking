@@ -77,19 +77,6 @@ namespace PBS.Web.Controllers
                 // Remove hardcoded role Id in future
                 model.RoleId = 4;
 
-                // Make address optional in future
-                model.AddressViewModel = new AddressViewModel ()
-                {
-                    AddressLine1 = "test",
-                    AddressLine2 = "test",
-                    City = "test",
-                    LandMark = "test",
-                    PinCode = "111111",
-                    District = "test",
-                    SubDistrict = "test",
-                    State = "test"
-                };
-
                 ResponseDetails response = _apiHelper.SendApiRequest (model, "auth/register", HttpMethod.Post);
 
                 if (response.Success)

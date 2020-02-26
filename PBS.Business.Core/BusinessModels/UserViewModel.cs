@@ -43,7 +43,7 @@ namespace PBS.Business.Core.BusinessModels
         #endregion
 
         #region User Address
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public AddressViewModel AddressViewModel { get; set; }
         #endregion
 
