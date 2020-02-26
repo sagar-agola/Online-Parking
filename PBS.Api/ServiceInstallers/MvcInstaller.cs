@@ -14,8 +14,7 @@ namespace PBS.Api.ServiceInstallers
             services.AddSwaggerGen (c =>
             {
                 c.SwaggerDoc ("v1", new Info ());
-                c.AddSecurityDefinition ("Bearer",
-                   new ApiKeyScheme
+                c.AddSecurityDefinition ("Bearer", new ApiKeyScheme
                    {
                        In = "header",
                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
@@ -23,12 +22,12 @@ namespace PBS.Api.ServiceInstallers
                        Type = "apiKey"
                    });
                 c.AddSecurityRequirement (new Dictionary<string, IEnumerable<string>>
-               {
+                {
                     {
                        "Bearer",
                        Enumerable.Empty<string>()
                     },
-               });
+                });
             });
 
             services.AddCors ();

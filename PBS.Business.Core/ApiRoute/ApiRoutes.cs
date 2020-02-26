@@ -35,6 +35,7 @@
             public const string ChangePassword = _base + "/change-password";
             public const string ChangeRole = _base + "/change-role";
             public const string ConfirmEmail = _base + "/confirm-email/{id}";
+            public const string EmailExists = _base + "/email-exists";
         }
         #endregion
 

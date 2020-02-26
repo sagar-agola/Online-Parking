@@ -38,12 +38,20 @@ namespace PBS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string encryptedOtp = _mailSender.GanerateAndSendOTP (model.Email);
+                ResponseDetails respone = _apiHelper.SendApiRequest (model.Email, "user/email-exists", HttpMethod.Post);
 
-                TempData["Email"] = model.Email;
+                if (respone.Success)
+                {
+                    string encryptedOtp = _mailSender.GanerateAndSendOTP (model.Email);
 
-                HttpContext.Session.SetString ("OTP", encryptedOtp);
-                return RedirectToAction ("UpdatePassword");
+                    TempData["Email"] = model.Email;
+
+                    HttpContext.Session.SetString ("OTP", encryptedOtp);
+                    return RedirectToAction ("UpdatePassword");
+                }
+
+                ModelState.AddModelError ("", "Email address does not exists. Make sure you are providing currect email address");
+                return View (model);
             }
 
             ModelState.AddModelError ("", "Validation error.");

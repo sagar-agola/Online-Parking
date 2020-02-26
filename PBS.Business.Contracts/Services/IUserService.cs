@@ -13,5 +13,6 @@ namespace PBS.Business.Contracts.Services
         bool MakeOwner (int userId);
         bool Remove (int id);
         bool ChangeRole (ChangeUserRoleModel model);
+        bool EmailExists (string email);
     }
 }

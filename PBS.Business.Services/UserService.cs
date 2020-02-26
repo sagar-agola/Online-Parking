@@ -127,5 +127,10 @@ namespace PBS.Business.Services
 
             return success;
         }
+
+        public bool EmailExists(string email)
+        {
+            return _unitOfWork.AuthRepository.EmailExists (email);
+        }
     }
 }

@@ -108,5 +108,18 @@ namespace PBS.Api.Controllers
 
             return new ResponseDetails (true, "Your email id now Confirmed successfully.");
         }
+
+        [HttpPost (ApiRoutes.User.EmailExists)]
+        public object EmailExists (string email)
+        {
+            bool isEmailExists = _userService.EmailExists (email);
+
+            if (isEmailExists)
+            {
+                return new ResponseDetails (true, string.Empty);
+            }
+
+            return new ResponseDetails (false, string.Empty);
+        }
     }
 }
