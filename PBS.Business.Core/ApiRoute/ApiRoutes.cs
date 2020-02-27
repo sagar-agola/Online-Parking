@@ -90,6 +90,9 @@
             private const string _base = _root + "/slot-type";
 
             public const string GetAll = _base + "/get-all";
+            public const string Get = _base + "/get/{id}";
+            public const string Add = _base + "/add";
+            public const string Remove = _base + "/remove/{id}";
         }
         #endregion
 
