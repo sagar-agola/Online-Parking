@@ -18,6 +18,7 @@ namespace PBS.Api.ServiceInstallers
             services.AddSingleton<ISlotMapping, SlotMapping> ();
             services.AddSingleton<IRoleMapping, RoleMapping> ();
             services.AddSingleton<IBookingMapping, BookingMapping> ();
+            services.AddSingleton<ISlotTypeMapping, SlotTypeMapping> ();
         }
     }
 }

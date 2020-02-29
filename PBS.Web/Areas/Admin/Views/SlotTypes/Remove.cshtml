@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Remove Role";
+    ViewData["Title"] = "Remove Slot Type";
 }
 
 @section header {
-    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;User Roles
+    <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Slot Types
 }
 
 <div class="panel">
     <div class="panel-heading main-color-bg">
         <h3 class="panel-title">
-            <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;Delete Role
+            <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;Delete Slot Type
         </h3>
     </div>
     <div class="panel-body">
@@ -19,7 +19,7 @@
     </div>
     <div class="panel-footer">
         <form asp-action="Remove" method="post">
-            <input id="roleId" name="roleId" type="hidden" value="@ViewData["Id"]" />
+            <input id="id" name="id" type="hidden" value="@ViewData["Id"]" />
             <input type="submit" value="Yes" class="btn main-color-bg" />
             <a asp-action="Index" class="btn btn-danger">No</a>
         </form>

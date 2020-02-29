@@ -89,10 +89,12 @@ namespace PBS.Web.Areas.Admin.Controllers
             }
             else
             {
-                ModelState.AddModelError ("", response.Data.ToString ());
-                ViewData["Id"] = newId;
+                ErrorViewModel ErrorModel = new ErrorViewModel ()
+                {
+                    Message = response.Data.ToString ()
+                };
 
-                return View ();
+                return View ("Error", ErrorModel);
             }
         }
 

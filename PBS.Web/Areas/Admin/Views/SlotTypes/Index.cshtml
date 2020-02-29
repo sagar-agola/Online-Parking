@@ -1,0 +1,44 @@
+﻿@model List<SlotTypeViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section header {
+    <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Slot Types
+}
+
+<p>
+    <a asp-action="Create" class="btn main-color-bg">Create New</a>
+</p>
+
+<div class="panel">
+    <div class="panel-heading main-color-bg">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;Slot Types
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table border="0" class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <td><b>Slot Type</b></td>
+                    <td><b>Number of Slots</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SlotTypeViewModel slotType in Model)
+                {
+                    <tr>
+                        <td>@slotType.Title</td>
+                        <td>@slotType.SlotViewModels.Count</td>
+                        <td>
+                            <a asp-action="Remove" asp-route-id="@slotType.EncryptedId" class="btn btn-danger text-white">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

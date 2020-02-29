@@ -25,7 +25,9 @@ namespace PBS.Business.DAL.Repositories
 
         public List<SlotType> GetAll ()
         {
-            return _context.SlotTypes.ToList ();
+            return _context.SlotTypes
+                .Include(s => s.Slots)
+                .ToList ();
         }
 
         public SlotType Get (int id)
