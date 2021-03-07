@@ -7,10 +7,7 @@ pipeline{
 
     stage('Checkout') {
         steps {
-            git 
-                credentialsId: '9898dd46-3ab4-45e1-87b2-96703c808edb', 
-                url: 'https://github.com/sagar-agola/OnlineParking.git/', 
-                branch: 'master'
+            git url: 'https://github.com/sagar-agola/OnlineParking.git/', branch: 'master'
         }
     }
 
